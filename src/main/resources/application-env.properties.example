@@ -1,0 +1,21 @@
+# Rename this file to either `application-dev.properties` or
+# `application-prod.properties`.
+
+#db.url=jdbc:sqlite:/Users/jsumners/Dropbox/Project/Java/ice-lotto/src/main/resources/test.sqlite3
+#db.url=jdbc:h2:/Users/jsumners/Dropbox/Projects/Java/ice-lotto/src/main/resources/test.m2db;INIT=CREATE SCHEMA IF NOT EXISTS icelotto
+db.url=jdbc:h2:/Users/jsumners/Documents/My Dropbox/Projects/Java/ice-lotto/src/main/resources/test;INIT=CREATE SCHEMA IF NOT EXISTS icelotto
+db.name=ice-lotto-db
+
+# Hibernate configuration
+#hibernate.dialect=org.hibernate.dialect.SQLiteDialect
+hibernate.default_schema=icelotto
+hibernate.dialect=org.hibernate.dialect.H2Dialect
+hibernate.format_sql=true
+hibernate.ejb.naming_strategy=org.hibernate.cfg.ImprovedNamingStrategy
+hibernate.show_sql=true
+# Don't do it in production!
+# `update`, `create`, `create-drop`
+hibernate.hbm2ddl.auto=update
+
+# EntityManager configuration
+packages.to.scan=com.jrfom.icelotto.model

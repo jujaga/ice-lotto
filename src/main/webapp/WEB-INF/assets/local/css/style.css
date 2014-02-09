@@ -1,0 +1,8 @@
+.prize-pool {
+  border: 1px solid #000000;
+  border-collapse: collapse;
+}
+
+.prize-pool > .row {
+  margin-top: 10px;
+}
