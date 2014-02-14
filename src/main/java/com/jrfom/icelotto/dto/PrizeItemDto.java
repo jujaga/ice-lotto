@@ -1,5 +1,7 @@
 package com.jrfom.icelotto.dto;
 
+import com.jrfom.icelotto.util.Stringer;
+
 public class PrizeItemDto {
   private Long id;
   private String name;
@@ -29,5 +31,10 @@ public class PrizeItemDto {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  @Override
+  public String toString() {
+    return Stringer.jsonString(this);
   }
 }

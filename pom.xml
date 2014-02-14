@@ -23,9 +23,11 @@
     <jackson.version>2.3.1</jackson.version>
     <javax-persistence.version>1.0.2</javax-persistence.version>
     <javax-servlet.version>3.1.0</javax-servlet.version>
+    <javax-validation.version>1.1.0.Final</javax-validation.version>
     <jstl.version>1.2</jstl.version>
     <junit.version>4.11</junit.version>
     <logback.version>1.0.13</logback.version>
+    <mockito.version>1.9.5</mockito.version>
     <slf4j.version>1.7.5</slf4j.version>
     <spring.version>4.0.0.RELEASE</spring.version>
     <spring-data.version>1.4.3.RELEASE</spring-data.version>
@@ -97,6 +99,12 @@
     </dependency>
 
     <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>${javax-validation.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>jstl</groupId>
       <artifactId>jstl</artifactId>
       <version>${jstl.version}</version>
@@ -113,6 +121,13 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>${logback.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -171,6 +186,13 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-orm</artifactId>
       <version>${spring.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
