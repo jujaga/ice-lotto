@@ -20,6 +20,7 @@
     <h2.version>1.3.175</h2.version>
     <hibernate-entitymanager.version>4.3.1.Final</hibernate-entitymanager.version>
     <hibernate-jpa.version>1.0.0.Final</hibernate-jpa.version>
+    <hibernate-validator.version>5.0.3.Final</hibernate-validator.version>
     <jackson.version>2.3.1</jackson.version>
     <javax-persistence.version>1.0.2</javax-persistence.version>
     <javax-servlet.version>3.1.0</javax-servlet.version>
@@ -29,7 +30,7 @@
     <logback.version>1.0.13</logback.version>
     <mockito.version>1.9.5</mockito.version>
     <slf4j.version>1.7.5</slf4j.version>
-    <spring.version>4.0.0.RELEASE</spring.version>
+    <spring.version>4.0.2.RELEASE</spring.version>
     <spring-data.version>1.4.3.RELEASE</spring-data.version>
     <sqlite-jdbc.version>3.8.0-SNAPSHOT</sqlite-jdbc.version>
     <threeten.version>0.8.1</threeten.version>
@@ -53,6 +54,12 @@
       <groupId>com.jrfom</groupId>
       <artifactId>GW2-API-Client</artifactId>
       <version>${gw2-api-client.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-web</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -71,6 +78,12 @@
       <groupId>org.hibernate.javax.persistence</groupId>
       <artifactId>hibernate-jpa-2.1-api</artifactId>
       <version>${hibernate-jpa.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>${hibernate-validator.version}</version>
     </dependency>
 
     <dependency>
