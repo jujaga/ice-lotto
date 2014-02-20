@@ -2,6 +2,8 @@ package com.jrfom.icelotto.model;
 
 import javax.persistence.*;
 
+import com.jrfom.icelotto.util.Stringer;
+
 @Entity
 @Table(name = "drawing_results")
 public class DrawingResult {
@@ -47,8 +49,8 @@ public class DrawingResult {
     return this.winner;
   }
 
-  public void setWinner(User winnerId) {
-    this.winner = winnerId;
+  public void setWinner(User winner) {
+    this.winner = winner;
   }
 
   public PrizePool getPrizePool() {
@@ -73,5 +75,10 @@ public class DrawingResult {
 
   public void setPrizeItem(PrizeItem prizeItem) {
     this.prizeItem = prizeItem;
+  }
+
+  @Override
+  public String toString() {
+    return Stringer.jsonString(this);
   }
 }

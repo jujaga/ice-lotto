@@ -1,13 +1,14 @@
 package com.jrfom.icelotto.service;
 
-import java.util.Collection;
+import java.util.List;
 
+import com.google.common.base.Optional;
 import com.jrfom.icelotto.exception.DrawingResultNotFoundException;
-import com.jrfom.icelotto.model.DrawingResult;
+import com.jrfom.icelotto.model.*;
 
 public interface DrawingResultService {
-  DrawingResult create();
-  DrawingResult delete(Long drawingResultId) throws DrawingResultNotFoundException;
-  Collection<DrawingResult> findAll();
-  DrawingResult findById(Long id);
+  Optional<DrawingResult> create(Drawing drawing, PrizePool prizePool, PrizeTier prizeTier, PrizeItem prizeItem, User winner);
+  void delete(Long drawingResultId) throws DrawingResultNotFoundException;
+  List<DrawingResult> findAll();
+  Optional<DrawingResult> findById(Long id);
 }
