@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.jrfom.icelotto.util.Stringer;
+
 @Entity
 @Table(name = "roles")
 public class Role {
@@ -20,7 +22,12 @@ public class Role {
   @ManyToMany(mappedBy = "roles")
   private Set<User> users;
 
-  public Role() {}
+  protected Role() {}
+
+  public Role(String name, String description) {
+    this.name = name;
+    this.description = description;
+  }
 
   public Long getId() {
     return this.id;
@@ -48,5 +55,10 @@ public class Role {
 
   public void setUsers(Set<User> users) {
     this.users = users;
+  }
+
+  @Override
+  public String toString() {
+    return Stringer.jsonString(this);
   }
 }

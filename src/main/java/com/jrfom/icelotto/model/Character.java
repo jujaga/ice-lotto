@@ -2,6 +2,8 @@ package com.jrfom.icelotto.model;
 
 import javax.persistence.*;
 
+import com.jrfom.icelotto.util.Stringer;
+
 @Entity
 @Table(name = "characters")
 public class Character {
@@ -12,7 +14,11 @@ public class Character {
   @Column
   private String name;
 
-  public Character() {}
+  protected Character() {}
+
+  public Character(String name) {
+    this.name = name;
+  }
 
   public Long getId() {
     return this.id;
@@ -28,5 +34,10 @@ public class Character {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  @Override
+  public String toString() {
+    return Stringer.jsonString(this);
   }
 }

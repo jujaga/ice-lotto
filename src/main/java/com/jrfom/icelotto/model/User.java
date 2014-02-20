@@ -4,6 +4,9 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jrfom.icelotto.util.Stringer;
+
 @Entity
 @Table(name = "users")
 @Embeddable
@@ -25,6 +28,7 @@ public class User {
   private String gw2DisplayName;
 
   @Column
+  @JsonIgnore
   private String password;
 
   @Column
@@ -54,7 +58,11 @@ public class User {
   )
   private Set<Role> roles;
 
-  public User() {}
+  protected User() {}
+
+  public User(String gw2DisplayName) {
+    this.gw2DisplayName = gw2DisplayName;
+  }
 
   public Long getId() {
     return this.id;
@@ -106,5 +114,10 @@ public class User {
 
   public void setRoles(Set<Role> roles) {
     this.roles = roles;
+  }
+
+  @Override
+  public String toString() {
+    return Stringer.jsonString(this);
   }
 }

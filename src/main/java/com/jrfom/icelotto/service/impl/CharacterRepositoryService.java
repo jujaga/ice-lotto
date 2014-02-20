@@ -1,16 +1,19 @@
 package com.jrfom.icelotto.service.impl;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.google.common.base.Optional;
 import com.jrfom.icelotto.exception.CharacterNotFoundException;
 import com.jrfom.icelotto.model.Character;
 import com.jrfom.icelotto.repository.CharacterRepository;
 import com.jrfom.icelotto.service.CharacterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CharacterRepositoryService implements CharacterService {
@@ -20,22 +23,55 @@ public class CharacterRepositoryService implements CharacterService {
   private CharacterRepository characterRepository;
 
   @Override
-  public com.jrfom.icelotto.model.Character create() {
-    return null;
+  @Transactional
+  public Optional<Character> create(String name) {
+    log.debug("Creating new character with name: `{}`", name);
+    Optional<Character> result = Optional.absent();
+    Character record = new Character(name);
+
+    try {
+      record = this.characterRepository.save(record);
+      result = Optional.of(record);
+    } catch (DataAccessException e) {
+      log.error("Could not create new character: `{}`", e.getMessage());
+      log.debug(e.toString());
+    }
+
+    return result;
   }
 
   @Override
-  public Character delete(Long characterId) throws CharacterNotFoundException {
-    return null;
+  @Transactional(rollbackFor = CharacterNotFoundException.class)
+  public void delete(Long characterId) throws CharacterNotFoundException {
+    log.debug("Deleting character with id: `{}`", characterId);
+    Character deleted = this.characterRepository.findOne(characterId);
+
+    if (deleted == null) {
+      log.debug("Could not find character with id: `{}`", characterId);
+      throw new CharacterNotFoundException();
+    } else {
+      this.characterRepository.delete(characterId);
+    }
   }
 
   @Override
-  public Collection<Character> findAll() {
-    return null;
+  @Transactional(readOnly = true)
+  public List<Character> findAll() {
+    log.debug("Finding all characters");
+    return this.characterRepository.findAll();
   }
 
   @Override
-  public Character findById(Long id) {
-    return null;
+  @Transactional(readOnly = true)
+  public Optional<Character> findById(Long id) {
+    log.debug("Finding character with id: `{}`", id);
+    Optional<Character> result = Optional.absent();
+    Character character = this.characterRepository.findOne(id);
+
+    if (character != null) {
+      result = Optional.of(character);
+    }
+
+    return result;
   }
 }

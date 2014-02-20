@@ -1,13 +1,14 @@
 package com.jrfom.icelotto.service;
 
-import java.util.Collection;
+import java.util.List;
 
+import com.google.common.base.Optional;
 import com.jrfom.icelotto.exception.UserNotFoundException;
 import com.jrfom.icelotto.model.User;
 
 public interface UserService {
-  User create();
-  User delete(Long userId) throws UserNotFoundException;
-  Collection<User> findAll();
-  User findById(Long id);
+  Optional<User> create(String gw2DisplayName);
+  void delete(Long userId) throws UserNotFoundException;
+  List<User> findAll();
+  Optional<User> findById(Long id);
 }

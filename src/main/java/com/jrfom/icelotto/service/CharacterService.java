@@ -1,13 +1,14 @@
 package com.jrfom.icelotto.service;
 
-import java.util.Collection;
+import java.util.List;
 
+import com.google.common.base.Optional;
 import com.jrfom.icelotto.exception.CharacterNotFoundException;
 import com.jrfom.icelotto.model.Character;
 
 public interface CharacterService {
-  Character create();
-  Character delete(Long characterId) throws CharacterNotFoundException;
-  Collection<Character> findAll();
-  Character findById(Long id);
+  Optional<Character> create(String name);
+  void delete(Long characterId) throws CharacterNotFoundException;
+  List<Character> findAll();
+  Optional<Character> findById(Long id);
 }
