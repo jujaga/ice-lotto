@@ -7,8 +7,8 @@ import com.jrfom.icelotto.exception.PrizeTierNotFoundException;
 import com.jrfom.icelotto.model.PrizeTier;
 
 public interface PrizeTierService {
-  public Optional<PrizeTier> create();
-  public void delete(Long prizeTierId) throws PrizeTierNotFoundException;
-  public List<PrizeTier> findAll();
-  public Optional<PrizeTier> findById(Long id);
+  Optional<PrizeTier> create();
+  void delete(Long prizeTierId) throws PrizeTierNotFoundException;
+  List<PrizeTier> findAll();
+  Optional<PrizeTier> findById(Long id);
 }

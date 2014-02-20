@@ -6,8 +6,8 @@ import com.jrfom.icelotto.exception.DrawingNotFoundException;
 import com.jrfom.icelotto.model.Drawing;
 
 public interface DrawingService {
-  public Drawing create();
-  public Drawing delete(Long drawingId) throws DrawingNotFoundException;
-  public Collection<Drawing> findAll();
-  public Drawing findById(Long id);
+  Drawing create();
+  Drawing delete(Long drawingId) throws DrawingNotFoundException;
+  Collection<Drawing> findAll();
+  Drawing findById(Long id);
 }

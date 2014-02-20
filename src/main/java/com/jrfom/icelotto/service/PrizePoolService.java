@@ -7,8 +7,8 @@ import com.jrfom.icelotto.exception.PrizePoolNotFoundException;
 import com.jrfom.icelotto.model.PrizePool;
 
 public interface PrizePoolService {
-  public Optional<PrizePool> create();
-  public void delete(Long prizePoolId) throws PrizePoolNotFoundException;
-  public List<PrizePool> findAll();
-  public Optional<PrizePool> findById(Long id);
+  Optional<PrizePool> create();
+  void delete(Long prizePoolId) throws PrizePoolNotFoundException;
+  List<PrizePool> findAll();
+  Optional<PrizePool> findById(Long id);
 }
