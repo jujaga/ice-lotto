@@ -1,5 +1,11 @@
 package com.jrfom.icelotto.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jrfom.icelotto.util.Stringer;
+
 public class PrizeTierDto {
   private Long id;
   private PrizeItemDto item1;
@@ -101,5 +107,26 @@ public class PrizeTierDto {
 
   public void setItem10(PrizeItemDto item10) {
     this.item10 = item10;
+  }
+
+  @JsonIgnore
+  public List<PrizeItemDto> toList() {
+    ArrayList<PrizeItemDto> prizeItems = new ArrayList<>(10);
+    prizeItems.add(this.getItem1());
+    prizeItems.add(this.getItem2());
+    prizeItems.add(this.getItem3());
+    prizeItems.add(this.getItem4());
+    prizeItems.add(this.getItem5());
+    prizeItems.add(this.getItem6());
+    prizeItems.add(this.getItem7());
+    prizeItems.add(this.getItem8());
+    prizeItems.add(this.getItem9());
+    prizeItems.add(this.getItem10());
+    return prizeItems;
+  }
+
+  @Override
+  public String toString() {
+    return Stringer.jsonString(this);
   }
 }

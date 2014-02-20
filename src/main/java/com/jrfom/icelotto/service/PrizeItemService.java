@@ -60,11 +60,7 @@ public interface PrizeItemService {
    *                  with the new details. Both {@code name} and
    *                  {@code description} properties will be used in the update.
    *
-   * @return An instance of {@link com.jrfom.icelotto.model.PrizeItem},
-   * representing the new record, wrapped in an {@link com.google.common.base.Optional}
-   * or an empty {@code Optional}.
-   *
    * @throws PrizeItemNotFoundException
    */
-  public Optional<PrizeItem> update(PrizeItemDto prizeItem) throws PrizeItemNotFoundException;
+  public void update(PrizeItemDto prizeItem);
 }

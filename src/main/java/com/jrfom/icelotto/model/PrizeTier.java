@@ -1,6 +1,10 @@
 package com.jrfom.icelotto.model;
 
+import java.util.List;
+
 import javax.persistence.*;
+
+import com.jrfom.icelotto.util.Stringer;
 
 @Entity
 @Table(name = "prize_tiers")
@@ -133,5 +137,63 @@ public class PrizeTier {
 
   public void setItem10(PrizeItem item10) {
     this.item10 = item10;
+  }
+
+  /**
+   * <p>Updates the record by setting the item identifiers to those in the
+   * {@code prizeItems} list. This is done by iterating the list, so list element
+   * 0 corresponds to {@code item1} and list element 9 to {@code item10}.</p>
+   *
+   * <p>If you supply a list of 5 elements, only the first 5 items will be
+   * updated.</p>
+   *
+   * <p>If an item is to be removed, then supply {@code null} for the value.</p>
+   *
+   * @param prizeItems A {@link java.util.List} of
+   *                  {@link com.jrfom.icelotto.model.PrizeItem}s. An
+   *                  {@link java.util.ArrayList} should be used since it supports
+   *                  {@code null} values.
+   */
+  public void update(List<PrizeItem> prizeItems) {
+    for (int i = 0, j = prizeItems.size(); i < j; i += 1) {
+      switch (i) {
+        case 0:
+          this.setItem1(prizeItems.get(i));
+          break;
+        case 1:
+          this.setItem2(prizeItems.get(i));
+          break;
+        case 2:
+          this.setItem3(prizeItems.get(i));
+          break;
+        case 3:
+          this.setItem4(prizeItems.get(i));
+          break;
+        case 4:
+          this.setItem5(prizeItems.get(i));
+          break;
+        case 5:
+          this.setItem6(prizeItems.get(i));
+          break;
+        case 6:
+          this.setItem7(prizeItems.get(i));
+          break;
+        case 7:
+          this.setItem8(prizeItems.get(i));
+          break;
+        case 8:
+          this.setItem9(prizeItems.get(i));
+          break;
+        case 9:
+          this.setItem10(prizeItems.get(i));
+          break;
+        default:
+      }
+    }
+  }
+
+  @Override
+  public String toString() {
+    return Stringer.jsonString(this);
   }
 }

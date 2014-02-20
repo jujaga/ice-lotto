@@ -93,11 +93,8 @@ public class PrizeItemRepositoryService implements PrizeItemService {
 
   @Override
   @Transactional(rollbackFor = PrizeItemNotFoundException.class)
-  public Optional<PrizeItem> update(PrizeItemDto prizeItem)
-    throws PrizeItemNotFoundException
-  {
+  public void update(PrizeItemDto prizeItem) {
     log.debug("Updating prize item with: `{}`", prizeItem.toString());
-    Optional<PrizeItem> result = Optional.absent();
     PrizeItem record = this.prizeItemRepository.findOne(prizeItem.getId());
 
     if (record == null) {
@@ -105,9 +102,6 @@ public class PrizeItemRepositoryService implements PrizeItemService {
       throw new PrizeItemNotFoundException();
     } else {
       record.update(prizeItem.getName(), prizeItem.getDescription());
-      result = Optional.of(record);
     }
-
-    return result;
   }
 }
