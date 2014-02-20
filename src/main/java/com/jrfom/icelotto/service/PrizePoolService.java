@@ -1,15 +1,14 @@
 package com.jrfom.icelotto.service;
 
-import java.util.Collection;
+import java.util.List;
 
-import com.jrfom.icelotto.dto.PrizePoolDto;
+import com.google.common.base.Optional;
 import com.jrfom.icelotto.exception.PrizePoolNotFoundException;
 import com.jrfom.icelotto.model.PrizePool;
 
 public interface PrizePoolService {
-  public PrizePool create(PrizePoolDto prizePool);
-  public PrizePool delete(Long prizePoolId) throws PrizePoolNotFoundException;
-  public Collection<PrizePool> findAll();
-  public PrizePool findById(Long id);
-  public PrizePool update(PrizePoolDto prizePool) throws PrizePoolNotFoundException;
+  public Optional<PrizePool> create();
+  public void delete(Long prizePoolId) throws PrizePoolNotFoundException;
+  public List<PrizePool> findAll();
+  public Optional<PrizePool> findById(Long id);
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Optional;
-import com.jrfom.icelotto.dto.PrizeItemDto;
 import com.jrfom.icelotto.exception.PrizeItemNotFoundException;
 import com.jrfom.icelotto.model.PrizeItem;
 import com.jrfom.icelotto.repository.PrizeItemRepository;
@@ -37,7 +36,7 @@ public class PrizeItemRepositoryServiceTest {
   @Autowired
   private PrizeItemRepositoryService prizeItemRepositoryService;
 
-  private PrizeItemDto prizeItemDto;
+  private PrizeItem prizeItem;
 
   private final Long ITEM_ID = Long.valueOf(2495);
   private final String ITEM_NAME = "Foo";
@@ -46,10 +45,10 @@ public class PrizeItemRepositoryServiceTest {
   @Before
   public void setup() {
     reset(this.prizeItemRepository); // Since we use Spring to autowire it
-    this.prizeItemDto = new PrizeItemDto();
-    this.prizeItemDto.setId(this.ITEM_ID);
-    this.prizeItemDto.setName(this.ITEM_NAME);
-    this.prizeItemDto.setDescription(this.ITEM_DESCRIPTION);
+    this.prizeItem = new PrizeItem();
+    this.prizeItem.setId(this.ITEM_ID);
+    this.prizeItem.setName(this.ITEM_NAME);
+    this.prizeItem.setDescription(this.ITEM_DESCRIPTION);
   }
 
   @Test
@@ -60,7 +59,11 @@ public class PrizeItemRepositoryServiceTest {
     PrizeItem persisted = new PrizeItem(this.ITEM_ID, this.ITEM_NAME, this.ITEM_DESCRIPTION);
     when(this.prizeItemRepository.save(any(PrizeItem.class))).thenReturn(persisted);
 
-    Optional<PrizeItem> result = this.prizeItemRepositoryService.create(this.prizeItemDto);
+    Optional<PrizeItem> result = this.prizeItemRepositoryService.create(
+      this.ITEM_ID,
+      this.ITEM_NAME,
+      this.ITEM_DESCRIPTION
+    );
     assertTrue(result.isPresent());
 
     PrizeItem returned = result.get();
@@ -71,9 +74,9 @@ public class PrizeItemRepositoryServiceTest {
     verifyNoMoreInteractions(this.prizeItemRepository);
 
     // And then verify that it matches what we gave the create method
-    assertEquals(this.prizeItemDto.getId(), prizeItemArgumentCaptor.getValue().getId());
-    assertEquals(this.prizeItemDto.getName(), prizeItemArgumentCaptor.getValue().getName());
-    assertEquals(this.prizeItemDto.getDescription(), prizeItemArgumentCaptor.getValue().getDescription());
+    assertEquals(this.prizeItem.getId(), prizeItemArgumentCaptor.getValue().getId());
+    assertEquals(this.prizeItem.getName(), prizeItemArgumentCaptor.getValue().getName());
+    assertEquals(this.prizeItem.getDescription(), prizeItemArgumentCaptor.getValue().getDescription());
 
     assertEquals(persisted, returned);
   }
@@ -84,9 +87,11 @@ public class PrizeItemRepositoryServiceTest {
     PrizeItem persisted = new PrizeItem(this.ITEM_ID, this.ITEM_NAME, this.ITEM_DESCRIPTION);
     when(this.prizeItemRepository.save(any(PrizeItem.class))).thenReturn(persisted);
 
-    PrizeItemDto newRecord = new PrizeItemDto();
-
-    Optional<PrizeItem> result = this.prizeItemRepositoryService.create(newRecord);
+    Optional<PrizeItem> result = this.prizeItemRepositoryService.create(
+      null,
+      this.ITEM_NAME,
+      this.ITEM_DESCRIPTION
+    );
     assertFalse(result.isPresent());
   }
 
@@ -138,35 +143,7 @@ public class PrizeItemRepositoryServiceTest {
     assertTrue(result.isPresent());
     PrizeItem returned = result.get();
 
-    assertEquals(prizeItem, prizeItem);
-  }
-
-  @Test
-  public void update() throws PrizeItemNotFoundException {
-    PrizeItem prizeItem = new PrizeItem(this.ITEM_ID, this.ITEM_NAME, this.ITEM_DESCRIPTION);
-
-    when(this.prizeItemRepository.findOne(this.ITEM_ID)).thenReturn(prizeItem);
-
-    Optional<PrizeItem> result = this.prizeItemRepositoryService.update(this.prizeItemDto);
-
-    verify(this.prizeItemRepository).findOne(this.ITEM_ID);
-    verifyNoMoreInteractions(this.prizeItemRepository);
-
-    assertTrue(result.isPresent());
-    PrizeItem returned = result.get();
-
-    assertEquals(this.prizeItemDto.getId(), returned.getId());
-    assertEquals(this.prizeItemDto.getName(), returned.getName());
-    assertEquals(this.prizeItemDto.getDescription(), returned.getDescription());
-  }
-
-  @Test(expected = PrizeItemNotFoundException.class)
-  public void updateWhenNotFound() throws PrizeItemNotFoundException {
-    when(this.prizeItemRepository.findOne(this.ITEM_ID)).thenReturn(null);
-    this.prizeItemRepositoryService.update(this.prizeItemDto);
-
-    verify(this.prizeItemRepository).findOne(this.prizeItemDto.getId());
-    verifyNoMoreInteractions(this.prizeItemRepository);
+    assertEquals(prizeItem, returned);
   }
 }
 

@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import javax.annotation.Resource;
 
-import com.jrfom.icelotto.dto.DrawingDto;
 import com.jrfom.icelotto.exception.DrawingNotFoundException;
 import com.jrfom.icelotto.model.Drawing;
 import com.jrfom.icelotto.repository.DrawingRepository;
@@ -21,7 +20,7 @@ public class DrawingRepositoryService implements DrawingService {
   private DrawingRepository drawingRepository;
 
   @Override
-  public Drawing create(DrawingDto drawing) {
+  public Drawing create() {
     return null;
   }
 
@@ -37,11 +36,6 @@ public class DrawingRepositoryService implements DrawingService {
 
   @Override
   public Drawing findById(Long id) {
-    return null;
-  }
-
-  @Override
-  public Drawing update(DrawingDto drawing) throws DrawingNotFoundException {
     return null;
   }
 }

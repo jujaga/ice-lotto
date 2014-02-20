@@ -2,6 +2,8 @@ package com.jrfom.icelotto.model;
 
 import javax.persistence.*;
 
+import com.jrfom.icelotto.util.Stringer;
+
 @Entity
 @Table(name = "prize_pools")
 public class PrizePool {
@@ -143,5 +145,10 @@ public class PrizePool {
 
   public void setTier10(PrizeTier tier10) {
     this.tier10 = tier10;
+  }
+
+  @Override
+  public String toString() {
+    return Stringer.jsonString(this);
   }
 }

@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import javax.annotation.Resource;
 
-import com.jrfom.icelotto.dto.CharacterDto;
 import com.jrfom.icelotto.exception.CharacterNotFoundException;
 import com.jrfom.icelotto.model.Character;
 import com.jrfom.icelotto.repository.CharacterRepository;
@@ -21,7 +20,7 @@ public class CharacterRepositoryService implements CharacterService {
   private CharacterRepository characterRepository;
 
   @Override
-  public com.jrfom.icelotto.model.Character create(CharacterDto character) {
+  public com.jrfom.icelotto.model.Character create() {
     return null;
   }
 
@@ -37,11 +36,6 @@ public class CharacterRepositoryService implements CharacterService {
 
   @Override
   public Character findById(Long id) {
-    return null;
-  }
-
-  @Override
-  public Character update(CharacterDto character) throws CharacterNotFoundException {
     return null;
   }
 }

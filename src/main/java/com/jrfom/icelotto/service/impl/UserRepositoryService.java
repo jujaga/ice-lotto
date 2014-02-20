@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import javax.annotation.Resource;
 
-import com.jrfom.icelotto.dto.UserDto;
 import com.jrfom.icelotto.exception.UserNotFoundException;
 import com.jrfom.icelotto.model.User;
 import com.jrfom.icelotto.repository.UserRepository;
@@ -21,7 +20,7 @@ public class UserRepositoryService implements UserService {
   private UserRepository userRepository;
 
   @Override
-  public User create(UserDto user) {
+  public User create() {
     return null;
   }
 
@@ -37,11 +36,6 @@ public class UserRepositoryService implements UserService {
 
   @Override
   public User findById(Long id) {
-    return null;
-  }
-
-  @Override
-  public User update(UserDto user) throws UserNotFoundException {
     return null;
   }
 }

@@ -1,21 +1,17 @@
 package com.jrfom.icelotto.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import com.google.common.base.Optional;
-import com.jrfom.icelotto.dto.PrizeItemDto;
-import com.jrfom.icelotto.dto.PrizeTierDto;
 import com.jrfom.icelotto.exception.PrizeTierNotFoundException;
-import com.jrfom.icelotto.model.PrizeItem;
 import com.jrfom.icelotto.model.PrizeTier;
-import com.jrfom.icelotto.repository.PrizeItemRepository;
 import com.jrfom.icelotto.repository.PrizeTierRepository;
 import com.jrfom.icelotto.service.PrizeTierService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,21 +22,18 @@ public class PrizeTierRepositoryService implements PrizeTierService {
   @Resource
   private PrizeTierRepository prizeTierRepository;
 
-  @Resource
-  private PrizeItemRepository prizeItemRepository;
-
   @Override
   @Transactional
-  public Optional<PrizeTier> create(PrizeTierDto prizeTier) {
-    log.debug("Creating new prize tier: `{}`", prizeTier.toString());
+  public Optional<PrizeTier> create() {
+    log.debug("Creating new prize tier");
     Optional<PrizeTier> result = Optional.absent();
     PrizeTier record = new PrizeTier();
 
     try {
       record = this.prizeTierRepository.save(record);
       result = Optional.of(record);
-    } catch (NullPointerException e) {
-      log.error("Attempted to create a prize tier with a null id: `{}`", e.getMessage());
+    } catch (DataAccessException e) {
+      log.error("Something went wrong creating prize tier: `{}`", e.getMessage());
       log.debug(e.toString());
     }
 
@@ -80,26 +73,5 @@ public class PrizeTierRepositoryService implements PrizeTierService {
     }
 
     return result;
-  }
-
-  @Override
-  @Transactional(rollbackFor = PrizeTierNotFoundException.class)
-  public void update(PrizeTierDto prizeTier) {
-    log.debug("Updating prize tier with: `{}`", prizeTier.toString());
-    PrizeTier record = this.prizeTierRepository.findOne(prizeTier.getId());
-
-    if (record == null) {
-      log.error("Could not find tier with id: `{}`", prizeTier.getId());
-      throw new PrizeTierNotFoundException();
-    } else {
-      ArrayList<PrizeItem> prizeItems = new ArrayList<>(10);
-      List<PrizeItemDto> dtos = prizeTier.toList();
-      for (int i = 0; i < 10; i += 1) {
-        PrizeItem item = this.prizeItemRepository.findOne(dtos.get(i).getId());
-        prizeItems.add(item);
-      }
-
-      record.update(prizeItems);
-    }
   }
 }

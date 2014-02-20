@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import javax.annotation.Resource;
 
-import com.jrfom.icelotto.dto.RoleDto;
 import com.jrfom.icelotto.exception.RoleNotFoundException;
 import com.jrfom.icelotto.model.Role;
 import com.jrfom.icelotto.repository.RoleRepository;
@@ -21,7 +20,7 @@ public class RoleRepositoryService implements RoleService {
   private RoleRepository roleRepository;
 
   @Override
-  public Role create(RoleDto role) {
+  public Role create() {
     return null;
   }
 
@@ -37,11 +36,6 @@ public class RoleRepositoryService implements RoleService {
 
   @Override
   public Role findById(Long id) {
-    return null;
-  }
-
-  @Override
-  public Role update(RoleDto role) throws RoleNotFoundException {
     return null;
   }
 }

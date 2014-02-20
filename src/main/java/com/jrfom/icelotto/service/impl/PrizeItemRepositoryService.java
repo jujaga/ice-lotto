@@ -5,7 +5,6 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.google.common.base.Optional;
-import com.jrfom.icelotto.dto.PrizeItemDto;
 import com.jrfom.icelotto.exception.PrizeItemNotFoundException;
 import com.jrfom.icelotto.model.PrizeItem;
 import com.jrfom.icelotto.repository.PrizeItemRepository;
@@ -27,14 +26,24 @@ public class PrizeItemRepositoryService implements PrizeItemService {
    */
   @Override
   @Transactional
-  public Optional<PrizeItem> create(PrizeItemDto prizeItem) {
-    log.debug("Creating new prize item: `{}`", prizeItem.toString());
-    Optional<PrizeItem> result = Optional.absent();
-    PrizeItem record = new PrizeItem(
-      prizeItem.getId(),
-      prizeItem.getName(),
-      prizeItem.getDescription()
+  public Optional<PrizeItem> create(Long id, String name) {
+    return this.create(id, name, null);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  @Transactional
+  public Optional<PrizeItem> create(Long id, String name, String description) {
+    log.debug(
+      "Creating new prize item: [id: `{}`, name: `{}`, desc: `{}`]",
+      id,
+      name,
+      description
     );
+    Optional<PrizeItem> result = Optional.absent();
+    PrizeItem record = new PrizeItem(id, name, description);
 
     try {
       record = this.prizeItemRepository.save(record);
@@ -89,19 +98,5 @@ public class PrizeItemRepositoryService implements PrizeItemService {
     }
 
     return result;
-  }
-
-  @Override
-  @Transactional(rollbackFor = PrizeItemNotFoundException.class)
-  public void update(PrizeItemDto prizeItem) {
-    log.debug("Updating prize item with: `{}`", prizeItem.toString());
-    PrizeItem record = this.prizeItemRepository.findOne(prizeItem.getId());
-
-    if (record == null) {
-      log.error("Could not find item with id: `{}`", prizeItem.getId());
-      throw new PrizeItemNotFoundException();
-    } else {
-      record.update(prizeItem.getName(), prizeItem.getDescription());
-    }
   }
 }

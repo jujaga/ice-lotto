@@ -1,17 +1,19 @@
 package com.jrfom.icelotto.service.impl;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.jrfom.icelotto.dto.PrizePoolDto;
+import com.google.common.base.Optional;
 import com.jrfom.icelotto.exception.PrizePoolNotFoundException;
 import com.jrfom.icelotto.model.PrizePool;
 import com.jrfom.icelotto.repository.PrizePoolRepository;
 import com.jrfom.icelotto.service.PrizePoolService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PrizePoolRepositoryService implements PrizePoolService {
@@ -21,27 +23,54 @@ public class PrizePoolRepositoryService implements PrizePoolService {
   private PrizePoolRepository prizePoolRepository;
 
   @Override
-  public PrizePool create(PrizePoolDto prizePool) {
-    return null;
+  public Optional<PrizePool> create() {
+    log.debug("Creating new prize pool");
+    Optional<PrizePool> result = Optional.absent();
+    PrizePool record = new PrizePool();
+
+    try {
+      record = this.prizePoolRepository.save(record);
+      result = Optional.of(record);
+    } catch (DataAccessException e) {
+      log.error("Something went wrong creating prize pool: `{}`", e.getMessage());
+      log.debug(e.toString());
+    }
+
+    return result;
   }
 
   @Override
-  public PrizePool delete(Long prizePoolId) throws PrizePoolNotFoundException {
-    return null;
+  @Transactional(rollbackFor = PrizePoolNotFoundException.class)
+  public void delete(Long prizePoolId) throws PrizePoolNotFoundException {
+    log.debug("Deleting prize pool with id: `{}`", prizePoolId);
+    PrizePool deleted = this.prizePoolRepository.findOne(prizePoolId);
+
+    if (deleted == null) {
+      log.debug("Could not find prize pool with id: `{}`", prizePoolId);
+      throw new PrizePoolNotFoundException();
+    } else {
+      this.prizePoolRepository.delete(prizePoolId);
+    }
   }
 
   @Override
-  public Collection<PrizePool> findAll() {
-    return null;
+  @Transactional(readOnly = true)
+  public List<PrizePool> findAll() {
+    log.debug("Finding all prize pools");
+    return this.prizePoolRepository.findAll();
   }
 
   @Override
-  public PrizePool findById(Long id) {
-    return null;
-  }
+  @Transactional(readOnly = true)
+  public Optional<PrizePool> findById(Long id) {
+    log.debug("Finding prize pool with id: `{}`", id);
+    Optional<PrizePool> result = Optional.absent();
+    PrizePool pool = this.prizePoolRepository.findOne(id);
 
-  @Override
-  public PrizePool update(PrizePoolDto prizePool) throws PrizePoolNotFoundException {
-    return null;
+    if (pool != null) {
+      result = Optional.of(pool);
+    }
+
+    return result;
   }
 }
