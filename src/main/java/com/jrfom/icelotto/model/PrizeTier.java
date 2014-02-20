@@ -14,43 +14,43 @@ public class PrizeTier {
   private Long id;
 
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeItem item1;
 
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeItem item2;
 
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeItem item3;
 
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeItem item4;
 
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeItem item5;
 
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeItem item6;
 
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeItem item7;
 
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeItem item8;
 
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeItem item9;
 
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeItem item10;
 
   public PrizeTier() {}

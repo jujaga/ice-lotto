@@ -18,7 +18,7 @@ public class Drawing {
   private Instant held;
 
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizePool prizePool;
 
   @Column

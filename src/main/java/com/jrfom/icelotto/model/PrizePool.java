@@ -11,54 +11,44 @@ public class PrizePool {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-//  @Column(name = "tier_1")
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier1;
 
-//  @Column(name = "tier_2")
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier2;
 
-//  @Column(name = "tier_3")
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier3;
 
-//  @Column(name = "tier_4")
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier4;
 
-//  @Column(name = "tier_5")
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier5;
 
-//  @Column(name = "tier_6")
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier6;
 
-//  @Column(name = "tier_7")
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier7;
 
-//  @Column(name = "tier_8")
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier8;
 
-//  @Column(name = "tier_9")
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier9;
 
-//  @Column(name = "tier_10")
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier10;
 
   public PrizePool() {}

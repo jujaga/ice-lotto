@@ -10,23 +10,24 @@ public class DrawingResult {
   private Long id;
 
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private Drawing drawing;
 
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private User winner;
 
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizePool prizePool;
 
   @OneToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(referencedColumnName = "id")
   private PrizeTier prizeTier;
 
-  @Column
-  private Integer itemNumber;
+  @OneToOne
+  @JoinColumn(referencedColumnName = "id")
+  private PrizeItem prizeItem;
 
   public DrawingResult() {}
 
@@ -66,11 +67,11 @@ public class DrawingResult {
     this.prizeTier = prizeTier;
   }
 
-  public Integer getItemNumber() {
-    return this.itemNumber;
+  public PrizeItem getPrizeItem() {
+    return this.prizeItem;
   }
 
-  public void setItemNumber(Integer itemNumber) {
-    this.itemNumber = itemNumber;
+  public void setPrizeItem(PrizeItem prizeItem) {
+    this.prizeItem = prizeItem;
   }
 }
