@@ -38,38 +38,41 @@
   <!-- Thanks IE11 for not supporting the "main" element. -->
   <div class="main-content container">
 
-    <div class="prize-pool container-fluid" data-pool-id="0">
-      <header class="container">
-        <h4 class="row">Prize Pool</h4>
-        <div class="row">
-          <ul class="col-xs-12 nav nav-pills">
-            <li><a href="#" class="btn btn-default">Draw 1</a></li>
-            <li><a href="#" class="btn btn-default">Draw 2</a></li>
-            <li><a href="#" class="btn btn-default">Draw 3</a></li>
-            <li><a href="#" class="btn btn-default">Draw 4</a></li>
-            <li><a href="#" class="btn btn-default">Draw 5</a></li>
-            <li><a href="#" class="btn btn-default">Draw 6</a></li>
-            <li><a href="#" class="btn btn-default">Draw 7</a></li>
-            <li><a href="#" class="btn btn-default">Draw 8</a></li>
-            <li><a href="#" class="btn btn-default">Draw 9</a></li>
-            <li><a href="#" class="btn btn-default">Draw 10</a></li>
-            <li><a href="#" class="btn btn-default">Draw All</a></li>
-          </ul>
-        </div>
+    <div class="prize-pool panel panel-default" data-pool-id="0">
+      <header class="panel-heading">
+        <h4 class="panel-title">Prize Pool</h4>
       </header>
 
-      <ul class="prize-tier row inline-list list-unstyled" data-tier-id="0">
-        <li class="col-xs-1" data-item-number="1">
-          <div th:replace="item::fragment(${prizeItem})"></div>
-        </li>
-        <li class="col-xs-1" data-item-number="3">
-          <div th:replace="item::fragment(${prizeItem})"></div>
-        </li>
-        <li class="col-xs-1" data-item-number="2">
-          <button class="btn btn-default btn-sm">Add</button>
-        </li>
-      </ul>
+      <table class="table">
+        <thead class="prize-pool-admin-header">
+          <tr>
+            <th><a href="#" class="btn btn-default">Draw 1</a></th>
+            <th><a href="#" class="btn btn-default">Draw 2</a></th>
+            <th><a href="#" class="btn btn-default">Draw 3</a></th>
+            <th><a href="#" class="btn btn-default">Draw 4</a></th>
+            <th><a href="#" class="btn btn-default">Draw 5</a></th>
+            <th><a href="#" class="btn btn-default">Draw 6</a></th>
+            <th><a href="#" class="btn btn-default">Draw 7</a></th>
+            <th><a href="#" class="btn btn-default">Draw 8</a></th>
+            <th><a href="#" class="btn btn-default">Draw 9</a></th>
+            <th><a href="#" class="btn btn-default">Draw 10</a></th>
+          </tr>
+        </thead>
 
+        <tbody>
+          <tr class="prize-pool-tier-row" data-tier-id="0">
+            <td>
+              <div th:replace="item::fragment(${prizeItem})"></div>
+            </td>
+            <td>
+              <div th:replace="item::fragment(${prizeItem})"></div>
+            </td>
+            <td colspan="8">
+              <button class="btn btn-default btn-sm">Add</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
   </div>
