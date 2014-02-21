@@ -19,7 +19,12 @@ public class PrizeItem {
   protected PrizeItem() {}
 
   public PrizeItem(GameItem gameItem) {
+    this(gameItem, 1);
+  }
+
+  public PrizeItem(GameItem gameItem, Integer count) {
     this.gameItem = gameItem;
+    this.count = count;
   }
 
   public Long getId() {
