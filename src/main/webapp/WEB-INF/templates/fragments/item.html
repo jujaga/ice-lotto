@@ -6,14 +6,14 @@
 </head>
 <body>
   <div th:fragment="fragment (itemDetails)">
-    <i data:id="${itemDetails.id}"
-       data:name="${itemDetails.name}"
-       data:description="${itemDetails.description}"
-       data:count="1"
+    <i data:id="${itemDetails.gameItem.id}"
+       data:name="${itemDetails.gameItem.name}"
+       data:description="${itemDetails.gameItem.description}"
+       data:count="${itemDetails.count}"
        data-level="24"
        data-rarity="Basic"
        data-value="10000"></i>
-    <img class="img-responsive" th:src="@{'/local/gw2-icons/'+${itemDetails.id}+'-lg.png'}" src="gw2-icons/2495-lg.png" />
+    <img class="img-responsive" th:src="@{'/local/gw2-icons/'+${itemDetails.gameItem.id}+'-lg.png'}" src="gw2-icons/2495-lg.png" />
   </div>
 </body>
 </html>

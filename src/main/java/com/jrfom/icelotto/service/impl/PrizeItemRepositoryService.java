@@ -6,11 +6,13 @@ import javax.annotation.Resource;
 
 import com.google.common.base.Optional;
 import com.jrfom.icelotto.exception.PrizeItemNotFoundException;
+import com.jrfom.icelotto.model.GameItem;
 import com.jrfom.icelotto.model.PrizeItem;
 import com.jrfom.icelotto.repository.PrizeItemRepository;
 import com.jrfom.icelotto.service.PrizeItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,30 +28,16 @@ public class PrizeItemRepositoryService implements PrizeItemService {
    */
   @Override
   @Transactional
-  public Optional<PrizeItem> create(Long id, String name) {
-    return this.create(id, name, null);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  @Transactional
-  public Optional<PrizeItem> create(Long id, String name, String description) {
-    log.debug(
-      "Creating new prize item: [id: `{}`, name: `{}`, desc: `{}`]",
-      id,
-      name,
-      description
-    );
+  public Optional<PrizeItem> create(GameItem gameItem) {
+    log.debug("Creating new prize item with game item: `{}`", gameItem.toString());
     Optional<PrizeItem> result = Optional.absent();
-    PrizeItem record = new PrizeItem(id, name, description);
+    PrizeItem record = new PrizeItem(gameItem);
 
     try {
       record = this.prizeItemRepository.save(record);
       result = Optional.of(record);
-    } catch (NullPointerException e) {
-      log.error("Attempted to create a prize item with a null id: `{}`", e.getMessage());
+    } catch (DataAccessException e) {
+      log.error("Could not create prize item record: `{}`", e.getMessage());
       log.debug(e.toString());
     }
 

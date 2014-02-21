@@ -1,5 +1,7 @@
 package com.jrfom.icelotto.controllers;
 
+import com.google.common.base.Optional;
+import com.jrfom.icelotto.model.PrizeItem;
 import com.jrfom.icelotto.service.PrizeItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +22,10 @@ public class IndexController {
     log.info("Displaying index.html");
     ModelAndView modelAndView = new ModelAndView();
     modelAndView.setViewName("index");
-    modelAndView.addObject("prizeItem", this.prizeItemService.findById(2952l).get());
+
+    Optional<PrizeItem> result = this.prizeItemService.findById(1l);
+    PrizeItem prizeItem = (result.isPresent()) ? result.get() : null;
+    modelAndView.addObject("prizeItem", prizeItem);
 
     return modelAndView;
   }

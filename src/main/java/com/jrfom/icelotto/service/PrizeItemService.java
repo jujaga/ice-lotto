@@ -4,33 +4,21 @@ import java.util.List;
 
 import com.google.common.base.Optional;
 import com.jrfom.icelotto.exception.PrizeItemNotFoundException;
+import com.jrfom.icelotto.model.GameItem;
 import com.jrfom.icelotto.model.PrizeItem;
 
 public interface PrizeItemService {
   /**
    * Create a new {@link com.jrfom.icelotto.model.PrizeItem} entry in the
-   * database with the specified {@code id} and {@code name}.
+   * database with the specified {@code gameItem}.
    *
-   * @param id A unique identifier for the item.
-   * @param name The display name for the item.
+   * @param gameItem A {@link com.jrfom.icelotto.model.GameItem} to add as a prize.
    *
    * @return An instance of {@link com.jrfom.icelotto.model.PrizeItem} wrapped
    * in an {@link com.google.common.base.Optional} or an empty {@code Optional}
    * if there was an error.
    */
-  Optional<PrizeItem> create(Long id, String name);
-
-  /**
-   * Create a new {@link com.jrfom.icelotto.model.PrizeItem} entry in the
-   * database with the specified {@code id}, {@code name}, and
-   * {@code description}.
-   *
-   * @param id A unique identifier for the item.
-   * @param name The display name for the item.
-   * @param description A string describing the item.
-   * @return
-   */
-  Optional<PrizeItem> create(Long id, String name, String description);
+  Optional<PrizeItem> create(GameItem gameItem);
 
   /**
    * Delete a {@link com.jrfom.icelotto.model.PrizeItem} from the database
