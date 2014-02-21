@@ -60,14 +60,10 @@
 
       <ul class="prize-tier row inline-list list-unstyled" data-tier-id="0">
         <li class="col-xs-1" data-item-number="1">
-          <i data-id="2952"
-             data-name="Acolyte Coat"
-             data-description="It's a coat!"
-             data-level="24"
-             data-rarity="Basic"
-             data-value="10000"
-             data-count="1"></i>
-          <img class="img-responsive" th:src="@{/local/gw2-icons/2952-lg.png}" src="gw2-icons/2952-lg.png" />
+          <div th:replace="item::fragment(${prizeItem})"></div>
+        </li>
+        <li class="col-xs-1" data-item-number="3">
+          <div th:replace="item::fragment(${prizeItem})"></div>
         </li>
         <li class="col-xs-1" data-item-number="2">
           <button class="btn btn-default btn-sm">Add</button>

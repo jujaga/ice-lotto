@@ -35,6 +35,7 @@
     <sqlite-jdbc.version>3.8.0-SNAPSHOT</sqlite-jdbc.version>
     <threeten.version>0.8.1</threeten.version>
     <thymeleaf.version>2.1.2.RELEASE</thymeleaf.version>
+    <tl-data-attr.version>1.3</tl-data-attr.version>
   </properties>
 
   <dependencies>
@@ -230,6 +231,12 @@
       <groupId>org.thymeleaf</groupId>
       <artifactId>thymeleaf-spring4</artifactId>
       <version>${thymeleaf.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.mxab.thymeleaf.extras</groupId>
+      <artifactId>thymeleaf-extras-data-attribute</artifactId>
+      <version>${tl-data-attr.version}</version>
     </dependency>
   </dependencies>
   

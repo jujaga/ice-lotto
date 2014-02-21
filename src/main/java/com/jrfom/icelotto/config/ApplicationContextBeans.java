@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
 
+import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 import com.jrfom.gw2.ApiClient;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,18 @@ public class ApplicationContextBeans {
     resolver.setSuffix(".html");
     resolver.setTemplateMode("HTML5");
 
+    // We need to see the latest and greatest during development.
+    if (this.isDevEnvironment()) {
+      resolver.setCacheable(false);
+    }
+
+    // Fragment HTML files can reside in the same directory as the template
+    // in which they are used, but if they are stored elsewhere, you can't
+    // reference them directly. Instead of cluttering the templates directory
+    // with a bunch of small fragment files, I've opted to add fragments in
+    // this manner.
+    resolver.addTemplateAlias("item", "fragments/item");
+
     return resolver;
   }
 
@@ -47,6 +60,7 @@ public class ApplicationContextBeans {
   public SpringTemplateEngine templateEngine() {
     SpringTemplateEngine engine = new SpringTemplateEngine();
     engine.setTemplateResolver(this.templateResolver());
+    engine.addDialect(new DataAttributeDialect());
 
     return engine;
   }
@@ -85,10 +99,26 @@ public class ApplicationContextBeans {
     jpaProperties.put("hibernate.ejb.naming_strategy", this.env.getRequiredProperty("hibernate.ejb.naming_strategy"));
     jpaProperties.put("hibernate.show_sql", this.env.getRequiredProperty("hibernate.show_sql"));
     jpaProperties.put("hibernate.hbm2ddl.auto", this.env.getProperty("hibernate.hbm2ddl.auto"));
+    jpaProperties.put("hibernate.hbm2ddl.import_files", this.env.getProperty("hibernate.hbm2ddl.import_files"));
+    jpaProperties.put("hibernate.hbm2ddl.import_files_sql_extractor", "org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor");
 
     factoryBean.setJpaProperties(jpaProperties);
     factoryBean.afterPropertiesSet();
 
     return factoryBean.getObject();
+  }
+
+  private boolean isDevEnvironment() {
+    boolean result = false;
+
+    String[] activeProfiles = this.env.getActiveProfiles();
+    for (String profile : activeProfiles) {
+      if (profile.equals("dev")) {
+        result = true;
+        break;
+      }
+    }
+
+    return result;
   }
 }

@@ -2,8 +2,7 @@
 # `application-prod.properties`.
 
 #db.url=jdbc:sqlite:/Users/jsumners/Dropbox/Project/Java/ice-lotto/src/main/resources/test.sqlite3
-#db.url=jdbc:h2:/Users/jsumners/Dropbox/Projects/Java/ice-lotto/src/main/resources/test.m2db;INIT=CREATE SCHEMA IF NOT EXISTS icelotto
-db.url=jdbc:h2:/Users/jsumners/Documents/My Dropbox/Projects/Java/ice-lotto/src/main/resources/test;INIT=CREATE SCHEMA IF NOT EXISTS icelotto
+db.url=jdbc:h2:/Users/jsumners/Documents/My Dropbox/Projects/Java/ice-lotto/src/main/resources/test;schema=icelotto;INIT=CREATE SCHEMA IF NOT EXISTS icelotto
 db.name=ice-lotto-db
 
 # Hibernate configuration
@@ -13,9 +12,13 @@ hibernate.dialect=org.hibernate.dialect.H2Dialect
 hibernate.format_sql=true
 hibernate.ejb.naming_strategy=org.hibernate.cfg.ImprovedNamingStrategy
 hibernate.show_sql=true
-# Don't do it in production!
-# `update`, `create`, `create-drop`
-hibernate.hbm2ddl.auto=update
+# `update`, `create`, `create-drop` are possible values
+# Use `create` or `create-drop` for import_files to work.
+hibernate.hbm2ddl.auto=create
+hibernate.hbm2ddl.import_files=/sql/prizeItems.sql
+# Note: if `;schema=icelotto` is not in the db.url then the import_files scripts
+# need to reference the schema before table names. The default_schema setting
+# has no bearing on the import_files setting.
 
 # EntityManager configuration
 packages.to.scan=com.jrfom.icelotto.model
