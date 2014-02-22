@@ -77,7 +77,7 @@
 
   </div>
 
-  <div id="addItemModal" class="modal fade" role="dialog">
+  <div id="addItemModal" class="modal fade" role="dialog" data-backdrop="static">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
 
@@ -93,13 +93,7 @@
                    class="form-control"
                    placeholder="Enter an item name or chat link (e.g. '[&amp;AgHidwAA]') " />
           </p>
-          <p id="itemSearchResultWell" class="well collapse">
-            <!--This "well" will show the first matched result from the input in the search field above.<br />
-            Thus, the search field above will be performing a search as the user types and displaying
-            the first result here.<br />
-            The "well" will not be shown until there is a result to display.<br/> <br />
-            <img src="local/gw2-icons/2952-lg.png" />-->
-          </p>
+          <p id="itemSearchResultWell" class="well collapse"></p>
         </div>
 
         <footer class="modal-footer">
@@ -110,6 +104,16 @@
       </div>
     </div>
   </div>
+
+  <template id="itemSearchResultTemplate">
+    <div class="media search-result">
+      <span class="pull-left"><img class="media-object img-sm" src="" /></span>
+      <div class="media-body">
+        <h4 class="media-heading"></h4>
+        <dl class="dl-horizontal"></dl>
+      </div>
+    </div>
+  </template>
 
   <script th:src="@{/jquery/jquery.min.js}" src="jquery.min.js"></script>
   <script th:src="@{/bootstrap/js/bootstrap.min.js}" src="bootstrap.min.js"></script>
