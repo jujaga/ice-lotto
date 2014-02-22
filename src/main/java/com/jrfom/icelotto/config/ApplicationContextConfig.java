@@ -44,6 +44,10 @@ public class ApplicationContextConfig extends WebMvcConfigurerAdapter {
     registry
       .addResourceHandler("jquery/**")
       .addResourceLocations("/WEB-INF/assets/jquery-2.1.0/");
+
+    registry
+      .addResourceHandler("spinjs/**")
+      .addResourceLocations("/WEB-INF/assets/spinjs-1.3.3/");
   }
 
   @Override

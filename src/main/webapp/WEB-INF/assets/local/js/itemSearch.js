@@ -1,9 +1,11 @@
 (function($) {
   "use strict";
 
-  var $itemSearchBox = $("#itemSearchBox"),
+  var $addButton = $("#addItemModal .btn-primary"),
+      $itemSearchBox = $("#itemSearchBox"),
       $itemSearchResultWell = $("#itemSearchResultWell"),
       $itemSearchResultTemplate = $("#itemSearchResultTemplate"),
+      $spinner = $itemSearchBox.siblings(".input-group-addon"),
       displayResult = function(){},
       lookupItem = function(){},
       timer = -1;
@@ -29,6 +31,10 @@
     click = function() {
       $(".bg-success", $itemSearchResultWell).toggleClass("bg-success");
       $(this).toggleClass("bg-success");
+
+      if ($addButton.hasClass("disabled")) {
+        $addButton.removeClass("disabled");
+      }
     };
 
     $itemSearchResultWell.children().fadeOut("slow").remove();
@@ -60,6 +66,10 @@
       if ($itemSearchResultWell.is(":visible")) {
         $(".media", $itemSearchResultWell).fadeOut("slow");
         $itemSearchResultWell.collapse("hide");
+
+        if (!$addButton.hasClass("disabled")) {
+          $addButton.addClass("disabled");
+        }
       }
       return;
     }
@@ -71,6 +81,12 @@
         // TODO: determine if paged results (that Spidy returns) will be
         // problematic here.
         displayResult(data.results);
+      },
+      beforeSend: function(jqXHR, settings) {
+        $spinner.spin("small");
+      },
+      complete: function(jqXHR, status) {
+        $spinner.spin(false);
       }
     });
   };
