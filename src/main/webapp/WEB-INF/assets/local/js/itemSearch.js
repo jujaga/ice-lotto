@@ -8,7 +8,15 @@
       $spinner = $itemSearchBox.siblings(".input-group-addon"),
       displayResult = function(){},
       lookupItem = function(){},
+      lookupXHR = {},
       timer = -1;
+
+  $itemSearchBox.on("keydown", function() {
+    if (lookupXHR.abort) {
+      lookupXHR.abort();
+      $spinner.spin(false);
+    }
+  });
 
   $itemSearchBox.on("keyup", function() {
     if (timer > -1) {
@@ -74,7 +82,7 @@
       return;
     }
 
-    $.ajax({
+    lookupXHR = $.ajax({
       url: "spidy/item-search/" + encodeURIComponent(text),
       dataType: "json",
       success: function(data, status, jqXHR) {
