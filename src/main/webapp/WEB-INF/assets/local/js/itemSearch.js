@@ -88,7 +88,12 @@
       success: function(data, status, jqXHR) {
         // TODO: determine if paged results (that Spidy returns) will be
         // problematic here.
-        displayResult(data.results);
+        if (data.result) {
+          // A single item as a result of a chat link search term.
+          displayResult([data.result]);
+        } else {
+          displayResult(data.results);
+        }
       },
       beforeSend: function(jqXHR, settings) {
         $spinner.spin("small");
