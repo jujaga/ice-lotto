@@ -1,5 +1,7 @@
 package com.jrfom.icelotto.config;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import org.h2.jdbcx.JdbcDataSource;
@@ -25,5 +27,10 @@ public class TestDataSouceConfig implements DataSourceConfig {
     dataSource.setUrl(this.env.getRequiredProperty("db.url"));
 
     return dataSource;
+  }
+
+  @Override
+  public Properties jpaProperties() {
+    return null;
   }
 }

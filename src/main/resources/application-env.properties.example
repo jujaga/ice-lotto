@@ -1,24 +1,42 @@
 # Rename this file to either `application-dev.properties` or
 # `application-prod.properties`.
+#
+# Chose either the SQLite configuration or the H2 configuration and then
+# remove the unchosen one.
 
-#db.url=jdbc:sqlite:/Users/jsumners/Dropbox/Project/Java/ice-lotto/src/main/resources/test.sqlite3
-db.url=jdbc:h2:/Users/jsumners/Documents/My Dropbox/Projects/Java/ice-lotto/src/main/resources/test;schema=icelotto;INIT=CREATE SCHEMA IF NOT EXISTS icelotto
-db.name=ice-lotto-db
+### SQLite Configuration Example ###
+db.type=sqlite
+db.url=jdbc:sqlite:/Users/jsumners/Documents/My Dropbox/Projects/Java/ice-lotto/src/main/resources/test.sqlite3
+db.name=icelotto
 
 # Hibernate configuration
-#hibernate.dialect=org.hibernate.dialect.SQLiteDialect
+hibernate.dialect=org.hibernate.dialect.SQLiteDialect
+hibernate.format_sql=true
+hibernate.ejb.naming_strategy=org.hibernate.cfg.ImprovedNamingStrategy
+hibernate.show_sql=true
+# `update`, `create`, `create-drop`
+hibernate.hbm2ddl.auto=create
+# import_files will only work if auto is set to `create` or `create-drop`
+hibernate.hbm2ddl.import_files=/sql/gameItems.sql,/sql/prizeItems.sql
+
+# EntityManager configuration
+packages.to.scan=com.jrfom.icelotto.model
+
+
+### H2 Configuration Example ###
+db.type=h2
+db.url=jdbc:h2:/some/path/icelotto;INIT=CREATE SCHEMA IF NOT EXISTS icelotto;schema=icelotto
+
+# Hibernate configuration
 hibernate.default_schema=icelotto
 hibernate.dialect=org.hibernate.dialect.H2Dialect
 hibernate.format_sql=true
 hibernate.ejb.naming_strategy=org.hibernate.cfg.ImprovedNamingStrategy
 hibernate.show_sql=true
-# `update`, `create`, `create-drop` are possible values
-# Use `create` or `create-drop` for import_files to work.
+# `update`, `create`, `create-drop`
 hibernate.hbm2ddl.auto=create
+# import_files will only work if auto is set to `create` or `create-drop`
 hibernate.hbm2ddl.import_files=/sql/gameItems.sql,/sql/prizeItems.sql
-# Note: if `;schema=icelotto` is not in the db.url then the import_files scripts
-# need to reference the schema before table names. The default_schema setting
-# has no bearing on the import_files setting.
 
 # EntityManager configuration
 packages.to.scan=com.jrfom.icelotto.model

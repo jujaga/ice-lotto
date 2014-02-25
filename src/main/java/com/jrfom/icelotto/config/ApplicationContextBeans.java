@@ -1,7 +1,5 @@
 package com.jrfom.icelotto.config;
 
-import java.util.Properties;
-
 import javax.persistence.EntityManagerFactory;
 
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
@@ -91,18 +89,7 @@ public class ApplicationContextBeans {
     factoryBean.setDataSource(this.dataSourceConfig.dataSource());
     factoryBean.setPackagesToScan(this.env.getRequiredProperty("packages.to.scan"));
     factoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
-
-    Properties jpaProperties = new Properties();
-    jpaProperties.put("hibernate.dialect", this.env.getRequiredProperty("hibernate.dialect"));
-    jpaProperties.put("hibernate.default_schema", this.env.getRequiredProperty("hibernate.default_schema"));
-    jpaProperties.put("hibernate.format_sql", this.env.getRequiredProperty("hibernate.format_sql"));
-    jpaProperties.put("hibernate.ejb.naming_strategy", this.env.getRequiredProperty("hibernate.ejb.naming_strategy"));
-    jpaProperties.put("hibernate.show_sql", this.env.getRequiredProperty("hibernate.show_sql"));
-    jpaProperties.put("hibernate.hbm2ddl.auto", this.env.getProperty("hibernate.hbm2ddl.auto"));
-    jpaProperties.put("hibernate.hbm2ddl.import_files", this.env.getProperty("hibernate.hbm2ddl.import_files"));
-    jpaProperties.put("hibernate.hbm2ddl.import_files_sql_extractor", "org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor");
-
-    factoryBean.setJpaProperties(jpaProperties);
+    factoryBean.setJpaProperties(this.dataSourceConfig.jpaProperties());
     factoryBean.afterPropertiesSet();
 
     return factoryBean.getObject();
