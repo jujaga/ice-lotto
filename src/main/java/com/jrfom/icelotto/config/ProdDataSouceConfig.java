@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.h2.jdbcx.JdbcDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
@@ -19,9 +20,17 @@ public class ProdDataSouceConfig implements DataSourceConfig {
   private Environment env;
 
   public DataSource dataSource() {
-    SQLiteDataSource dataSource = new SQLiteDataSource();
-    dataSource.setDatabaseName(this.env.getRequiredProperty("db.name"));
-    dataSource.setUrl(this.env.getRequiredProperty("db.url"));
+    String dbType = this.env.getRequiredProperty("db.type");
+    DataSource dataSource = null;
+
+    if (dbType.toLowerCase().equals("h2")) {
+      dataSource = new JdbcDataSource();
+      ((JdbcDataSource) dataSource).setUrl(this.env.getRequiredProperty("db.url"));
+    } else if (dbType.toLowerCase().equals("sqlite")) {
+      dataSource = new SQLiteDataSource();
+      ((SQLiteDataSource) dataSource).setDatabaseName(this.env.getRequiredProperty("db.name"));
+      ((SQLiteDataSource) dataSource).setUrl(this.env.getRequiredProperty("db.url"));
+    }
 
     return dataSource;
   }
