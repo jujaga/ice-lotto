@@ -1,5 +1,8 @@
 package com.jrfom.icelotto.controllers;
 
+import java.util.List;
+
+import com.jrfom.icelotto.model.Drawing;
 import com.jrfom.icelotto.service.DrawingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class DrawingController {
@@ -21,7 +25,10 @@ public class DrawingController {
     method = RequestMethod.GET,
     produces = MediaType.TEXT_HTML_VALUE
   )
-  public String drawingsIndex() {
+  public String drawingsIndex(ModelAndView mav) {
+    List<Drawing> drawingList = this.drawingService.findAll();
+    mav.addObject("drawings", drawingList);
+
     return "drawings";
   }
 }

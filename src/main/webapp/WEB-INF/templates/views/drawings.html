@@ -8,6 +8,10 @@
 
 <div class="container" th:fragment="content">
   <h2>This is the drawings view!</h2>
+
+  <div th:if="${drawings != null}">
+    <th:text>${drawings.length}</th:text>
+  </div>
 </div>
 
 </body>
