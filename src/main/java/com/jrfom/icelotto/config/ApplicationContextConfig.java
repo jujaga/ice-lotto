@@ -1,5 +1,6 @@
 package com.jrfom.icelotto.config;
 
+import com.jrfom.icelotto.interceptors.ThymeleafLayoutInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.ComponentScan;
@@ -27,6 +28,11 @@ public class ApplicationContextConfig extends WebMvcConfigurerAdapter {
     webContentInterceptor.setUseCacheControlHeader(true);
     registry.addInterceptor(webContentInterceptor)
         .addPathPatterns("/**");
+
+    // Add our custom Thymeleaf layout interceptor
+    ThymeleafLayoutInterceptor layoutInterceptor = new ThymeleafLayoutInterceptor();
+    layoutInterceptor.setDefaultLayout("default");
+    registry.addInterceptor(layoutInterceptor);
 
     super.addInterceptors(registry);
   }

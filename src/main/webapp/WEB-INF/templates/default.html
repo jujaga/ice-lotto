@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+  <title>ICE Lotto</title>
+
+  <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" href="bootstrap.min.css" />
+  <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap-theme.min.css}" href="bootstrap-theme.min.css" />
+  <link rel="stylesheet" th:href="@{/local/css/style.css}" href="style.css" />
+</head>
+<body>
+  <!--/* Site header/navbar */-->
+  <div th:replace="fragments/navMenu :: content" th:remove="tag"></div>
+
+  <!--/* Main content */-->
+  <!-- Thanks IE11 for not supporting the "main" element. -->
+  <section class="main-content container">
+    <!--/* TODO: add detection for being logged in */-->
+    <div th:replace="views/__${view}__ :: content" th:remove="tag"></div>
+  </section>
+
+  <!--/* Site footer/navbar */-->
+  <div th:replace="fragments/siteFooter :: content" th:remove="tag"></div>
+
+  <!--/* Sitewide scripts */-->
+  <script th:src="@{/jquery/jquery.min.js}" src="jquery.min.js"></script>
+  <script th:src="@{/bootstrap/js/bootstrap.min.js}" src="bootstrap.min.js"></script>
+</body>
+</html>

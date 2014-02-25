@@ -1,3 +1,7 @@
+.clickable {
+  cursor: pointer;
+}
+
 .img-sm {
   height: 32px;
   width: 32px;

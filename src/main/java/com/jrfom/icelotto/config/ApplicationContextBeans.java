@@ -44,14 +44,6 @@ public class ApplicationContextBeans {
       resolver.setCacheable(false);
     }
 
-    // Fragment HTML files can reside in the same directory as the template
-    // in which they are used, but if they are stored elsewhere, you can't
-    // reference them directly. Instead of cluttering the templates directory
-    // with a bunch of small fragment files, I've opted to add fragments in
-    // this manner.
-    resolver.addTemplateAlias("item", "fragments/item");
-    resolver.addTemplateAlias("prizePool", "fragments/prizePool");
-
     return resolver;
   }
 

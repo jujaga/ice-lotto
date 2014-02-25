@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title></title>
+</head>
+<body>
+
+<div th:fragment="content">
+  <div id="addItemModal" class="modal fade" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <header class="modal-header">
+          <a class="close" data-dismiss="modal" role="button">&times;</a>
+          <h4 class="modal-title">Add Item</h4>
+        </header>
+
+        <div class="modal-body">
+          <p class="input-group">
+            <input id="itemSearchBox"
+                   type="search"
+                   class="form-control"
+                   placeholder="Enter an item name or chat link (e.g. '[&amp;AgHidwAA]') " />
+            <i class="input-group-addon no-background"><span class="invisible">@</span></i>
+          </p>
+          <p id="itemSearchResultWell" class="well collapse"></p>
+
+          <p>
+            Count: <input id="itemCount" type="number" min="1" max="250" placeholder="1" />
+          </p>
+        </div>
+
+        <footer class="modal-footer">
+          <a class="btn btn-default" data-dismiss="modal" role="button">Cancel</a>
+          <a class="btn btn-primary disabled" role="button">Add</a>
+        </footer>
+
+      </div>
+    </div>
+  </div>
+
+  <template id="itemSearchResultTemplate">
+    <div class="media search-result">
+      <span class="pull-left"><img class="media-object img-sm" src="" /></span>
+      <div class="media-body">
+        <h4 class="media-heading"></h4>
+        <dl class="dl-horizontal"></dl>
+      </div>
+    </div>
+  </template>
+
+  <script th:src="@{/spinjs/spin.min.js}" defer="defer"></script>
+  <script th:src="@{/spinjs/jquery.spin.js}" defer="defer"></script>
+  <script th:src="@{/local/js/itemSearch.js}" defer="defer"></script>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+  <title>ICE Lotto</title>
+
+  <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" href="bootstrap.min.css" />
+  <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap-theme.min.css}" href="bootstrap-theme.min.css" />
+  <link rel="stylesheet" th:href="@{/local/css/style.css}" href="style.css" />
+</head>
+<body>
+
+<div th:fragment="content">
+  <h2>Welcome to the ICE lottery!</h2>
+
+  <div th:if="${nextDrawing == null}">
+    <h4>No drawing is currently open.</h4>
+  </div>
+
+  <div th:if="${nextDrawing != null}">
+
+    <div th:replace="prizePool::fragment('small', ${nextDrawing.smallPool})"></div>
+
+    <div th:replace="prizePool::fragment('large', ${nextDrawing.largePool})"></div>
+
+  </div>
+
+  <!--/* TODO: add in detection of admin role */-->
+  <div th:replace="fragments/admin/addItemModal :: content" th:remove="tag"></div>
+</div>
+
+</body>
+</html>

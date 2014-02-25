@@ -25,7 +25,7 @@ public class IndexController {
   @Autowired
   private PrizePoolService prizePoolService;
 
-  @RequestMapping(value = "/")
+  @RequestMapping(value = {"/", "/index"})
   public ModelAndView index() {
     log.info("Displaying index.html");
     ModelAndView modelAndView = new ModelAndView();
