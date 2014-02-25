@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title></title>
+</head>
+<body>
+
+<div th:fragment="fragment (size, pool)">
+  <div class="prize-pool panel panel-default" data-pool-id="0" th:classappend="${(size == 'small') ? 'small-pool' : 'large-pool'}">
+    <header class="panel-heading clearfix">
+      <h4 class="panel-title pull-left" th:text="${(size == 'small') ? 'Small Pool' : 'Large Pool'}">Prize Pool</h4>
+      <div class="pull-right">
+        <!--/* TODO: add interface for admin */-->
+        <span>15</span><img th:src="@{/local/images/gold.png}" src="gold.png" />
+      </div>
+    </header>
+
+    <div th:if="${pool == null}">
+      <h4>No pool is defined. (add pool btn)</h4>
+    </div>
+
+    <table class="table" th:if="${pool != null}">
+      <thead class="prize-pool-admin-header">
+        <tr>
+          <th><a href="#" class="btn btn-default">Draw 1</a></th>
+          <th><a href="#" class="btn btn-default">Draw 2</a></th>
+          <th><a href="#" class="btn btn-default">Draw 3</a></th>
+          <th><a href="#" class="btn btn-default">Draw 4</a></th>
+          <th><a href="#" class="btn btn-default">Draw 5</a></th>
+          <th><a href="#" class="btn btn-default">Draw 6</a></th>
+          <th><a href="#" class="btn btn-default">Draw 7</a></th>
+          <th><a href="#" class="btn btn-default">Draw 8</a></th>
+          <th><a href="#" class="btn btn-default">Draw 9</a></th>
+          <th><a href="#" class="btn btn-default">Draw 10</a></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <!--/* Loop through each tier and each item in that tier */-->
+        <tr th:each="i: ${#numbers.sequence(1, 10)}" class="prize-pool-tier-row" data:tier-id="${i}">
+          <td th:each="j: ${#numbers.sequence(1, 10)}" th:object="${pool.tier__${i}__}">
+            <!--/* There's no item in the current position in this tier so put an add button */-->
+            <div th:if="${item__${j}__ == null}">
+              <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#addItemModal">Add</button>
+            </div>
+
+            <!--/* Add the item to the row using the item template */-->
+            <div th:if="${item__${j}__ != null}">
+              <div th:replace="item::fragment(item__${j}__)"></div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>

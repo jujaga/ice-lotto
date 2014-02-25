@@ -50,6 +50,7 @@ public class ApplicationContextBeans {
     // with a bunch of small fragment files, I've opted to add fragments in
     // this manner.
     resolver.addTemplateAlias("item", "fragments/item");
+    resolver.addTemplateAlias("prizePool", "fragments/prizePool");
 
     return resolver;
   }

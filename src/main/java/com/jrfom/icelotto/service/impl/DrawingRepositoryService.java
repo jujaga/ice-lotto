@@ -13,6 +13,7 @@ import com.jrfom.icelotto.service.DrawingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.threeten.bp.Instant;
@@ -26,25 +27,16 @@ public class DrawingRepositoryService implements DrawingService {
 
   @Override
   @Transactional
-  public Optional<Drawing> create(String name) {
-    return this.create(name, null, null);
+  public Optional<Drawing> create(Instant scheduled) {
+    return this.create(scheduled, null, null);
   }
 
   @Override
   @Transactional
-  public Optional<Drawing> create(String name, Instant scheduled) {
-    return this.create(name, scheduled, null);
-  }
-
-  @Override
-  @Transactional
-  public Optional<Drawing> create(String name, Instant scheduled, PrizePool prizePool) {
+  public Optional<Drawing> create(Instant scheduled, PrizePool smallPool, PrizePool largePool) {
     log.debug("Creating new drawing");
     Optional<Drawing> result = Optional.absent();
-    Drawing record = new Drawing();
-    record.setName(name);
-    record.setScheduled(scheduled);
-    record.setPrizePool(prizePool);
+    Drawing record = new Drawing(scheduled, smallPool, largePool);
 
     try {
       record = this.drawingRepository.save(record);
@@ -84,6 +76,23 @@ public class DrawingRepositoryService implements DrawingService {
     log.debug("Finding drawing with id: `{}`", id);
     Optional<Drawing> result = Optional.absent();
     Drawing drawing = this.drawingRepository.findOne(id);
+
+    if (drawing != null) {
+      result = Optional.of(drawing);
+    }
+
+    return result;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  @Transactional(readOnly = true)
+  @Query
+  public Optional<Drawing> nextDrawing() {
+    Optional<Drawing> result = Optional.absent();
+    Drawing drawing = this.drawingRepository.nextDrawing();
 
     if (drawing != null) {
       result = Optional.of(drawing);

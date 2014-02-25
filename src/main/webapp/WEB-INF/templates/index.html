@@ -38,42 +38,17 @@
   <!-- Thanks IE11 for not supporting the "main" element. -->
   <div class="main-content container">
 
-    <div class="prize-pool panel panel-default" data-pool-id="0">
-      <header class="panel-heading">
-        <h4 class="panel-title">Prize Pool</h4>
-      </header>
-
-      <table class="table">
-        <thead class="prize-pool-admin-header">
-          <tr>
-            <th><a href="#" class="btn btn-default">Draw 1</a></th>
-            <th><a href="#" class="btn btn-default">Draw 2</a></th>
-            <th><a href="#" class="btn btn-default">Draw 3</a></th>
-            <th><a href="#" class="btn btn-default">Draw 4</a></th>
-            <th><a href="#" class="btn btn-default">Draw 5</a></th>
-            <th><a href="#" class="btn btn-default">Draw 6</a></th>
-            <th><a href="#" class="btn btn-default">Draw 7</a></th>
-            <th><a href="#" class="btn btn-default">Draw 8</a></th>
-            <th><a href="#" class="btn btn-default">Draw 9</a></th>
-            <th><a href="#" class="btn btn-default">Draw 10</a></th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr class="prize-pool-tier-row" data-tier-id="0">
-            <td>
-              <div th:replace="item::fragment(${prizeItem})"></div>
-            </td>
-            <td>
-              <div th:replace="item::fragment(${prizeItem})"></div>
-            </td>
-            <td colspan="8">
-              <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#addItemModal">Add</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div th:if="${nextDrawing == null}">
+      <h4>No drawing is currently open.</h4>
     </div>
+
+    <div th:if="${nextDrawing != null}">
+
+      <div th:replace="prizePool::fragment('small', ${nextDrawing.smallPool})"></div>
+
+      <div th:replace="prizePool::fragment('large', ${nextDrawing.largePool})"></div>
+
+    </div><!--/* end: drawing template */-->
 
   </div>
 

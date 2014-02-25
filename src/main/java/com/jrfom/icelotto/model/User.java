@@ -8,7 +8,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jrfom.icelotto.util.Stringer;
 
 @Entity
-@Table(name = "users")
+@Table(
+  name = "users"/*,
+  uniqueConstraints = {
+    @UniqueConstraint(columnNames = {
+      "gw2display_name"
+    })
+  }*/
+)
 @Embeddable
 public class User {
   @Id
@@ -22,8 +29,8 @@ public class User {
   private String displayName;
 
   @Column(
-    nullable = false,
-    unique = true
+//    name = "gw2display_name",
+    nullable = false
   )
   private String gw2DisplayName;
 

@@ -1,7 +1,5 @@
 package com.jrfom.icelotto.jpa.converters;
 
-import java.util.Date;
-
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
@@ -12,14 +10,14 @@ import org.threeten.bp.Instant;
  * {@link org.threeten.bp.Instant}s can be persisted to a data store.
  */
 @Converter(autoApply = true)
-public class InstantConverter implements AttributeConverter<Instant, Date> {
+public class InstantConverter implements AttributeConverter<Instant, Long> {
   @Override
-  public Date convertToDatabaseColumn(Instant attribute) {
-    return new Date(attribute.toEpochMilli());
+  public Long convertToDatabaseColumn(Instant attribute) {
+    return attribute.getEpochSecond();
   }
 
   @Override
-  public Instant convertToEntityAttribute(Date dbData) {
-    return Instant.ofEpochMilli(dbData.getTime());
+  public Instant convertToEntityAttribute(Long dbData) {
+    return (dbData == null) ? null : Instant.ofEpochSecond(dbData);
   }
 }

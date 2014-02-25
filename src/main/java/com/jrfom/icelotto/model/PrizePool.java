@@ -51,7 +51,18 @@ public class PrizePool {
   @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier10;
 
-  public PrizePool() {}
+  public PrizePool() {
+    this.tier1 = new PrizeTier();
+    this.tier2 = new PrizeTier();
+    this.tier3 = new PrizeTier();
+    this.tier4 = new PrizeTier();
+    this.tier5 = new PrizeTier();
+    this.tier6 = new PrizeTier();
+    this.tier7 = new PrizeTier();
+    this.tier8 = new PrizeTier();
+    this.tier9 = new PrizeTier();
+    this.tier10 = new PrizeTier();
+  }
 
   public Long getId() {
     return this.id;

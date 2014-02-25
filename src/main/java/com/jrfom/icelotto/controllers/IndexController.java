@@ -1,8 +1,10 @@
 package com.jrfom.icelotto.controllers;
 
 import com.google.common.base.Optional;
-import com.jrfom.icelotto.model.PrizeItem;
+import com.jrfom.icelotto.model.Drawing;
+import com.jrfom.icelotto.service.DrawingService;
 import com.jrfom.icelotto.service.PrizeItemService;
+import com.jrfom.icelotto.service.PrizePoolService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,13 @@ public class IndexController {
   private static final Logger log = LoggerFactory.getLogger(IndexController.class);
 
   @Autowired
+  private DrawingService drawingService;
+
+  @Autowired
   private PrizeItemService prizeItemService;
+
+  @Autowired
+  private PrizePoolService prizePoolService;
 
   @RequestMapping(value = "/")
   public ModelAndView index() {
@@ -23,9 +31,10 @@ public class IndexController {
     ModelAndView modelAndView = new ModelAndView();
     modelAndView.setViewName("index");
 
-    Optional<PrizeItem> result = this.prizeItemService.findById(1l);
-    PrizeItem prizeItem = (result.isPresent()) ? result.get() : null;
-    modelAndView.addObject("prizeItem", prizeItem);
+    Optional<Drawing> result = this.drawingService.nextDrawing();
+    if (result.isPresent()) {
+      modelAndView.addObject("nextDrawing", result.get());
+    }
 
     return modelAndView;
   }

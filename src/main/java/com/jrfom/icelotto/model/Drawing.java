@@ -1,7 +1,10 @@
 package com.jrfom.icelotto.model;
 
+import java.util.Set;
+
 import javax.persistence.*;
 
+import com.jrfom.icelotto.jpa.converters.InstantConverter;
 import org.threeten.bp.Instant;
 
 @Entity
@@ -11,20 +14,33 @@ public class Drawing {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @Column(columnDefinition = "TIMESTAMP")
+  @Column(columnDefinition = "INTEGER")
+  @Convert(converter = InstantConverter.class)
   private Instant scheduled;
 
-  @Column(columnDefinition = "TIMESTAMP")
+  @Column(columnDefinition = "INTEGER")
+  @Convert(converter = InstantConverter.class)
   private Instant held;
 
   @OneToOne
   @JoinColumn(referencedColumnName = "id")
-  private PrizePool prizePool;
+  private PrizePool smallPool;
 
-  @Column
-  private String name;
+  @OneToOne
+  @JoinColumn(referencedColumnName = "id")
+  private PrizePool largePool;
 
-  public Drawing() {}
+  @OneToMany
+  @JoinColumn(referencedColumnName = "id")
+  private Set<Entry> entries;
+
+  protected Drawing() {}
+
+  public Drawing(Instant scheduled, PrizePool smallPool, PrizePool largePool) {
+    this.scheduled = scheduled;
+    this.smallPool = smallPool;
+    this.largePool = largePool;
+  }
 
   public Long getId() {
     return this.id;
@@ -46,19 +62,20 @@ public class Drawing {
     this.held = held;
   }
 
-  public PrizePool getPrizePool() {
-    return this.prizePool;
+  public PrizePool getSmallPool() {
+    return this.smallPool;
   }
 
-  public void setPrizePool(PrizePool prizePool) {
-    this.prizePool = prizePool;
+  public void setSmallPool(PrizePool prizePool) {
+    this.smallPool = prizePool;
   }
 
-  public String getName() {
-    return this.name;
+  public PrizePool getLargePool() {
+    return this.largePool;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setLargePool(PrizePool largePool) {
+    this.largePool = largePool;
   }
+
 }

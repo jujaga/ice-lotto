@@ -9,10 +9,18 @@ import com.jrfom.icelotto.model.PrizePool;
 import org.threeten.bp.Instant;
 
 public interface DrawingService {
-  Optional<Drawing> create(String name);
-  Optional<Drawing> create(String name, Instant scheduled);
-  Optional<Drawing> create(String name, Instant scheduled, PrizePool prizePool);
+  Optional<Drawing> create(Instant scheduled);
+  Optional<Drawing> create(Instant scheduled, PrizePool smallPool, PrizePool largePool);
   void delete(Long drawingId) throws DrawingNotFoundException;
   List<Drawing> findAll();
   Optional<Drawing> findById(Long id);
+
+  /**
+   * Retrieve the next scheduled drawing from the database.
+   *
+   * @return An instance of {@link com.jrfom.icelotto.model.Drawing} wrapped
+   * in an {@link com.google.common.base.Optional} or an empty {@code Optional}
+   * if one cannot be found.
+   */
+  Optional<Drawing> nextDrawing();
 }
