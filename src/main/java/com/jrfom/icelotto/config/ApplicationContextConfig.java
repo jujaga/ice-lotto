@@ -54,6 +54,14 @@ public class ApplicationContextConfig extends WebMvcConfigurerAdapter {
     registry
       .addResourceHandler("spinjs/**")
       .addResourceLocations("/WEB-INF/assets/spinjs-1.3.3/");
+
+    registry
+      .addResourceHandler("stompjs/**")
+      .addResourceLocations("/WEB-INF/assets/stompjs-2.3.1/");
+
+    registry
+      .addResourceHandler("sockjs/**")
+      .addResourceLocations("/WEB-INF/assets/sockjs-0.3.4/");
   }
 
   @Override

@@ -1,4 +1,6 @@
 (function($) {
+  /** jsHint config **/
+  /* global Stomp,SockJS */
   "use strict";
 
   var $addButton = $("#addItemModal .btn-primary"),
@@ -6,18 +8,17 @@
       $itemSearchResultWell = $("#itemSearchResultWell"),
       $itemSearchResultTemplate = $("#itemSearchResultTemplate"),
       $spinner = $itemSearchBox.siblings(".input-group-addon"),
-      displayResult = function(){},
+      connected = false,
+      displayResult = function(a){},
+      doSearch = function(a){},
       lookupItem = function(){},
-      lookupXHR = {},
+      socket = {},
+      stompClient = {},
+      stompConnect = function(a){},
       timer = -1;
 
-  $itemSearchBox.on("keydown", function() {
-    if (lookupXHR.abort) {
-      lookupXHR.abort();
-      $spinner.spin(false);
-    }
-  });
-
+  // Submits the typed search term when 500ms have elapsed since the
+  // last key was pressed.
   $itemSearchBox.on("keyup", function() {
     if (timer > -1) {
       clearTimeout(timer);
@@ -26,6 +27,8 @@
     timer = setTimeout(lookupItem, 500);
   });
 
+  // Handles populating the search results template with the data
+  // returned from a search.
   displayResult = function(results) {
     var $node = {},
         $dl = {},
@@ -67,6 +70,8 @@
     }
   };
 
+  // Validates the input and submits it if valid. Also shows and hides the
+  // search result well depending on the result of the validation.
   lookupItem = function() {
     var text = $itemSearchBox.val();
 
@@ -82,25 +87,52 @@
       return;
     }
 
-    lookupXHR = $.ajax({
-      url: "spidy/item-search/" + encodeURIComponent(text),
-      dataType: "json",
-      success: function(data, status, jqXHR) {
-        // TODO: determine if paged results (that Spidy returns) will be
-        // problematic here.
-        if (data.result) {
-          // A single item as a result of a chat link search term.
-          displayResult([data.result]);
-        } else {
-          displayResult(data.results);
-        }
-      },
-      beforeSend: function(jqXHR, settings) {
-        $spinner.spin("small");
-      },
-      complete: function(jqXHR, status) {
+    $spinner.spin("small");
+    doSearch(text);
+    // TODO: determine if paged results (that Spidy returns) will be
+  };
+
+  stompConnect = function(searchTerm) {
+    if (connected) {
+      return;
+    }
+    socket = new SockJS("/item/search");
+    stompClient = Stomp.over(socket);
+
+    // Connect to the remote server and subscribe to the search result service.
+    stompClient.connect({}, function(frame) {
+      connected = true;
+
+      stompClient.subscribe('/wsresponse/item/search/result', function(response){
+        var data = JSON.parse(response.body);
         $spinner.spin(false);
+
+        if (data.content && data.content.result) {
+          displayResult([data.content.result]);
+        } else if (data.content && data.content.results) {
+          displayResult(data.content.results);
+        }
+      });
+
+      if (searchTerm) {
+        doSearch(searchTerm);
       }
     });
+
+    // Bind to the socket's onclose event so that we can update our
+    // connection status.
+    socket.onclose = function() {
+      connected = false;
+    };
   };
+
+  doSearch = function(text) {
+    if (!connected) {
+      stompConnect(text);
+    } else {
+      stompClient.send("/ws/item/search", {}, JSON.stringify({term: text}));
+    }
+  };
+
+  stompConnect();
 }(jQuery));
