@@ -6,13 +6,13 @@
 </head>
 <body>
 
-<div th:fragment="fragment (size, pool)">
+<div th:fragment="fragment (size, pool, entriesTotal)">
   <div class="prize-pool panel panel-default" data-pool-id="0" th:classappend="${(size == 'small') ? 'small-pool' : 'large-pool'}">
     <header class="panel-heading clearfix">
       <h4 class="panel-title pull-left" th:text="${(size == 'small') ? 'Small Pool' : 'Large Pool'}">Prize Pool</h4>
       <div class="pull-right">
         <!--/* TODO: add interface for admin */-->
-        <span>15</span><img th:src="@{/local/images/gold.png}" src="gold.png" />
+        <span th:text="${entriesTotal}">0</span><img th:src="@{/local/images/gold.png}" src="gold.png" />
       </div>
     </header>
 

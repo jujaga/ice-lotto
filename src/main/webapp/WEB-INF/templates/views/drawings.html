@@ -7,10 +7,56 @@
 <body>
 
 <div class="container" th:fragment="content">
-  <h2>This is the drawings view!</h2>
+  <div th:if="${drawingsList == null}" th:remove="tag">
+    <p>There are no drawings available.</p>
+  </div>
 
-  <div th:if="${drawings != null}">
-    <th:text>${drawings.length}</th:text>
+  <div th:if="${drawingsList != null}" class="table-responsive">
+    <!--/* TODO: enable ordering and searching */-->
+    <table class="table table-bordered table-condensed table-hover table-striped">
+      <thead>
+        <tr>
+          <td>Scheduled</td>
+          <td>Held</td>
+          <td>Small Pool</td>
+          <td>Large Pool</td>
+          <td colspan="4"></td>
+        </tr>
+      </thead>
+
+      <tbody>
+        <!--/* TODO: add links to drawings and pools */-->
+        <!--/* TODO: add support for formating JSR-310 dates (new dialect?) */-->
+        <tr th:each="drawing: ${drawingsList}" data:drawing-id="${drawing.id}">
+          <td th:text="${drawing.scheduled}">Not Set</td>
+          <td th:text="${drawing.held} ?: 'Not Yet Held'">Not Set</td>
+          <td th:text="${drawing.smallPool} ? ${drawing.smallPool.id}">Not Set</td>
+          <td th:text="${drawing.largePool} ? ${drawing.largePool.id}">Not Set</td>
+          <td class="text-center" colspan="4">
+            <div class="btn-group">
+              <a th:if="${drawing.held == null}" class="btn btn-default btn-xs">Start</a>
+              <a class="btn btn-default btn-xs">Edit</a>
+              <a class="btn btn-default btn-xs">Duplicate</a>
+              <a class="btn btn-default btn-xs">Delete</a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="panel panel-info">
+      <header class="panel-heading">
+        <a href="#help" class="panel-title" data-toggle="collapse">Help</a>
+      </header>
+      <div id="help" class="panel-collapse collapse">
+        <ul class="list-unstyled panel-body">
+          <li>The <kbd>Start</kbd> button is used to initiate a drawing.</li>
+          <li>The <kbd>Edit</kbd> button is used to open the drawing editor.</li>
+          <li>The <kbd>Duplicate</kbd> button is used to copy a drawing to a new one.</li>
+          <li>The <kbd>Delete</kbd> button is used to delete a drawing.</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
 

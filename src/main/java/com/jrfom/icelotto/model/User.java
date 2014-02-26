@@ -53,7 +53,7 @@ public class User {
   )
   private Set<Character> characters;
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
     name = "user_roles",
     joinColumns = {

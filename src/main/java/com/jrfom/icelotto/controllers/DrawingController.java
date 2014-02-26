@@ -25,10 +25,13 @@ public class DrawingController {
     method = RequestMethod.GET,
     produces = MediaType.TEXT_HTML_VALUE
   )
-  public String drawingsIndex(ModelAndView mav) {
+  public ModelAndView drawingsIndex() {
+    ModelAndView modelAndView = new ModelAndView();
     List<Drawing> drawingList = this.drawingService.findAll();
-    mav.addObject("drawings", drawingList);
 
-    return "drawings";
+    modelAndView.setViewName("drawings");
+    modelAndView.addObject("drawingsList", drawingList);
+
+    return modelAndView;
   }
 }

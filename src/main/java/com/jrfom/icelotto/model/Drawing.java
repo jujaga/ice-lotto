@@ -30,8 +30,16 @@ public class Drawing {
   @JoinColumn(referencedColumnName = "id")
   private PrizePool largePool;
 
-  @OneToMany
-  @JoinColumn(referencedColumnName = "id")
+  @OneToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+    name = "drawing_entries",
+    joinColumns = {
+      @JoinColumn(name = "drawing_id")
+    },
+    inverseJoinColumns = {
+      @JoinColumn(name = "entry_id")
+    }
+  )
   private Set<Entry> entries;
 
   protected Drawing() {}
@@ -76,6 +84,37 @@ public class Drawing {
 
   public void setLargePool(PrizePool largePool) {
     this.largePool = largePool;
+  }
+
+  @Transient
+  public Integer getSmallPoolTotal() {
+    // TODO: replace this with an accurate method
+    // This does not take into account users exceeding 10g and getting
+    // pushed into the large pool. This method is a filler method until such
+    // time as that logic is devised (in a separate, appropriate, class).
+    Integer result = 0;
+
+    for (Entry entry : this.entries) {
+      if (entry.getAmount() <= 10) {
+        result += entry.getAmount();
+      }
+    }
+
+    return result;
+  }
+
+  @Transient
+  public Integer getLargePoolTotal() {
+    // TODO: replace this with an accurate method (see smallPoolTotal)
+    Integer result = 0;
+
+    for (Entry entry : this.entries) {
+      if (entry.getAmount() > 10) {
+        result += entry.getAmount();
+      }
+    }
+
+    return result;
   }
 
 }
