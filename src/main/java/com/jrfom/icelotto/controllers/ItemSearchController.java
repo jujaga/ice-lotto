@@ -11,16 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-/**
- * Because the gw2spidy.com API doesn't support CORS request :-/
- */
 @Controller
-public class Gw2SpidyProxy {
-  private static final Logger log = LoggerFactory.getLogger(Gw2SpidyProxy.class);
+public class ItemSearchController {
+  private static final Logger log = LoggerFactory.getLogger(ItemSearchController.class);
 
   private RestTemplate restClient;
 
-  public Gw2SpidyProxy() {
+  public ItemSearchController() {
     this.restClient = new RestTemplate();
   }
 
