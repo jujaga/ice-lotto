@@ -1,6 +1,6 @@
 (function($) {
   /** jsHint config **/
-  /* global SocketManager */
+  /* global AdminSocketManager */
   "use strict";
 
   var $addButton = $("#addItemModal .btn-primary"),
@@ -10,9 +10,8 @@
       $spinner = $itemSearchBox.siblings(".input-group-addon"),
       displayResult = function(a){},
       doSearch = function(a){},
-      endpoint = "/app",
       lookupItem = function(){},
-      socketManager = new SocketManager(),
+      socketManager = AdminSocketManager.socketManager,
       subscribeCallback = function(){},
       timer = -1;
 
@@ -99,7 +98,7 @@
 
     if (!socketManager.connected) {
       socketManager.on("connected", callback);
-      socketManager.connect(endpoint);
+      AdminSocketManager.reconnect();
     } else {
       socketManager.send("/ws/app/item/search", {}, JSON.stringify({term: text}));
     }
@@ -118,6 +117,10 @@
     });
   };
 
-  socketManager.on("connected", subscribeCallback);
-  socketManager.connect(endpoint);
+  if (socketManager.connected) {
+    subscribeCallback();
+  } else {
+    socketManager.on("connected", subscribeCallback);
+    AdminSocketManager.reconnect();
+  }
 }(jQuery));
