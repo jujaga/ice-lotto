@@ -12,6 +12,7 @@
       doSearch = function(a){},
       endpoint = "/app",
       lookupItem = function(){},
+      socketManager = new SocketManager(),
       subscribeCallback = function(){},
       timer = -1;
 
@@ -93,19 +94,19 @@
   doSearch = function(text) {
     var callback = function() {
       doSearch(text);
-      SocketManager.off("connected", callback);
+      socketManager.off("connected", callback);
     };
 
-    if (!SocketManager.connected) {
-      SocketManager.on("connected", callback);
-      SocketManager.connect(endpoint);
+    if (!socketManager.connected) {
+      socketManager.on("connected", callback);
+      socketManager.connect(endpoint);
     } else {
-      SocketManager.send("/ws/app/item/search", {}, JSON.stringify({term: text}));
+      socketManager.send("/ws/app/item/search", {}, JSON.stringify({term: text}));
     }
   };
 
   subscribeCallback = function() {
-    SocketManager.subscribe('/topic/item/search/result', function(response) {
+    socketManager.subscribe('/topic/item/search/result', function(response) {
       var data = JSON.parse(response.body);
       $spinner.spin(false);
 
@@ -117,6 +118,6 @@
     });
   };
 
-  SocketManager.on("connected", subscribeCallback);
-  SocketManager.connect(endpoint);
+  socketManager.on("connected", subscribeCallback);
+  socketManager.connect(endpoint);
 }(jQuery));

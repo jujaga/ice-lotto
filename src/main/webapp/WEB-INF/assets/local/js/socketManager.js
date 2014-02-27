@@ -28,13 +28,17 @@
  * <p>To send messages, use the <code>send(destination, headers, body)</code>
  * method. This method is the same as the Stomp.js send method.</p>
  */
-var SocketManager = (function() {
+var SocketManager = function() {
   /* global SockJS,Stomp */
   "use strict";
   var obj = {},
       eventNames = ["connected", "disconnected"],
       events = {},
       stompClient = {};
+
+  if (!(this instanceof SocketManager)) {
+    return new SocketManager();
+  }
 
   obj.connected = false;
 
@@ -108,4 +112,4 @@ var SocketManager = (function() {
   };
 
   return obj;
-}());
+};
