@@ -1,6 +1,6 @@
 (function($) {
   /** jsHint config **/
-  /* global Stomp,SockJS */
+  /* global SocketManager */
   "use strict";
 
   var $addButton = $("#addItemModal .btn-primary"),
@@ -8,13 +8,11 @@
       $itemSearchResultWell = $("#itemSearchResultWell"),
       $itemSearchResultTemplate = $("#itemSearchResultTemplate"),
       $spinner = $itemSearchBox.siblings(".input-group-addon"),
-      connected = false,
       displayResult = function(a){},
       doSearch = function(a){},
+      endpoint = "/app",
       lookupItem = function(){},
-      socket = {},
-      stompClient = {},
-      stompConnect = function(a){},
+      subscribeCallback = function(){},
       timer = -1;
 
   // Submits the typed search term when 500ms have elapsed since the
@@ -92,47 +90,33 @@
     // TODO: determine if paged results (that Spidy returns) will be
   };
 
-  stompConnect = function(searchTerm) {
-    if (connected) {
-      return;
+  doSearch = function(text) {
+    var callback = function() {
+      doSearch(text);
+      SocketManager.off("connected", callback);
+    };
+
+    if (!SocketManager.connected) {
+      SocketManager.on("connected", callback);
+      SocketManager.connect(endpoint);
+    } else {
+      SocketManager.send("/ws/app/item/search", {}, JSON.stringify({term: text}));
     }
-    socket = new SockJS("/item/search");
-    stompClient = Stomp.over(socket);
+  };
 
-    // Connect to the remote server and subscribe to the search result service.
-    stompClient.connect({}, function(frame) {
-      connected = true;
+  subscribeCallback = function() {
+    SocketManager.subscribe('/topic/item/search/result', function(response) {
+      var data = JSON.parse(response.body);
+      $spinner.spin(false);
 
-      stompClient.subscribe('/wsresponse/item/search/result', function(response){
-        var data = JSON.parse(response.body);
-        $spinner.spin(false);
-
-        if (data.content && data.content.result) {
-          displayResult([data.content.result]);
-        } else if (data.content && data.content.results) {
-          displayResult(data.content.results);
-        }
-      });
-
-      if (searchTerm) {
-        doSearch(searchTerm);
+      if (data.content && data.content.result) {
+        displayResult([data.content.result]);
+      } else if (data.content && data.content.results) {
+        displayResult(data.content.results);
       }
     });
-
-    // Bind to the socket's onclose event so that we can update our
-    // connection status.
-    socket.onclose = function() {
-      connected = false;
-    };
   };
 
-  doSearch = function(text) {
-    if (!connected) {
-      stompConnect(text);
-    } else {
-      stompClient.send("/ws/item/search", {}, JSON.stringify({term: text}));
-    }
-  };
-
-  stompConnect();
+  SocketManager.on("connected", subscribeCallback);
+  SocketManager.connect(endpoint);
 }(jQuery));

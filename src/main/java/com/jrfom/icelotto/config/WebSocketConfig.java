@@ -16,7 +16,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   @Override
   public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
-    stompEndpointRegistry.addEndpoint("/item/search").withSockJS();
+    stompEndpointRegistry.addEndpoint("/app").withSockJS();
   }
 
   @Override
@@ -37,7 +37,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry messageBrokerRegistry) {
-    messageBrokerRegistry.enableSimpleBroker("/wsresponse");
+    messageBrokerRegistry.enableSimpleBroker("/topic");
     messageBrokerRegistry.setApplicationDestinationPrefixes("/ws");
   }
 }
