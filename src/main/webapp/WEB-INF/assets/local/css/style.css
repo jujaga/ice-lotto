@@ -4,6 +4,8 @@
 
 .gw-item-icon {
   border: 1px solid #ccc;
+  height: 64px;
+  width: 64px;
 }
 
 .img-sm {
