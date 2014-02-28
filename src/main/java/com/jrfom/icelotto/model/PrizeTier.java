@@ -192,6 +192,48 @@ public class PrizeTier {
     }
   }
 
+  @Transient
+  public PrizeItem getItemAtPosition(Integer position) {
+    PrizeItem result;
+
+    switch (position) {
+      case 1:
+        result = this.getItem1();
+        break;
+      case 2:
+        result = this.getItem2();
+        break;
+      case 3:
+        result = this.getItem3();
+        break;
+      case 4:
+        result = this.getItem4();
+        break;
+      case 5:
+        result = this.getItem5();
+        break;
+      case 6:
+        result = this.getItem6();
+        break;
+      case 7:
+        result = this.getItem7();
+        break;
+      case 8:
+        result = this.getItem8();
+        break;
+      case 9:
+        result = this.getItem9();
+        break;
+      case 10:
+        result = this.getItem10();
+        break;
+      default:
+        result = null;
+    }
+
+    return result;
+  }
+
   @Override
   public String toString() {
     return Stringer.jsonString(this);

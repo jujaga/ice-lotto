@@ -76,11 +76,11 @@ var SocketManager = function() {
   };
 
   obj.send = function(destination, headers, body) {
-    stompClient.send(destination, headers, body);
+    return stompClient.send(destination, headers, body);
   };
 
   obj.subscribe = function(topic, callback) {
-    stompClient.subscribe(topic, callback);
+    return stompClient.subscribe(topic, callback);
   };
 
   events.addEventListener = function(eventName, listener) {

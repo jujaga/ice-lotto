@@ -5,15 +5,25 @@
   <title></title>
 </head>
 <body>
-  <div th:fragment="fragment (itemDetails)">
-    <i data:id="${itemDetails.gameItem.id}"
-       data:name="${itemDetails.gameItem.name}"
-       data:description="${itemDetails.gameItem.description}"
-       data:count="${itemDetails.count}"
-       data-level="24"
-       data-rarity="Basic"
-       data-value="10000"></i>
-    <img class="img-responsive" th:src="@{'/local/gw2-icons/'+${itemDetails.gameItem.id}+'-lg.png'}" src="gw2-icons/2495-lg.png" />
+  <div th:fragment="fragment (prizeItem)" th:remove="tag">
+    <div th:if="${prizeItem}" th:remove="tag">
+      <i data:id="${prizeItem.gameItem.id}"
+         data:name="${prizeItem.gameItem.name}"
+         data:description="${prizeItem.gameItem.description}"
+         data:count="${prizeItem.count}"
+         data:level="${prizeItem.gameItem.minLevel}"
+         data:rarity="${prizeItem.gameItem.rarity}"></i>
+      <!--/* TODO: cache the images locally
+      <img class="img-responsive" th:src="@{'/local/gw2-icons/'+${prizeItem.gameItem.id}+'-lg.png'}" src="gw2-icons/2495-lg.png" />
+      */-->
+      <img class="img-responsive gw-item-icon" th:src="${prizeItem.gameItem.imageUrl}" src="gw2-icons/2495-lg.png" />
+      <span class="badge" th:text="${prizeItem.count}" th:if="${prizeItem.count > 1}">1</span>
+    </div>
+
+    <!--/* TODO: create a missing item icon */-->
+    <div th:if="${prizeItem == null}" th:remove="tag">
+      <img class="img-responsive gw-item-icon" src="missing-item-icon.png" />
+    </div>
   </div>
 </body>
 </html>

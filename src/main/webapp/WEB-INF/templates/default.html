@@ -9,6 +9,10 @@
   <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" href="bootstrap.min.css" />
   <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap-theme.min.css}" href="bootstrap-theme.min.css" />
   <link rel="stylesheet" th:href="@{/local/css/style.css}" href="style.css" />
+
+  <!--/* Loading these in the head because they are required for any other script. */-->
+  <script th:src="@{/jquery/jquery.min.js}" src="jquery.min.js"></script>
+  <script th:src="@{/bootstrap/js/bootstrap.min.js}" src="bootstrap.min.js"></script>
 </head>
 <body>
   <!--/* Site header/navbar */-->
@@ -25,8 +29,6 @@
   <div th:replace="fragments/siteFooter :: content" th:remove="tag"></div>
 
   <!--/* Sitewide scripts */-->
-  <script th:src="@{/jquery/jquery.min.js}" src="jquery.min.js"></script>
-  <script th:src="@{/bootstrap/js/bootstrap.min.js}" src="bootstrap.min.js"></script>
   <script th:src="@{/stompjs/stomp.min.js}" src="stomp.min.js"></script>
   <script th:src="@{/sockjs/sockjs.min.js}" src="sockjs.min.js"></script>
   <script th:src="@{/local/js/socketManager.js}" src="socketManager.js"></script>

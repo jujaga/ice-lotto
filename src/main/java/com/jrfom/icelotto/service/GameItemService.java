@@ -63,4 +63,11 @@ public interface GameItemService {
    * in an {@link com.google.common.base.Optional} or an empty {@code Optional}.
    */
   Optional<GameItem> findById(Long id);
+
+  /**
+   * Save a {@link com.jrfom.icelotto.model.GameItem} to the database.
+   *
+   * @param gameItem The {@link com.jrfom.icelotto.model.GameItem} to save.
+   */
+  void save(GameItem gameItem);
 }

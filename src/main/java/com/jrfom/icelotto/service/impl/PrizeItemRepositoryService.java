@@ -87,4 +87,13 @@ public class PrizeItemRepositoryService implements PrizeItemService {
 
     return result;
   }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  @Transactional
+  public void save(PrizeItem prizeItem) {
+    this.prizeItemRepository.save(prizeItem);
+  }
 }

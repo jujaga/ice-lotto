@@ -22,6 +22,10 @@ hibernate.hbm2ddl.import_files=/sql/gameItems.sql,/sql/prizeItems.sql
 # EntityManager configuration
 packages.to.scan=com.jrfom.icelotto.model
 
+# Application storage path. This is where the application will store thing
+# like item images it downloads from remote APIs.
+application.store.path=/tmp/icelotto
+
 
 ### H2 Configuration Example ###
 db.type=h2
@@ -40,3 +44,7 @@ hibernate.hbm2ddl.import_files=/sql/gameItems.sql,/sql/prizeItems.sql
 
 # EntityManager configuration
 packages.to.scan=com.jrfom.icelotto.model
+
+# Application storage path. This is where the application will store thing
+# like item images it downloads from remote APIs.
+application.store.path=/tmp/icelotto

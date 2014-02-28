@@ -50,4 +50,11 @@ public interface PrizeItemService {
    * in an {@link com.google.common.base.Optional} or an empty {@code Optional}.
    */
   Optional<PrizeItem> findById(Long id);
+
+  /**
+   * Commit a {@link com.jrfom.icelotto.model.PrizeItem} to the database.
+   *
+   * @param prizeItem The {@link com.jrfom.icelotto.model.PrizeItem} to commit.
+   */
+  void save(PrizeItem prizeItem);
 }

@@ -1,11 +1,7 @@
 package com.jrfom.icelotto.config;
 
-import com.jrfom.icelotto.service.DrawingService;
-import com.jrfom.icelotto.service.PrizeItemService;
-import com.jrfom.icelotto.service.PrizePoolService;
-import com.jrfom.icelotto.service.impl.DrawingRepositoryService;
-import com.jrfom.icelotto.service.impl.PrizeItemRepositoryService;
-import com.jrfom.icelotto.service.impl.PrizePoolRepositoryService;
+import com.jrfom.icelotto.service.*;
+import com.jrfom.icelotto.service.impl.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,6 +13,11 @@ public class PersistenceBeans {
   }
 
   @Bean
+  public GameItemService gameItemService() {
+    return new GameItemRepositoryService();
+  }
+
+  @Bean
   public PrizeItemService prizeItemService() {
     return new PrizeItemRepositoryService();
   }
@@ -24,5 +25,10 @@ public class PersistenceBeans {
   @Bean
   public PrizePoolService prizePoolService() {
     return new PrizePoolRepositoryService();
+  }
+
+  @Bean
+  public PrizeTierService prizeTierService() {
+    return new PrizeTierRepositoryService();
   }
 }

@@ -99,4 +99,10 @@ public class GameItemRepositoryService implements GameItemService {
 
     return result;
   }
+
+  @Override
+  @Transactional
+  public void save(GameItem gameItem) {
+    this.gameItemRepository.save(gameItem);
+  }
 }

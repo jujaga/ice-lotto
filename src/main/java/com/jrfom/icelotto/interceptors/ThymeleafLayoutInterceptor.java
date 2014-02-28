@@ -65,7 +65,9 @@ public class ThymeleafLayoutInterceptor extends HandlerInterceptorAdapter {
     }
 
     String originalViewName = modelAndView.getViewName();
-    if (this.isRedirectOrForward(originalViewName)) {
+    if (this.isRedirectOrForward(originalViewName) ||
+      this.isFragment(originalViewName))
+    {
       return;
     }
 
@@ -76,6 +78,10 @@ public class ThymeleafLayoutInterceptor extends HandlerInterceptorAdapter {
 
   private boolean isRedirectOrForward(String viewName) {
     return viewName.startsWith("redirect:") || viewName.startsWith("forward:");
+  }
+
+  private boolean isFragment(String viewName) {
+    return viewName.contains("::");
   }
 
   private String getLayoutName(Object handler) {

@@ -1,9 +1,6 @@
 package com.jrfom.icelotto.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import com.google.common.base.Preconditions;
@@ -26,6 +23,15 @@ public class GameItem {
 
   @Column
   private String description;
+
+  @Column
+  private Integer minLevel;
+
+  @Enumerated(EnumType.ORDINAL)
+  private ItemRarity rarity;
+
+  @Column
+  private String imageUrl;
 
   protected GameItem() {}
 
@@ -70,6 +76,30 @@ public class GameItem {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public Integer getMinLevel() {
+    return this.minLevel;
+  }
+
+  public void setMinLevel(Integer minLevel) {
+    this.minLevel = minLevel;
+  }
+
+  public ItemRarity getRarity() {
+    return this.rarity;
+  }
+
+  public void setRarity(ItemRarity rarity) {
+    this.rarity = rarity;
+  }
+
+  public String getImageUrl() {
+    return this.imageUrl;
+  }
+
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
   }
 
   public void update(String name, String description) {

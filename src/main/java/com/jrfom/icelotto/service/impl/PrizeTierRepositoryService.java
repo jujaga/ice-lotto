@@ -6,7 +6,11 @@ import javax.annotation.Resource;
 
 import com.google.common.base.Optional;
 import com.jrfom.icelotto.exception.PrizeTierNotFoundException;
+import com.jrfom.icelotto.model.GameItem;
+import com.jrfom.icelotto.model.PrizeItem;
 import com.jrfom.icelotto.model.PrizeTier;
+import com.jrfom.icelotto.repository.GameItemRepository;
+import com.jrfom.icelotto.repository.PrizeItemRepository;
 import com.jrfom.icelotto.repository.PrizeTierRepository;
 import com.jrfom.icelotto.service.PrizeTierService;
 import org.slf4j.Logger;
@@ -21,6 +25,12 @@ public class PrizeTierRepositoryService implements PrizeTierService {
 
   @Resource
   private PrizeTierRepository prizeTierRepository;
+
+  @Resource
+  private PrizeItemRepository prizeItemRepository;
+
+  @Resource
+  private GameItemRepository gameItemRepository;
 
   @Override
   @Transactional
@@ -73,5 +83,68 @@ public class PrizeTierRepositoryService implements PrizeTierService {
     }
 
     return result;
+  }
+
+  @Override
+  @Transactional
+  public void save(PrizeTier prizeTier) {
+    this.prizeTierRepository.save(prizeTier);
+  }
+
+  @Override
+  @Transactional
+  public void addItem(GameItem gameItem, Long tierId, Integer position, Integer count) {
+    log.debug(
+      "Adding item: [itemId: `{}`, tierId: `{}`, position: `{}`, count: `{}`]",
+      gameItem.getId(),
+      tierId,
+      position,
+      count
+    );
+    Optional<PrizeTier> tierOptional = this.findById(tierId);
+    if (!tierOptional.isPresent()) {
+      throw new PrizeTierNotFoundException();
+    }
+
+    PrizeItem prizeItem = new PrizeItem(gameItem);
+    prizeItem.setCount(count);
+    this.prizeItemRepository.save(prizeItem);
+
+    PrizeTier tier = tierOptional.get();
+    switch (position) {
+      case 1:
+        tier.setItem1(prizeItem);
+        break;
+      case 2:
+        tier.setItem2(prizeItem);
+        break;
+      case 3:
+        tier.setItem3(prizeItem);
+        break;
+      case 4:
+        tier.setItem4(prizeItem);
+        break;
+      case 5:
+        tier.setItem5(prizeItem);
+        break;
+      case 6:
+        tier.setItem6(prizeItem);
+        break;
+      case 7:
+        tier.setItem7(prizeItem);
+        break;
+      case 8:
+        tier.setItem8(prizeItem);
+        break;
+      case 9:
+        tier.setItem9(prizeItem);
+        break;
+      case 10:
+        tier.setItem10(prizeItem);
+        break;
+      default:
+    }
+
+    this.save(tier);
   }
 }
