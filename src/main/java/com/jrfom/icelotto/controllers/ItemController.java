@@ -1,25 +1,24 @@
 package com.jrfom.icelotto.controllers;
 
 import com.google.common.base.Optional;
+import com.jrfom.gw2.util.ChatLink;
 import com.jrfom.icelotto.model.PrizeItem;
 import com.jrfom.icelotto.model.PrizeTier;
-import com.jrfom.icelotto.service.PrizeItemService;
 import com.jrfom.icelotto.service.PrizeTierService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class ItemController {
   private static final Logger log = LoggerFactory.getLogger(ItemController.class);
-
-  @Autowired
-  private PrizeItemService prizeItemService;
 
   @Autowired
   private PrizeTierService prizeTierService;
@@ -40,5 +39,15 @@ public class ItemController {
     }
 
     return "fragments/item :: fragment";
+  }
+
+  @RequestMapping(
+    value = "/item/{id}/count/{count}",
+    method = RequestMethod.GET,
+    produces = MediaType.APPLICATION_JSON_VALUE
+  )
+  @ResponseBody
+  public ChatLink getChatLink(@PathVariable Integer id, @PathVariable Integer count) {
+    return new ChatLink(id, count);
   }
 }

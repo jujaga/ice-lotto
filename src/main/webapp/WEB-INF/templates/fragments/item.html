@@ -16,7 +16,7 @@
       <!--/* TODO: cache the images locally
       <img class="img-responsive" th:src="@{'/local/gw2-icons/'+${prizeItem.gameItem.id}+'-lg.png'}" src="gw2-icons/2495-lg.png" />
       */-->
-      <img class="img-responsive gw-item-icon" th:src="${prizeItem.gameItem.imageUrl}" src="gw2-icons/2495-lg.png" />
+      <img class="img-responsive gw-item-icon clickable" th:src="${prizeItem.gameItem.imageUrl}" src="gw2-icons/2495-lg.png" />
       <span class="badge" th:text="${prizeItem.count}" th:if="${prizeItem.count > 1}">1</span>
     </div>
 

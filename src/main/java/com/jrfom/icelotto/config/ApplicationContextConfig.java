@@ -48,6 +48,10 @@ public class ApplicationContextConfig extends WebMvcConfigurerAdapter {
       .addResourceLocations("/WEB-INF/assets/bootstrap-3.1.0/");
 
     registry
+      .addResourceHandler("bootstrap-dialog/**")
+      .addResourceLocations("/WEB-INF/assets/bootstrap-dialog-1.24/");
+
+    registry
       .addResourceHandler("jquery/**")
       .addResourceLocations("/WEB-INF/assets/jquery-2.1.0/");
 
