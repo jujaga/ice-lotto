@@ -1,8 +1,8 @@
 .idea/
 .classpath
 .project
-.settings
 *.iml
 
 catalina.base_IS_UNDEFINED/
 target/
+/WebContent
