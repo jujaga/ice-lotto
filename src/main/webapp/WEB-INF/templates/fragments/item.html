@@ -13,10 +13,7 @@
          data:count="${prizeItem.count}"
          data:level="${prizeItem.gameItem.minLevel}"
          data:rarity="${prizeItem.gameItem.rarity}"></i>
-      <!--/* TODO: cache the images locally
-      <img class="img-responsive" th:src="@{'/local/gw2-icons/'+${prizeItem.gameItem.id}+'-lg.png'}" src="gw2-icons/2495-lg.png" />
-      */-->
-      <img class="img-responsive gw-item-icon clickable" th:src="${prizeItem.gameItem.imageUrl}" src="gw2-icons/2495-lg.png" />
+      <img class="img-resopnsive gw-item-icon clickable" th:src="@{/store/icons/__${prizeItem.gameItem.id}__.png}" src="gw2-icons/2495-lg.png" />
       <span class="badge" th:text="${prizeItem.count}" th:if="${prizeItem.count > 1}">1</span>
     </div>
 

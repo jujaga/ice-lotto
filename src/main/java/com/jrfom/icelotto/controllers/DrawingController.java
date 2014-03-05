@@ -15,6 +15,7 @@ import com.jrfom.icelotto.model.websocket.ItemAddResponse;
 import com.jrfom.icelotto.service.DrawingService;
 import com.jrfom.icelotto.service.GameItemService;
 import com.jrfom.icelotto.service.PrizeTierService;
+import com.jrfom.icelotto.util.ImageDownloader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class DrawingController {
 
   @Autowired
   private ApiClient apiClient;
+
+  @Autowired
+  private ImageDownloader imageDownloader;
 
   @Autowired
   private DrawingService drawingService;
@@ -103,13 +107,14 @@ public class DrawingController {
         );
         gameItem.setMinLevel(item.getLevel());
         gameItem.setRarity(ItemRarity.valueOf(item.getRarity()));
-        gameItem.setImageUrl(
-          String.format(
-            "https://render.guildwars2.com/file/%s/%s.png",
-            item.getIconFileSignature(),
-            item.getIconFileId()
-          )
+
+        String url = String.format(
+          "https://render.guildwars2.com/file/%s/%s.png",
+          item.getIconFileSignature(),
+          item.getIconFileId()
         );
+        this.imageDownloader.downloadImageAtUrlAs(url, "icons/" + item.getItemId());
+        gameItem.setImageUrl(url);
       }
 
       this.gameItemService.save(gameItem);

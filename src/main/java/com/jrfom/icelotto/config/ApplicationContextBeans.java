@@ -4,6 +4,7 @@ import javax.persistence.EntityManagerFactory;
 
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 import com.jrfom.gw2.ApiClient;
+import com.jrfom.icelotto.util.ImageDownloader;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.client.RestTemplate;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
@@ -86,6 +88,18 @@ public class ApplicationContextBeans {
     factoryBean.afterPropertiesSet();
 
     return factoryBean.getObject();
+  }
+
+  @Bean
+  public RestTemplate restTemplate() {
+    return new RestTemplate();
+  }
+
+  @Bean
+  public ImageDownloader imageDownloader() {
+    return new ImageDownloader(
+      this.env.getRequiredProperty("application.store.path")
+    );
   }
 
   private boolean isDevEnvironment() {

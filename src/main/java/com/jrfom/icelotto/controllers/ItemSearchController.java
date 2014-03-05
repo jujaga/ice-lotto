@@ -8,6 +8,7 @@ import com.jrfom.icelotto.model.websocket.ItemSearchResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,12 @@ public class ItemSearchController {
   private RestTemplate restClient;
 
   public ItemSearchController() {
-    this.restClient = new RestTemplate();
+    SimpleClientHttpRequestFactory requestFactory =
+      new SimpleClientHttpRequestFactory();
+    requestFactory.setReadTimeout(5 * 1000); // 5 seconds
+    requestFactory.setConnectTimeout(5 * 1000);
+
+    this.restClient = new RestTemplate(requestFactory);
   }
 
   @RequestMapping(

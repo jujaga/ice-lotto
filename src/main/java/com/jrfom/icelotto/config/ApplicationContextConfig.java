@@ -3,8 +3,12 @@ package com.jrfom.icelotto.config;
 import com.jrfom.icelotto.interceptors.ThymeleafLayoutInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
+import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.mvc.WebContentInterceptor;
 
@@ -15,8 +19,14 @@ import org.springframework.web.servlet.mvc.WebContentInterceptor;
     "com.jrfom"
   )
 )
+@PropertySources({
+  @PropertySource("classpath:application-${spring.profiles.active}.properties")
+})
 public class ApplicationContextConfig extends WebMvcConfigurerAdapter {
   private static final Logger log = LoggerFactory.getLogger(ApplicationContextConfig.class);
+
+  @Autowired
+  private Environment env;
 
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
@@ -42,6 +52,14 @@ public class ApplicationContextConfig extends WebMvcConfigurerAdapter {
     registry
       .addResourceHandler("local/**")
       .addResourceLocations("/WEB-INF/assets/local/");
+
+    // Where the application will store things like downloaded images.
+    registry
+      .addResourceHandler("store/**")
+      .addResourceLocations(
+        "file://" +
+        this.env.getRequiredProperty("application.store.path")
+      );
 
     registry
       .addResourceHandler("bootstrap/**")

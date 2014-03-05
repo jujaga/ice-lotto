@@ -46,5 +46,7 @@ hibernate.hbm2ddl.import_files=/sql/gameItems.sql,/sql/prizeItems.sql
 packages.to.scan=com.jrfom.icelotto.model
 
 # Application storage path. This is where the application will store thing
-# like item images it downloads from remote APIs.
-application.store.path=/tmp/icelotto
+# like item images it downloads from remote APIs. You must include the
+# trailing slash. In other words, "/tmp/icelotto" is invalid but
+# "/tmp/icelotto/" is valid.
+application.store.path=/tmp/icelotto/
