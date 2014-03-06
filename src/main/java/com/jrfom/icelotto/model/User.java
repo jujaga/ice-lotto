@@ -41,7 +41,7 @@ public class User {
   @Column
   private String salt;
 
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL)
   @JoinTable(
     name = "user_characters",
     joinColumns = {

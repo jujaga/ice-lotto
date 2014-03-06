@@ -9,7 +9,7 @@ public class PrizeItem {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(referencedColumnName = "id")
   private GameItem gameItem;
 

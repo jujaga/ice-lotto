@@ -1,3 +1,8 @@
+body {
+  padding-bottom: 70px;
+  padding-top: 70px;
+}
+
 .clickable {
   cursor: pointer;
 }
@@ -11,6 +16,14 @@
 .img-sm {
   height: 32px;
   width: 32px;
+}
+
+.narrow-300 {
+  max-width: 300px;
+}
+
+.navbar-short {
+  min-height: 32px !important;
 }
 
 .no-background {

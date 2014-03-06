@@ -73,4 +73,11 @@ public class PrizePoolRepositoryService implements PrizePoolService {
 
     return result;
   }
+
+  @Override
+  @Transactional
+  public void save(PrizePool prizePool) {
+    log.debug("Saving prize pool with id: `{}`", prizePool.getId());
+    this.prizePoolRepository.save(prizePool);
+  }
 }

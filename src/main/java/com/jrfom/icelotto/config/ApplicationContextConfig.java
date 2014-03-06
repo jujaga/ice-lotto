@@ -58,7 +58,7 @@ public class ApplicationContextConfig extends WebMvcConfigurerAdapter {
       .addResourceHandler("store/**")
       .addResourceLocations(
         "file://" +
-        this.env.getRequiredProperty("application.store.path")
+          this.env.getRequiredProperty("application.store.path")
       );
 
     registry
@@ -68,6 +68,10 @@ public class ApplicationContextConfig extends WebMvcConfigurerAdapter {
     registry
       .addResourceHandler("bootstrap-dialog/**")
       .addResourceLocations("/WEB-INF/assets/bootstrap-dialog-1.25/");
+
+    registry
+      .addResourceHandler("bootstrap-dtpicker/**")
+      .addResourceLocations("/WEB-INF/assets/bootstrap-dtpicker-2.2.0/");
 
     registry
       .addResourceHandler("jquery/**")

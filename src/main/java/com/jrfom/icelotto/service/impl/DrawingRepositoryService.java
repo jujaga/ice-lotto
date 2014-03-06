@@ -3,6 +3,7 @@ package com.jrfom.icelotto.service.impl;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.persistence.PersistenceException;
 
 import com.google.common.base.Optional;
 import com.jrfom.icelotto.exception.DrawingNotFoundException;
@@ -32,7 +33,7 @@ public class DrawingRepositoryService implements DrawingService {
   }
 
   @Override
-  @Transactional
+  @Transactional(rollbackFor = PersistenceException.class)
   public Optional<Drawing> create(Instant scheduled, PrizePool smallPool, PrizePool largePool) {
     log.debug("Creating new drawing");
     Optional<Drawing> result = Optional.absent();

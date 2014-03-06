@@ -11,43 +11,43 @@ public class PrizePool {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier1;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier2;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier3;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier4;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier5;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier6;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier7;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier8;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier9;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier10;
 

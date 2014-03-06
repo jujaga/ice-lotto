@@ -10,10 +10,13 @@ import com.jrfom.icelotto.exception.PrizeTierNotFoundException;
 import com.jrfom.icelotto.model.Drawing;
 import com.jrfom.icelotto.model.GameItem;
 import com.jrfom.icelotto.model.ItemRarity;
+import com.jrfom.icelotto.model.PrizePool;
+import com.jrfom.icelotto.model.websocket.DrawingCreateMessage;
 import com.jrfom.icelotto.model.websocket.ItemAddMessage;
 import com.jrfom.icelotto.model.websocket.ItemAddResponse;
 import com.jrfom.icelotto.service.DrawingService;
 import com.jrfom.icelotto.service.GameItemService;
+import com.jrfom.icelotto.service.PrizePoolService;
 import com.jrfom.icelotto.service.PrizeTierService;
 import com.jrfom.icelotto.util.ImageDownloader;
 import org.slf4j.Logger;
@@ -42,6 +45,9 @@ public class DrawingController {
 
   @Autowired
   private PrizeTierService prizeTierService;
+
+  @Autowired
+  private PrizePoolService prizePoolService;
 
   @Autowired
   private GameItemService gameItemService;
@@ -86,6 +92,16 @@ public class DrawingController {
     }
 
     return response;
+  }
+
+  @MessageMapping("/app/drawing/create")
+  @SendTo("/topic/drawing/created")
+  public String createDrawing(DrawingCreateMessage drawingCreateMessage) {
+    PrizePool smallPool = new PrizePool();
+    PrizePool largePool = new PrizePool();
+    this.drawingService.create(drawingCreateMessage.getDate(), smallPool, largePool);
+
+    return "created";
   }
 
   private GameItem getGameItem(Long itemId) {

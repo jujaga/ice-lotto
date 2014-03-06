@@ -15,6 +15,16 @@
   <script th:src="@{/jquery/jquery.min.js}" src="jquery.min.js"></script>
   <script th:src="@{/bootstrap/js/bootstrap.min.js}" src="bootstrap.min.js"></script>
   <script th:src="@{/bootstrap-dialog/js/bootstrap-dialog.min.js}" src="bootstrap-dialog.min.js"></script>
+
+  <script th:src="@{/stompjs/stomp.min.js}" src="stomp.min.js"></script>
+  <script th:src="@{/sockjs/sockjs.min.js}" src="sockjs.min.js"></script>
+  <script th:src="@{/local/js/socketManager.js}" src="socketManager.js"></script>
+
+  <!--/* TODO: load the following only if the user is an administrator */-->
+  <script th:src="@{/local/js/adminSocket.js}" src="adminSocket.js"></script>
+
+  <link rel="stylesheet" th:href="@{/bootstrap-dtpicker/css/bootstrap-datetimepicker.min.css}" href="bootstrap-datetimepicker.min.css" />
+  <script th:src="@{/bootstrap-dtpicker/js/bootstrap-datetimepicker.min.js}" src="bootstrap-datetimepicker.min.js"></script>
 </head>
 <body>
   <!--/* Site header/navbar */-->
@@ -29,13 +39,5 @@
 
   <!--/* Site footer/navbar */-->
   <div th:replace="fragments/siteFooter :: content" th:remove="tag"></div>
-
-  <!--/* Sitewide scripts */-->
-  <script th:src="@{/stompjs/stomp.min.js}" src="stomp.min.js"></script>
-  <script th:src="@{/sockjs/sockjs.min.js}" src="sockjs.min.js"></script>
-  <script th:src="@{/local/js/socketManager.js}" src="socketManager.js"></script>
-
-  <!--/* TODO: make sure this is only loaded for admin users */-->
-  <script th:src="@{/local/js/adminSocket.js}" src="adminSocket.js"></script>
 </body>
 </html>

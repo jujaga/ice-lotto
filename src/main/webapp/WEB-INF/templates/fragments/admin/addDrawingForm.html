@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title></title>
+</head>
+<body>
+
+<div class="panel panel-default narrow-300" th:fragment="content">
+
+  <header class="panel-heading">
+    <h4 class="panel-title">Create Drawing</h4>
+  </header>
+
+  <div class="panel-body">
+    <div id="createDrawingScheduledDate" class="input-group date">
+      <input class="form-control" size="16" readonly="readonly" />
+      <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+    </div>
+    <br />
+    <a id="createDrawingBtn" class="btn btn-default form-control" data-loading-text="Creating...">Create</a>
+  </div>
+
+  <script th:src="@{/local/js/admin/createDrawing.js}" src="createDrawing.js"></script>
+</div>
+
+</body>
+</html>

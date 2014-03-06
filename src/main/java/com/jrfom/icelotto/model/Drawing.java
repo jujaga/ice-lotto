@@ -22,11 +22,11 @@ public class Drawing {
   @Convert(converter = InstantConverter.class)
   private Instant held;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(referencedColumnName = "id")
   private PrizePool smallPool;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(referencedColumnName = "id")
   private PrizePool largePool;
 
