@@ -21,27 +21,28 @@
     </div>
 
     <table class="table" th:if="${pool != null}">
+      <!--/* TODO: add detection for admin and drawing having been started */-->
       <thead class="prize-pool-admin-header">
         <tr>
-          <th><a href="#" class="btn btn-default">Draw 1</a></th>
-          <th><a href="#" class="btn btn-default">Draw 2</a></th>
-          <th><a href="#" class="btn btn-default">Draw 3</a></th>
-          <th><a href="#" class="btn btn-default">Draw 4</a></th>
-          <th><a href="#" class="btn btn-default">Draw 5</a></th>
-          <th><a href="#" class="btn btn-default">Draw 6</a></th>
-          <th><a href="#" class="btn btn-default">Draw 7</a></th>
-          <th><a href="#" class="btn btn-default">Draw 8</a></th>
-          <th><a href="#" class="btn btn-default">Draw 9</a></th>
-          <th><a href="#" class="btn btn-default">Draw 10</a></th>
+          <th class="text-center"><a href="#" class="btn btn-default">Draw 1</a></th>
+          <th class="text-center"><a href="#" class="btn btn-default">Draw 2</a></th>
+          <th class="text-center"><a href="#" class="btn btn-default">Draw 3</a></th>
+          <th class="text-center"><a href="#" class="btn btn-default">Draw 4</a></th>
+          <th class="text-center"><a href="#" class="btn btn-default">Draw 5</a></th>
+          <th class="text-center"><a href="#" class="btn btn-default">Draw 6</a></th>
+          <th class="text-center"><a href="#" class="btn btn-default">Draw 7</a></th>
+          <th class="text-center"><a href="#" class="btn btn-default">Draw 8</a></th>
+          <th class="text-center"><a href="#" class="btn btn-default">Draw 9</a></th>
+          <th class="text-center"><a href="#" class="btn btn-default">Draw 10</a></th>
         </tr>
       </thead>
 
       <tbody>
         <!--/* Loop through each tier and each item in that tier */-->
-        <tr th:each="i: ${#numbers.sequence(1, 10)}" class="prize-pool-tier-row" data:tier-id="${i}">
+        <tr th:each="i: ${#numbers.sequence(1, 10)}" class="prize-pool-tier-row" data:tier-id="${pool.tier__${i}__.id}">
           <td th:each="j: ${#numbers.sequence(1, 10)}" th:object="${pool.tier__${i}__}" data:position="${j}">
             <!--/* There's no item in the current position in this tier so put an add button */-->
-            <div th:if="*{item__${j}__ == null}">
+            <div th:if="*{item__${j}__ == null}" class="text-center">
               <button class="btn btn-default btn-sm add-item-btn">
                 Add
               </button>

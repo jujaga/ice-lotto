@@ -3,6 +3,7 @@ package com.jrfom.icelotto.controllers;
 import java.util.List;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.jrfom.gw2.ApiClient;
 import com.jrfom.gw2.api.model.items.Item;
 import com.jrfom.icelotto.exception.GameItemNotFoundException;
@@ -26,6 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -67,6 +69,24 @@ public class DrawingController {
     return modelAndView;
   }
 
+  @RequestMapping(
+    value = "/drawing/{id}",
+    method = RequestMethod.GET,
+    produces = MediaType.TEXT_HTML_VALUE
+  )
+  public ModelAndView editDrawing(@PathVariable Long id) {
+    ModelAndView modelAndView = new ModelAndView();
+    Optional<Drawing> drawingOptional = this.drawingService.findById(id);
+
+    if (drawingOptional.isPresent()) {
+      modelAndView.addObject("drawing", drawingOptional.get());
+    }
+    modelAndView.addObject("drawingId", id);
+
+    modelAndView.setViewName("drawing");
+    return modelAndView;
+  }
+
   @MessageMapping("/app/drawing/item/add")
   @SendTo("/topic/drawing/item/add")
   public ItemAddResponse addItem(ItemAddMessage itemAddMessage) {
@@ -89,6 +109,8 @@ public class DrawingController {
       );
     } catch (PrizeTierNotFoundException | GameItemNotFoundException e) {
       response = new ItemAddResponse(false, e.getMessage());
+    } catch (NullPointerException e) {
+      response = new ItemAddResponse(false, "Item id was null. Try again?");
     }
 
     return response;
@@ -106,6 +128,7 @@ public class DrawingController {
 
   private GameItem getGameItem(Long itemId) {
     // TODO: this should be in a service
+    Preconditions.checkNotNull(itemId);
     GameItem gameItem = null;
     Optional<GameItem> gameItemOptional =
         this.gameItemService.findById(itemId);

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title></title>
+</head>
+<body>
+
+<div th:fragment="content">
+
+  <div th:if="${drawing == null}">
+    <h4>
+      Drawing does not exist.<br />
+      <small>Drawing id = <span th:text="${drawingId}">-1</span></small>
+    </h4>
+  </div>
+
+  <div th:if="${drawing != null}">
+
+    <div th:replace="fragments/prizePool::fragment('small', ${drawing.smallPool}, ${drawing.smallPoolTotal})"></div>
+
+    <div th:replace="fragments/prizePool::fragment('large', ${drawing.largePool}, ${drawing.largePoolTotal})"></div>
+
+    <script>
+      $(".main-content").on("click", ".gw-item-icon", function() {
+        var $this = $(this),
+            $i = $this.siblings("i");
+
+        $.ajax({
+          url: "/item/" + $i.data("id") + "/count/" + $i.data("count"),
+          dataType: "json",
+          success: function(data, status, jqXHR) {
+            BootstrapDialog.show({
+              title: $i.data("name"),
+              message: "Chat link: " + data.linkString,
+              type: BootstrapDialog.TYPE_INFO
+            });
+          }
+        });
+      });
+    </script>
+
+  </div>
+
+  <!--/* TODO: add in detection of admin role */-->
+  <div th:replace="fragments/admin/addItemModal :: content" th:remove="tag"></div>
+</div>
+
+</body>
+</html>

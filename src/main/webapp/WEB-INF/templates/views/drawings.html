@@ -36,7 +36,7 @@
           <td class="text-center" colspan="4">
             <div class="btn-group">
               <a th:if="${drawing.held == null}" class="btn btn-default btn-xs">Start</a>
-              <a th:if="${drawing.held == null}" class="btn btn-default btn-xs">Edit</a>
+              <a th:if="${drawing.held == null}" class="btn btn-default btn-xs" th:href="@{/drawing/__${drawing.id}__}">Edit</a>
               <a th:if="${drawing.held != null}" class="btn btn-default btn-xs">Duplicate</a>
               <a class="btn btn-default btn-xs">Delete</a>
             </div>

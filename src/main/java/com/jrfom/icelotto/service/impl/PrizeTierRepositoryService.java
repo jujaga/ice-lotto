@@ -108,7 +108,6 @@ public class PrizeTierRepositoryService implements PrizeTierService {
 
     PrizeItem prizeItem = new PrizeItem(gameItem);
     prizeItem.setCount(count);
-    this.prizeItemRepository.save(prizeItem);
 
     PrizeTier tier = tierOptional.get();
     switch (position) {
