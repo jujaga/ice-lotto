@@ -12,6 +12,7 @@
       <h4 class="panel-title pull-left" th:text="${(size == 'small') ? 'Small Pool' : 'Large Pool'}">Prize Pool</h4>
       <div class="pull-right">
         <!--/* TODO: add interface for admin */-->
+        <a class="btn btn-default btn-xs deposit-btn">Deposit</a>
         <span th:text="${entriesTotal}">0</span><img th:src="@{/local/images/gold.png}" src="gold.png" />
       </div>
     </header>
@@ -59,7 +60,9 @@
 
     <script>
       $(function() {
-        var $addItemModal = $("#addItemModal");
+        var $addItemModal = $("#addItemModal"),
+            $depositModal = $("#depositModal");
+
         $(".add-item-btn").on("click", function() {
           var $this = $(this),
               position = $this.closest("td").attr("data-position"),
@@ -71,6 +74,15 @@
             tierId: tierId,
             poolId: poolId
           }).modal({
+            backdrop: "static",
+            show: true
+          });
+        });
+
+        $(".deposit-btn").on("click", function() {
+          var $this = $(this);
+
+          $depositModal.modal({
             backdrop: "static",
             show: true
           });
