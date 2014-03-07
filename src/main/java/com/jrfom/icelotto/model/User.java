@@ -6,6 +6,10 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jrfom.icelotto.util.Stringer;
+import org.threeten.bp.Instant;
+import org.threeten.bp.OffsetDateTime;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.format.DateTimeFormatter;
 
 @Entity
 @Table(
@@ -40,6 +44,22 @@ public class User {
 
   @Column
   private String salt;
+
+  /**
+   * This should the be value of {@link org.threeten.bp.ZoneId#OLD_IDS_POST_2005}.
+   */
+  @Column
+  private String timeZone;
+
+  /**
+   * If set, this will be used to fomat all dates and times that the user
+   * will see. It <em>must</em> be a valid format according to
+   * {@link org.threeten.bp.format.DateTimeFormatter#ofPattern(String)}. The
+   * default pattern that will be used if it isn't set is
+   * "yyyy-MM-dd HH:mm Z".
+   */
+  @Column
+  private String datetimeFormat;
 
   @OneToMany(cascade = CascadeType.ALL)
   @JoinTable(
@@ -115,12 +135,51 @@ public class User {
     this.salt = salt;
   }
 
+  public String getTimeZone() {
+    return this.timeZone;
+  }
+
+  public void setTimeZone(String timeZone) {
+    this.timeZone = timeZone;
+  }
+
+  public String getDatetimeFormat() {
+    return this.datetimeFormat;
+  }
+
+  public void setDatetimeFormat(String datetimeFormat) {
+    this.datetimeFormat = datetimeFormat;
+  }
+
   public Set<Role> getRoles() {
     return this.roles;
   }
 
   public void setRoles(Set<Role> roles) {
     this.roles = roles;
+  }
+
+  /**
+   * Formats an {@link org.threeten.bp.Instant} to the user's desired date
+   * time time format. If the format does not include both date <em>and</em>
+   * time parameters, then this method will fail.
+   *
+   * @param dateTime The {@link org.threeten.bp.Instant} to format.
+   *
+   * @return A formatted date and time string.
+   */
+  @Transient
+  public String localizeDatetime(Instant dateTime) {
+    ZoneId zoneId = (this.timeZone != null) ? ZoneId.of(this.timeZone) : ZoneId.of("UTC");
+    String format = (this.datetimeFormat != null) ? this.datetimeFormat : "yyyy-MM-dd HH:mm Z";
+
+    try {
+      DateTimeFormatter.ofPattern(format);
+    } catch (IllegalArgumentException e) {
+      format = "yyyy-MM-dd HH:mm Z";
+    }
+
+    return OffsetDateTime.ofInstant(dateTime, zoneId).toString(DateTimeFormatter.ofPattern(format));
   }
 
   @Override

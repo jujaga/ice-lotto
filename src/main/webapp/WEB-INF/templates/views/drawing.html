@@ -17,6 +17,8 @@
 
   <div th:if="${drawing != null}">
 
+    <p class="lead">Scheduled for <span th:text="${drawing.scheduled}">the end of days</span></p>
+
     <div th:replace="fragments/prizePool::fragment('small', ${drawing.smallPool}, ${drawing.smallPoolTotal})"></div>
 
     <div th:replace="fragments/prizePool::fragment('large', ${drawing.largePool}, ${drawing.largePoolTotal})"></div>
