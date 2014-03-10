@@ -27,8 +27,10 @@
  *
  * <p>To send messages, use the <code>send(destination, headers, body)</code>
  * method. This method is the same as the Stomp.js send method.</p>
+ *
+ * @param endpoint An endpoint recognized by the server. E.g. "/app" or "/admin".
  */
-var SocketManager = function() {
+var SocketManager = function(endpoint) {
   /* global SockJS,Stomp */
   "use strict";
   var obj = {},
@@ -41,14 +43,15 @@ var SocketManager = function() {
   }
 
   obj.connected = false;
+  obj.endpoint = endpoint;
 
-  obj.connect = function(endpoint) {
+  obj.connect = function() {
     var socket = {};
     if (obj.connected) {
       return;
     }
 
-    socket = new SockJS(endpoint);
+    socket = new SockJS(obj.endpoint);
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function(frame) {
       obj.connected = true;
@@ -76,11 +79,35 @@ var SocketManager = function() {
   };
 
   obj.send = function(destination, headers, body) {
-    return stompClient.send(destination, headers, body);
+    if (obj.connected) {
+      return stompClient.send(destination, headers, body);
+    } else {
+      return (function(){
+        var connectionCallback = function() {
+          obj.off("connected", connectionCallback);
+          return stompClient.send(destination, headers, body);
+        };
+
+        obj.on("connected", connectionCallback);
+        obj.connect();
+      }());
+    }
   };
 
   obj.subscribe = function(topic, callback) {
-    return stompClient.subscribe(topic, callback);
+    if (obj.connected) {
+      return stompClient.subscribe(topic, callback);
+    } else {
+      return (function(){
+        var connectionCallback = function() {
+          obj.off("connected", connectionCallback);
+          return stompClient.subscribe(topic, callback);
+        };
+
+        obj.on("connected", connectionCallback);
+        obj.connect();
+      }());
+    }
   };
 
   events.addEventListener = function(eventName, listener) {

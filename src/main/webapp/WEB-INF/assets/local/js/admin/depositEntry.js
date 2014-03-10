@@ -25,7 +25,6 @@
     msg.drawingId = $depositModal.data("drawingId");
     msg.poolId = $depositModal.data("poolId");
 
-    // TODO: make sure we are connected
     subscription = socketManager.subscribe(
         "/topic/drawing/deposit/added",
         function(response) {
@@ -73,7 +72,6 @@
   });
 
   doSearch = function(term) {
-    // TODO: detect if connection is valid
     var msg = {};
     msg.name = term;
     socketManager.send("/ws/app/user/search", {}, JSON.stringify(msg));
@@ -95,5 +93,9 @@
     socketManager.off("connected", subscribeSearch);
   };
 
-  socketManager.on("connected", subscribeSearch);
+  if (socketManager.connected) {
+    subscribeSearch();
+  } else {
+    socketManager.on("connected", subscribeSearch);
+  }
 }(jQuery));

@@ -4,11 +4,11 @@ var AdminSocketManager = (function() {
   var obj = {},
       endpoint = "/app";
 
-  obj.socketManager = new SocketManager();
-  obj.socketManager.connect(endpoint);
+  obj.socketManager = new SocketManager(endpoint);
+  obj.socketManager.connect();
 
   obj.reconnect = function() {
-    obj.socketManager.connect(endpoint);
+    obj.socketManager.connect();
   };
 
   return obj;

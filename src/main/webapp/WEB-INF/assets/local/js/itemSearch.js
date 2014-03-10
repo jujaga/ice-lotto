@@ -144,17 +144,7 @@
   };
 
   doSearch = function(text) {
-    var callback = function() {
-      doSearch(text);
-      socketManager.off("connected", callback);
-    };
-
-    if (!socketManager.connected) {
-      socketManager.on("connected", callback);
-      AdminSocketManager.reconnect();
-    } else {
-      socketManager.send("/ws/app/item/search", {}, JSON.stringify({term: text}));
-    }
+    socketManager.send("/ws/app/item/search", {}, JSON.stringify({term: text}));
   };
 
   subscribeCallback = function() {
@@ -174,6 +164,5 @@
     subscribeCallback();
   } else {
     socketManager.on("connected", subscribeCallback);
-    AdminSocketManager.reconnect();
   }
 }(jQuery));
