@@ -14,7 +14,6 @@ import com.jrfom.icelotto.service.DrawingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.threeten.bp.Instant;
@@ -90,7 +89,6 @@ public class DrawingRepositoryService implements DrawingService {
    */
   @Override
   @Transactional(readOnly = true)
-  @Query
   public Optional<Drawing> nextDrawing() {
     Optional<Drawing> result = Optional.absent();
     Drawing drawing = this.drawingRepository.nextDrawing();
@@ -100,5 +98,11 @@ public class DrawingRepositoryService implements DrawingService {
     }
 
     return result;
+  }
+
+  @Override
+  @Transactional
+  public Drawing save(Drawing drawing) {
+    return this.drawingRepository.save(drawing);
   }
 }

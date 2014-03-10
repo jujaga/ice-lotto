@@ -23,4 +23,6 @@ public interface DrawingService {
    * if one cannot be found.
    */
   Optional<Drawing> nextDrawing();
+
+  Drawing save(Drawing drawing);
 }

@@ -23,12 +23,17 @@ public class Entry {
   @Convert(converter = InstantConverter.class)
   private Instant enteredDate;
 
+  @OneToOne
+  @JoinColumn(referencedColumnName = "id")
+  private PrizePool prizePool;
+
   protected Entry() {}
 
-  public Entry(User user, Integer amount) {
+  public Entry(User user, PrizePool prizePool, Integer amount) {
     this.user = user;
     this.amount = amount;
     this.enteredDate = Instant.now();
+    this.prizePool = prizePool;
   }
 
   public User getUser() {
@@ -53,5 +58,13 @@ public class Entry {
 
   public void setEnteredDate(Instant enteredDate) {
     this.enteredDate = enteredDate;
+  }
+
+  public PrizePool getPrizePool() {
+    return this.prizePool;
+  }
+
+  public void setPrizePool(PrizePool prizePool) {
+    this.prizePool = prizePool;
   }
 }

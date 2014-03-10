@@ -31,4 +31,9 @@ public class PersistenceBeans {
   public PrizeTierService prizeTierService() {
     return new PrizeTierRepositoryService();
   }
+
+  @Bean
+  public UserService userService() {
+    return new UserRepositoryService();
+  }
 }

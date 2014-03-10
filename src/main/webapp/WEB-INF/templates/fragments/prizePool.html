@@ -13,7 +13,7 @@
       <div class="pull-right">
         <!--/* TODO: add interface for admin */-->
         <a class="btn btn-default btn-xs deposit-btn">Deposit</a>
-        <span th:text="${entriesTotal}">0</span><img th:src="@{/local/images/gold.png}" src="gold.png" />
+        <span th:text="${entriesTotal}" class="pool-pot">0</span><img th:src="@{/local/images/gold.png}" src="gold.png" />
       </div>
     </header>
 
@@ -80,9 +80,16 @@
         });
 
         $(".deposit-btn").on("click", function() {
-          var $this = $(this);
+          var $this = $(this),
+              drawing = $(".drawing-container").data("drawingId"),
+              pool = $this.closest(".prize-pool").attr("data-pool-id");
 
-          $depositModal.modal({
+          $depositModal.data({
+            drawingId: drawing,
+            poolId: pool,
+            poolPotDisplay: $this.siblings(".pool-pot")
+          })
+          .modal({
             backdrop: "static",
             show: true
           });

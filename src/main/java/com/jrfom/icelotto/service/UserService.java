@@ -11,4 +11,7 @@ public interface UserService {
   void delete(Long userId) throws UserNotFoundException;
   List<User> findAll();
   Optional<User> findById(Long id);
+  Optional<User> findByGw2DisplayName(String gw2DisplayName);
+  List<User> findAllLike(String term);
+  User save(User user);
 }

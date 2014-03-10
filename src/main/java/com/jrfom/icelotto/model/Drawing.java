@@ -30,7 +30,7 @@ public class Drawing {
   @JoinColumn(referencedColumnName = "id")
   private PrizePool largePool;
 
-  @OneToMany(fetch = FetchType.EAGER)
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinTable(
     name = "drawing_entries",
     joinColumns = {
@@ -95,7 +95,7 @@ public class Drawing {
     Integer result = 0;
 
     for (Entry entry : this.entries) {
-      if (entry.getAmount() <= 10) {
+      if (entry.getPrizePool().getId() == this.smallPool.getId()) {
         result += entry.getAmount();
       }
     }
@@ -109,7 +109,7 @@ public class Drawing {
     Integer result = 0;
 
     for (Entry entry : this.entries) {
-      if (entry.getAmount() > 10) {
+      if (entry.getPrizePool().getId() == this.largePool.getId()) {
         result += entry.getAmount();
       }
     }
@@ -117,4 +117,8 @@ public class Drawing {
     return result;
   }
 
+  @Transient
+  public void addEntry(Entry entry) {
+    this.entries.add(entry);
+  }
 }

@@ -61,7 +61,10 @@ public class User {
   @Column
   private String datetimeFormat;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @Column
+  private boolean enabled;
+
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinTable(
     name = "user_characters",
     joinColumns = {
@@ -89,6 +92,7 @@ public class User {
 
   public User(String gw2DisplayName) {
     this.gw2DisplayName = gw2DisplayName;
+    this.enabled = false;
   }
 
   public Long getId() {
@@ -151,12 +155,29 @@ public class User {
     this.datetimeFormat = datetimeFormat;
   }
 
+  public boolean isEnabled() {
+    return this.enabled;
+  }
+
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
+
+  public Set<Character> getCharacters() {
+    return this.characters;
+  }
+
   public Set<Role> getRoles() {
     return this.roles;
   }
 
   public void setRoles(Set<Role> roles) {
     this.roles = roles;
+  }
+
+  @Transient
+  public void addCharacter(Character character) {
+    this.characters.add(character);
   }
 
   /**

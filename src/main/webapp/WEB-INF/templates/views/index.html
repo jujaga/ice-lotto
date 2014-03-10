@@ -19,7 +19,7 @@
     <h4>No drawing is currently open.</h4>
   </div>
 
-  <div th:if="${nextDrawing != null}">
+  <div th:if="${nextDrawing != null}" class="drawing-container" data:drawing-id="${nextDrawing.id}">
 
     <div th:replace="fragments/prizePool::fragment('small', ${nextDrawing.smallPool}, ${nextDrawing.smallPoolTotal})"></div>
 

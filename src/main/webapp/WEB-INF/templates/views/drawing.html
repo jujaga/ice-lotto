@@ -15,7 +15,7 @@
     </h4>
   </div>
 
-  <div th:if="${drawing != null}">
+  <div th:if="${drawing != null}" class="drawing-container" data:drawing-id="${drawingId}">
 
     <p class="lead">Scheduled for <span th:text="${drawing.scheduled}">the end of days</span></p>
 

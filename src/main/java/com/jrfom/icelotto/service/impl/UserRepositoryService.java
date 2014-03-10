@@ -74,4 +74,30 @@ public class UserRepositoryService implements UserService {
 
     return result;
   }
+
+  @Override
+  @Transactional
+  public Optional<User> findByGw2DisplayName(String gw2DisplayName) {
+    Optional<User> result = Optional.absent();
+    User user = this.userRepository.findByGw2DisplayName(gw2DisplayName);
+
+    if (user != null) {
+      result = Optional.of(user);
+    }
+
+    return result;
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<User> findAllLike(String term) {
+    String actualTerm = (term.contains("%")) ? term : term + "%";
+    return this.userRepository.findAllLike(actualTerm);
+  }
+
+  @Override
+  @Transactional
+  public User save(User user) {
+    return this.userRepository.save(user);
+  }
 }

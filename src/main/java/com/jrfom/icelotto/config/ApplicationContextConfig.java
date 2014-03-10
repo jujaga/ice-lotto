@@ -74,6 +74,10 @@ public class ApplicationContextConfig extends WebMvcConfigurerAdapter {
       .addResourceLocations("/WEB-INF/assets/bootstrap-dtpicker-2.2.0/");
 
     registry
+      .addResourceHandler("typeahead/**")
+      .addResourceLocations("/WEB-INF/assets/typeahead-0.10.1/");
+
+    registry
       .addResourceHandler("jquery/**")
       .addResourceLocations("/WEB-INF/assets/jquery-2.1.0/");
 

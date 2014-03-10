@@ -8,17 +8,12 @@ import com.jrfom.gw2.ApiClient;
 import com.jrfom.gw2.api.model.items.Item;
 import com.jrfom.icelotto.exception.GameItemNotFoundException;
 import com.jrfom.icelotto.exception.PrizeTierNotFoundException;
-import com.jrfom.icelotto.model.Drawing;
-import com.jrfom.icelotto.model.GameItem;
-import com.jrfom.icelotto.model.ItemRarity;
-import com.jrfom.icelotto.model.PrizePool;
+import com.jrfom.icelotto.model.*;
+import com.jrfom.icelotto.model.websocket.DepositEntryMessage;
 import com.jrfom.icelotto.model.websocket.DrawingCreateMessage;
 import com.jrfom.icelotto.model.websocket.ItemAddMessage;
 import com.jrfom.icelotto.model.websocket.ItemAddResponse;
-import com.jrfom.icelotto.service.DrawingService;
-import com.jrfom.icelotto.service.GameItemService;
-import com.jrfom.icelotto.service.PrizePoolService;
-import com.jrfom.icelotto.service.PrizeTierService;
+import com.jrfom.icelotto.service.*;
 import com.jrfom.icelotto.util.ImageDownloader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +48,9 @@ public class DrawingController {
 
   @Autowired
   private GameItemService gameItemService;
+
+  @Autowired
+  private UserService userService;
 
   @RequestMapping(
     value = "/drawings",
@@ -124,6 +122,50 @@ public class DrawingController {
     this.drawingService.create(drawingCreateMessage.getDate(), smallPool, largePool);
 
     return "created";
+  }
+
+  @MessageMapping("/app/drawing/deposit")
+  @SendTo("/topic/drawing/deposit/added")
+  public Integer depositEntry(DepositEntryMessage depositEntryMessage) {
+    Integer result = 0;
+    Optional<Drawing> drawingOptional =
+      this.drawingService.findById(depositEntryMessage.getDrawingId());
+
+    // TODO: clean this mess up
+    if (drawingOptional.isPresent()) {
+      User user;
+      PrizePool prizePool;
+      Drawing drawing = drawingOptional.get();
+
+      Optional<PrizePool> prizePoolOptional =
+        this.prizePoolService.findById(depositEntryMessage.getPoolId());
+      Optional<User> userOptional =
+        this.userService.findByGw2DisplayName(depositEntryMessage.getGw2DisplayName());
+
+      if (!userOptional.isPresent()) {
+        user = new User(depositEntryMessage.getGw2DisplayName());
+        user = this.userService.save(user);
+      } else {
+        user = userOptional.get();
+      }
+
+      if (prizePoolOptional.isPresent()) {
+        prizePool = prizePoolOptional.get();
+        Entry entry = new Entry(user, prizePool, depositEntryMessage.getAmount());
+        drawing.addEntry(entry);
+        drawing = this.drawingService.save(drawing);
+
+        if (prizePool.getId() == drawing.getSmallPool().getId()) {
+          result = drawing.getSmallPoolTotal();
+        } else {
+          result = drawing.getLargePoolTotal();
+        }
+      }
+    } else {
+      result = -1;
+    }
+
+    return result;
   }
 
   private GameItem getGameItem(Long itemId) {
