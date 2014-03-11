@@ -85,8 +85,8 @@ public class DrawingController {
     return modelAndView;
   }
 
-  @MessageMapping("/app/drawing/item/add")
-  @SendTo("/topic/drawing/item/add")
+  @MessageMapping("/admin/drawing/item/add")
+  @SendTo("/topic/admin/drawing/item/add")
   public ItemAddResponse addItem(ItemAddMessage itemAddMessage) {
     ItemAddResponse response = new ItemAddResponse();
 
@@ -114,8 +114,8 @@ public class DrawingController {
     return response;
   }
 
-  @MessageMapping("/app/drawing/create")
-  @SendTo("/topic/drawing/created")
+  @MessageMapping("/admin/drawing/create")
+  @SendTo("/topic/admin/drawing/created")
   public String createDrawing(DrawingCreateMessage drawingCreateMessage) {
     PrizePool smallPool = new PrizePool();
     PrizePool largePool = new PrizePool();
@@ -124,8 +124,8 @@ public class DrawingController {
     return "created";
   }
 
-  @MessageMapping("/app/drawing/deposit")
-  @SendTo("/topic/drawing/deposit/added")
+  @MessageMapping("/admin/drawing/deposit")
+  @SendTo("/topic/admin/drawing/deposit/added")
   public Integer depositEntry(DepositEntryMessage depositEntryMessage) {
     Integer result = 0;
     Optional<Drawing> drawingOptional =

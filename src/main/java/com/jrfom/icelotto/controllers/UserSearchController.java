@@ -17,8 +17,8 @@ public class UserSearchController {
   @Autowired
   private UserService userService;
 
-  @MessageMapping("/app/user/search")
-  @SendTo("/topic/user/search/result")
+  @MessageMapping("/admin/user/search")
+  @SendTo("/topic/admin/user/search/result")
   public List<UserSearchResult> search(UserSearchMessage searchMessage) {
     List<UserSearchResult> results = new ArrayList<>(0);
 

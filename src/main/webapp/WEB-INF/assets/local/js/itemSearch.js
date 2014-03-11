@@ -46,7 +46,7 @@
     details.poolId = $addItemModal.data("poolId");
     details.count = (itemCount.length) > 0 ? parseInt(itemCount) : 1;
 
-    subscription = socketManager.subscribe("/topic/drawing/item/add", function(response) {
+    subscription = socketManager.subscribe("/topic/admin/drawing/item/add", function(response) {
       // When we receive a response back after submitting an item to be added
       // this is where we clean up and add the item to the view.
       var data = JSON.parse(response.body);
@@ -74,7 +74,7 @@
     });
 
     // Submit the item to be added.
-    socketManager.send("/ws/app/drawing/item/add", {}, JSON.stringify(details));
+    socketManager.send("/ws/admin/drawing/item/add", {}, JSON.stringify(details));
   });
 
   // Handles populating the search results template with the data
@@ -144,11 +144,11 @@
   };
 
   doSearch = function(text) {
-    socketManager.send("/ws/app/item/search", {}, JSON.stringify({term: text}));
+    socketManager.send("/ws/admin/item/search", {}, JSON.stringify({term: text}));
   };
 
   subscribeCallback = function() {
-    socketManager.subscribe('/topic/item/search/result', function(response) {
+    socketManager.subscribe('/topic/admin/item/search/result', function(response) {
       var data = JSON.parse(response.body);
       $spinner.spin(false);
 

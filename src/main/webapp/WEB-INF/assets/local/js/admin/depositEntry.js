@@ -26,7 +26,7 @@
     msg.poolId = $depositModal.data("poolId");
 
     subscription = socketManager.subscribe(
-        "/topic/drawing/deposit/added",
+        "/topic/admin/drawing/deposit/added",
         function(response) {
           subscription.unsubscribe();
 
@@ -45,7 +45,7 @@
         }
     );
 
-    socketManager.send("/ws/app/drawing/deposit", {}, JSON.stringify(msg));
+    socketManager.send("/ws/admin/drawing/deposit", {}, JSON.stringify(msg));
   });
 
   typeaheadSource = function(query, cb) {
@@ -74,7 +74,7 @@
   doSearch = function(term) {
     var msg = {};
     msg.name = term;
-    socketManager.send("/ws/app/user/search", {}, JSON.stringify(msg));
+    socketManager.send("/ws/admin/user/search", {}, JSON.stringify(msg));
   };
 
   searchResultHandler = function(response) {
@@ -87,7 +87,7 @@
 
   subscribeSearch = function() {
     searchSubscription = socketManager.subscribe(
-        "/topic/user/search/result",
+        "/topic/admin/user/search/result",
         searchResultHandler
     );
     socketManager.off("connected", subscribeSearch);

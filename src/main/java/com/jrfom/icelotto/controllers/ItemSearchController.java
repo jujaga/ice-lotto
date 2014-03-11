@@ -44,8 +44,8 @@ public class ItemSearchController {
     return this.doSearch(term);
   }
 
-  @MessageMapping("/app/item/search")
-  @SendTo("/topic/item/search/result")
+  @MessageMapping("/admin/item/search")
+  @SendTo("/topic/admin/item/search/result")
   public ItemSearchResponse wsSearch(ItemSearchMessage searchMessage) {
     Object searchResult = this.doSearch(searchMessage.getTerm());
     return new ItemSearchResponse(searchResult);

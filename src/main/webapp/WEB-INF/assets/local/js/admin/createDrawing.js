@@ -34,12 +34,12 @@
         subscription = {};
     msg.date = $createDrawingScheduledDate.children("input").val();
 
-    subscription = socketManager.subscribe("/topic/drawing/created", function(response) {
+    subscription = socketManager.subscribe("/topic/admin/drawing/created", function(response) {
       subscription.unsubscribe();
       window.location.href = window.location;
       // TODO: maybe not be lazy?
     });
 
-    socketManager.send("/ws/app/drawing/create", {}, JSON.stringify(msg));
+    socketManager.send("/ws/admin/drawing/create", {}, JSON.stringify(msg));
   };
 }(jQuery));
