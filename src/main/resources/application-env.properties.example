@@ -17,6 +17,8 @@ hibernate.show_sql=true
 # `update`, `create`, `create-drop`
 hibernate.hbm2ddl.auto=create
 # import_files will only work if auto is set to `create` or `create-drop`
+# Note that if this file contains non-ascii characters, e.g. UTF-8, then you
+# must set `-Dfile.encoding=UTF8` (or other encoding).
 hibernate.hbm2ddl.import_files=/sql/gameItems.sql,/sql/prizeItems.sql
 
 # EntityManager configuration
@@ -40,6 +42,8 @@ hibernate.show_sql=true
 # `update`, `create`, `create-drop`
 hibernate.hbm2ddl.auto=create
 # import_files will only work if auto is set to `create` or `create-drop`
+# Note that if this file contains non-ascii characters, e.g. UTF-8, then you
+# must set `-Dfile.encoding=UTF8` (or other encoding).
 hibernate.hbm2ddl.import_files=/sql/gameItems.sql,/sql/prizeItems.sql
 
 # EntityManager configuration
