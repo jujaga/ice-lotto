@@ -13,7 +13,15 @@
          data:count="${prizeItem.count}"
          data:level="${prizeItem.gameItem.minLevel}"
          data:rarity="${prizeItem.gameItem.rarity}"></i>
-      <img class="img-resopnsive gw-item-icon clickable" th:src="@{/store/icons/__${prizeItem.gameItem.id}__.png}" src="gw2-icons/2495-lg.png" />
+
+      <!--/* So we don't have to have a store for testing */-->
+      <div th:if="${prizeItem.gameItem.id == 2952}" th:remove="tag">
+        <img class="img-resopnsive gw-item-icon clickable" th:src="@{/local/gw2-icons/2952.png}" src="gw2-icons/2495.png" />
+      </div>
+      <div th:if="${prizeItem.gameItem.id != 2952}" th:remove="tag">
+        <img class="img-resopnsive gw-item-icon clickable" th:src="@{/store/icons/__${prizeItem.gameItem.id}__.png}" src="gw2-icons/2495.png" />
+      </div>
+
       <br />
       <span class="badge" th:text="${prizeItem.count}" th:if="${prizeItem.count > 1}">1</span>
       <!--/* TODO: position the badge over the icon as it is in-game */-->
