@@ -25,6 +25,7 @@ public class IndexController {
   @Autowired
   private PrizePoolService prizePoolService;
 
+  // TODO: show a login page if user is not logged in
   @RequestMapping(value = {"/", "/index"})
   public ModelAndView index() {
     log.info("Displaying index.html");
@@ -33,7 +34,7 @@ public class IndexController {
 
     Optional<Drawing> result = this.drawingService.nextDrawing();
     if (result.isPresent()) {
-      modelAndView.addObject("nextDrawing", result.get());
+      modelAndView.setViewName("redirect:drawing/" + result.get().getId());
     }
 
     return modelAndView;
