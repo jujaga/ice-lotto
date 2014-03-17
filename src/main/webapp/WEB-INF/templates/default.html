@@ -20,6 +20,9 @@
   <script th:src="@{/sockjs/sockjs.min.js}" src="sockjs.min.js"></script>
   <script th:src="@{/local/js/socketManager.js}" src="socketManager.js"></script>
 
+  <!--/* TODO: only load if the user is logged in */-->
+  <script th:src="@{/local/js/userSocket.js}" src="userSocket.js"></script>
+
   <!--/* TODO: load the following only if the user is an administrator */-->
   <script th:src="@{/local/js/adminSocket.js}" src="adminSocket.js"></script>
 

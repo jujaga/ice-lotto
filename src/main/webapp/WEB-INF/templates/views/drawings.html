@@ -35,7 +35,6 @@
           <td th:text="${drawing.largePool} ? ${drawing.largePool.id}">Not Set</td>
           <td class="text-center" colspan="4">
             <div class="btn-group">
-              <a th:if="${drawing.held == null}" class="btn btn-default btn-xs">Start</a>
               <a th:if="${drawing.held == null}" class="btn btn-default btn-xs" th:href="@{/drawing/__${drawing.id}__}">Edit</a>
               <a th:if="${drawing.held != null}" class="btn btn-default btn-xs">Duplicate</a>
               <a class="btn btn-default btn-xs">Delete</a>
@@ -51,7 +50,6 @@
       </header>
       <div id="help" class="panel-collapse collapse">
         <ul class="list-unstyled panel-body">
-          <li>The <kbd>Start</kbd> button is used to initiate a drawing.</li>
           <li>The <kbd>Edit</kbd> button is used to open the drawing editor.</li>
           <li>The <kbd>Duplicate</kbd> button is used to copy a drawing to a new one.</li>
           <li>The <kbd>Delete</kbd> button is used to delete a drawing.</li>

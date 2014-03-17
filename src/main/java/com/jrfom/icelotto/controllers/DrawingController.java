@@ -1,5 +1,7 @@
 package com.jrfom.icelotto.controllers;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.List;
 
 import com.google.common.base.Optional;
@@ -9,10 +11,7 @@ import com.jrfom.gw2.api.model.items.Item;
 import com.jrfom.icelotto.exception.GameItemNotFoundException;
 import com.jrfom.icelotto.exception.PrizeTierNotFoundException;
 import com.jrfom.icelotto.model.*;
-import com.jrfom.icelotto.model.websocket.DepositEntryMessage;
-import com.jrfom.icelotto.model.websocket.DrawingCreateMessage;
-import com.jrfom.icelotto.model.websocket.ItemAddMessage;
-import com.jrfom.icelotto.model.websocket.ItemAddResponse;
+import com.jrfom.icelotto.model.websocket.*;
 import com.jrfom.icelotto.service.*;
 import com.jrfom.icelotto.util.ImageDownloader;
 import org.slf4j.Logger;
@@ -166,6 +165,45 @@ public class DrawingController {
     }
 
     return result;
+  }
+
+  @MessageMapping("/admin/drawing/start")
+  @SendTo("/topic/drawing/started")
+  public StartDrawingResponse startDrawing(StartDrawingMessage startDrawingMessage) {
+    StartDrawingResponse result = new StartDrawingResponse();
+    Optional<Drawing> drawingOptional =
+      this.drawingService.findById(startDrawingMessage.getDrawingId());
+
+    if (drawingOptional.isPresent()) {
+      result.setDrawingId(drawingOptional.get().getId());
+      result.setStarted(true);
+    }
+
+    return result;
+  }
+
+  @MessageMapping("/admin/drawing/draw/tier")
+  @SendTo("/topic/drawing/tier/winner")
+  public DrawForTierResponse tierDraw(DrawForTierMessage message) {
+    DrawForTierResponse response = new DrawForTierResponse();
+    response.setPoolId(message.getPoolId());
+    response.setTierId(message.getTierId());
+
+    try {
+      SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+      byte[] seed = new byte[4098];
+      random.nextBytes(seed);
+      random.setSeed(seed);
+
+      Integer result = random.nextInt(10);
+      log.debug("Random draw result = `{}`", result);
+      response.setItemNumber(result);
+    } catch (NoSuchAlgorithmException e) {
+      log.error("Could not find random algorithm: `{}`", e.getMessage());
+      log.debug(e.toString());
+    }
+
+    return response;
   }
 
   private GameItem getGameItem(Long itemId) {

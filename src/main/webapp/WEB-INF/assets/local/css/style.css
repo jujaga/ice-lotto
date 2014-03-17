@@ -43,9 +43,20 @@ body {
   /*margin-top: 10px;*/
 }
 
+.prize-pool-tier-row > td {
+  height: 81px;
+  vertical-align: middle !important;
+  width: 114px;
+}
+
 .search-result {
   cursor: pointer;
   padding: 8px;
+}
+
+.tier-won-item {
+  border-color: #F00;
+  opacity: 0.5;
 }
 
 .tt-suggestions {
