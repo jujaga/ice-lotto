@@ -99,6 +99,15 @@ public class User {
     return this.id;
   }
 
+  /**
+   * For unit testing.
+   *
+   * @param id A number as an identifier.
+   */
+  protected void setId(Long id) {
+    this.id = id;
+  }
+
   public String getEmail() {
     return this.email;
   }
@@ -178,6 +187,71 @@ public class User {
   @Transient
   public void addCharacter(Character character) {
     this.characters.add(character);
+  }
+
+  /**
+   * Determine if the user has any entries in a specified drawing.
+   *
+   * @param drawing The {@link com.jrfom.icelotto.model.Drawing} in question.
+   *
+   * @return {@code true} if the user has entries in the drawing, {@code false}
+   * otherwise.
+   */
+  @Transient
+  public boolean hasEntriesInDrawing(Drawing drawing) {
+    boolean result = false;
+    Set<Entry> entries = drawing.getEntries();
+
+    for (Entry entry : entries) {
+      if (entry.getUser().getId() == this.id) {
+        result = true;
+        break;
+      }
+    }
+
+    return result;
+  }
+
+  /**
+   * Determine if the user's entries for a specified
+   * {@link com.jrfom.icelotto.model.Drawing} put him in the small money pool.
+   * If not, and {@link #hasEntriesInDrawing(Drawing)} is {@code true} then the
+   * user is in the large money pool.
+   *
+   * @param drawing An instance of {@link com.jrfom.icelotto.model.Drawing}.
+   *
+   * @return {@code true} if the user is in the small money pool, {@code false}
+   * otherwise. {@code false} does not guarantee the user has any entries.
+   */
+  @Transient
+  public boolean isInSmallPoolForDrawing(Drawing drawing) {
+    // TODO: consider using a custom SQL query instead to offload processing
+    // to the native db driver
+
+    Integer total = 0;
+    Set<Entry> entries = drawing.getEntries();
+
+    for (Entry entry : entries) {
+      if (entry.getUser().getId() == this.id) {
+        total += entry.getAmount();
+      }
+    }
+
+    return total < 10;
+  }
+
+  /**
+   * Determine if the user's entries for a specified
+   * {@link com.jrfom.icelotto.model.Drawing} put him in the large money pool.
+   *
+   * @param drawing An instance of {@link com.jrfom.icelotto.model.Drawing}.
+   *
+   * @return {@code true} if the user is in the large money pool, {@code false}
+   * otherwise. {@code false} does not guarantee the user has any entries.
+   */
+  @Transient
+  public boolean isInLargePoolForDrawing(Drawing drawing) {
+    return (this.hasEntriesInDrawing(drawing) && !this.isInSmallPoolForDrawing(drawing));
   }
 
   /**

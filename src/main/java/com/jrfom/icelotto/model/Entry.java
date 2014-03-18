@@ -25,15 +25,15 @@ public class Entry {
 
   @OneToOne
   @JoinColumn(referencedColumnName = "id")
-  private PrizePool prizePool;
+  private PrizeTier prizeTier;
 
   protected Entry() {}
 
-  public Entry(User user, PrizePool prizePool, Integer amount) {
+  public Entry(User user, PrizeTier prizeTier, Integer amount) {
     this.user = user;
     this.amount = amount;
     this.enteredDate = Instant.now();
-    this.prizePool = prizePool;
+    this.prizeTier = prizeTier;
   }
 
   public User getUser() {
@@ -60,11 +60,11 @@ public class Entry {
     this.enteredDate = enteredDate;
   }
 
-  public PrizePool getPrizePool() {
-    return this.prizePool;
+  public PrizeTier getPrizeTier() {
+    return this.prizeTier;
   }
 
-  public void setPrizePool(PrizePool prizePool) {
-    this.prizePool = prizePool;
+  public void setPrizeTier(PrizeTier prizePool) {
+    this.prizeTier = prizePool;
   }
 }

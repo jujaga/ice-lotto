@@ -125,19 +125,18 @@ public class DrawingController {
 
   @MessageMapping("/admin/drawing/deposit")
   @SendTo("/topic/admin/drawing/deposit/added")
-  public Integer depositEntry(DepositEntryMessage depositEntryMessage) {
-    Integer result = 0;
+  public DepositEntryResponse depositEntry(DepositEntryMessage depositEntryMessage) {
+    DepositEntryResponse response = new DepositEntryResponse();
     Optional<Drawing> drawingOptional =
       this.drawingService.findById(depositEntryMessage.getDrawingId());
 
     // TODO: clean this mess up
     if (drawingOptional.isPresent()) {
       User user;
-      PrizePool prizePool;
       Drawing drawing = drawingOptional.get();
 
-      Optional<PrizePool> prizePoolOptional =
-        this.prizePoolService.findById(depositEntryMessage.getPoolId());
+      Optional<PrizeTier> prizeTierOptional =
+        this.prizeTierService.findById(depositEntryMessage.getTierId());
       Optional<User> userOptional =
         this.userService.findByGw2DisplayName(depositEntryMessage.getGw2DisplayName());
 
@@ -148,23 +147,18 @@ public class DrawingController {
         user = userOptional.get();
       }
 
-      if (prizePoolOptional.isPresent()) {
-        prizePool = prizePoolOptional.get();
-        Entry entry = new Entry(user, prizePool, depositEntryMessage.getAmount());
+      if (prizeTierOptional.isPresent()) {
+        PrizeTier prizeTier = prizeTierOptional.get();
+        Entry entry = new Entry(user, prizeTier, depositEntryMessage.getAmount());
         drawing.addEntry(entry);
         drawing = this.drawingService.save(drawing);
 
-        if (prizePool.getId() == drawing.getSmallPool().getId()) {
-          result = drawing.getSmallPoolTotal();
-        } else {
-          result = drawing.getLargePoolTotal();
-        }
+        response.setSmallPoolTotal(drawing.getSmallPoolTotal());
+        response.setLargePoolTotal(drawing.getLargePoolTotal());
       }
-    } else {
-      result = -1;
     }
 
-    return result;
+    return response;
   }
 
   @MessageMapping("/admin/drawing/start")
@@ -173,6 +167,11 @@ public class DrawingController {
     StartDrawingResponse result = new StartDrawingResponse();
     Optional<Drawing> drawingOptional =
       this.drawingService.findById(startDrawingMessage.getDrawingId());
+
+    // TODO:
+    // 1. calculate pool (money) totals and who is entered in which money pool
+    // 2. shuffle all tiers entrants
+    // 3. return which tiers have entries, and how many
 
     if (drawingOptional.isPresent()) {
       result.setDrawingId(drawingOptional.get().getId());

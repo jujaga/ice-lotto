@@ -2,9 +2,14 @@
   "use strict";
   /* global AdminSocketManager */
   var $depositModal = $("#depositModal"),
+      $depositBtn = $("#depositBtn"),
       $depositUser = $("#depositUser"),
       $depositAmount = $("#depositAmount"),
+      $depositTier = $("#depositTier"),
       $depositEntryBtn = $("#depositEntryBtn"),
+      $smallPoolPot = $("#smallPoolPot"),
+      $largePoolPot = $("#largePoolPot"),
+      drawing = $(".drawing-container").data("drawingId"),
       searchSubscription = {},
       socketManager = AdminSocketManager.socketManager,
       doSearch = function(){},
@@ -13,6 +18,18 @@
       typeaheadCallback = function(){},
       typeaheadSource = function(){};
 
+  // This is the "add entry" button on the drawing page.
+  $depositBtn.on("click", function() {
+    $depositModal.data({
+      drawingId: drawing
+    })
+    .modal({
+      backdrop: "static",
+      show: true
+    });
+  });
+
+  // This is the "submit" button on the entry form.
   $depositEntryBtn.on("click", function() {
     var msg = {},
         subscription = {};
@@ -23,29 +40,35 @@
     msg.amount = ($depositAmount.val().length > 1) ?
         parseInt($depositAmount.val(), 10) : 1;
     msg.drawingId = $depositModal.data("drawingId");
-    msg.poolId = $depositModal.data("poolId");
+    msg.tierId = parseInt($depositTier.val(), 10);
 
     subscription = socketManager.subscribe(
         "/topic/admin/drawing/deposit/added",
         function(response) {
+          var data = JSON.parse(response.body);
           subscription.unsubscribe();
 
           $depositEntryBtn.button("reset");
-
-          if (parseInt(response.body, 10) === -1) {
-            alert("Deposit was not successful. Try again?");
-            return;
-          }
 
           $depositModal.modal("hide");
           $depositUser.val("");
           $depositAmount.val("");
 
-          $($depositModal.data("poolPotDisplay")).html(response.body);
+          // TODO: check for -1 value as an error
+          $smallPoolPot.html(data.smallPoolTotal);
+          $largePoolPot.html(data.largePoolTotal);
         }
     );
 
     socketManager.send("/ws/admin/drawing/deposit", {}, JSON.stringify(msg));
+  });
+
+  $depositAmount.on("change", function() {
+    var tier;
+    if (parseInt($depositAmount.val(), 10) <= 20) {
+      tier = $("option", $depositTier)[$depositAmount.val() - 1].value;
+      $depositTier.val(tier);
+    }
   });
 
   typeaheadSource = function(query, cb) {

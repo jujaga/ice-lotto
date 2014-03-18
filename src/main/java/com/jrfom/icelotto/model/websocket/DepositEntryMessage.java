@@ -2,7 +2,7 @@ package com.jrfom.icelotto.model.websocket;
 
 public class DepositEntryMessage {
   private Long drawingId;
-  private Long poolId;
+  private Long tierId;
   private Integer amount;
   private String gw2DisplayName;
 
@@ -16,12 +16,12 @@ public class DepositEntryMessage {
     this.drawingId = drawingId;
   }
 
-  public Long getPoolId() {
-    return this.poolId;
+  public Long getTierId() {
+    return this.tierId;
   }
 
-  public void setPoolId(Long poolId) {
-    this.poolId = poolId;
+  public void setTierId(Long tierId) {
+    this.tierId = tierId;
   }
 
   public Integer getAmount() {

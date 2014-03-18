@@ -1,5 +1,8 @@
 package com.jrfom.icelotto.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -42,7 +45,9 @@ public class Drawing {
   )
   private Set<Entry> entries;
 
-  protected Drawing() {}
+  protected Drawing() {
+    this.entries = new HashSet<>(0);
+  }
 
   public Drawing(Instant scheduled, PrizePool smallPool, PrizePool largePool) {
     this.scheduled = scheduled;
@@ -52,6 +57,15 @@ public class Drawing {
 
   public Long getId() {
     return this.id;
+  }
+
+  /**
+   * For unit testing.
+   *
+   * @param id A number as an identifier.
+   */
+  protected void setId(Long id) {
+    this.id = id;
   }
 
   public Instant getScheduled() {
@@ -86,18 +100,25 @@ public class Drawing {
     this.largePool = largePool;
   }
 
+  public Set<Entry> getEntries() {
+    return this.entries;
+  }
+
   @Transient
   public Integer getSmallPoolTotal() {
-    // TODO: replace this with an accurate method
-    // This does not take into account users exceeding 10g and getting
-    // pushed into the large pool. This method is a filler method until such
-    // time as that logic is devised (in a separate, appropriate, class).
     Integer result = 0;
+    List<Entry> countableEntries = new ArrayList<>(0);
 
     for (Entry entry : this.entries) {
-      if (entry.getPrizePool().getId() == this.smallPool.getId()) {
-        result += entry.getAmount();
+      if (entry.getUser().hasEntriesInDrawing(this) &&
+        entry.getUser().isInSmallPoolForDrawing(this))
+      {
+        countableEntries.add(entry);
       }
+    }
+
+    for (Entry entry : countableEntries) {
+      result += entry.getAmount();
     }
 
     return result;
@@ -105,13 +126,19 @@ public class Drawing {
 
   @Transient
   public Integer getLargePoolTotal() {
-    // TODO: replace this with an accurate method (see smallPoolTotal)
     Integer result = 0;
+    List<Entry> countableEntries = new ArrayList<>(0);
 
     for (Entry entry : this.entries) {
-      if (entry.getPrizePool().getId() == this.largePool.getId()) {
-        result += entry.getAmount();
+      if (entry.getUser().hasEntriesInDrawing(this) &&
+        entry.getUser().isInLargePoolForDrawing(this))
+      {
+        countableEntries.add(entry);
       }
+    }
+
+    for (Entry entry : countableEntries) {
+      result += entry.getAmount();
     }
 
     return result;

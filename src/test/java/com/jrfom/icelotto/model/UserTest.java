@@ -17,6 +17,41 @@ public class UserTest {
   private Instant testDateTime = Instant.ofEpochSecond(1394201280);
 
   @Test
+  public void inSmallPoolTest() {
+    log.info("Running User.isInSmallPoolForDrawing(Drawing) test");
+    User user = new User();
+    user.setId(1l);
+
+    Drawing drawing = new Drawing();
+    drawing.setId(1l);
+
+    PrizeTier prizeTier = new PrizeTier();
+
+    drawing.addEntry(new Entry(user, prizeTier, 1));
+    drawing.addEntry(new Entry(user, prizeTier, 2));
+
+    assertTrue(user.isInSmallPoolForDrawing(drawing));
+  }
+
+  @Test
+  public void inLargePoolTest() {
+    log.info("Running User.isInLargePoolForDrawing(Drawing) test");
+    User user = new User();
+    user.setId(1l);
+
+    Drawing drawing = new Drawing();
+    drawing.setId(1l);
+
+    PrizeTier prizeTier = new PrizeTier();
+
+    drawing.addEntry(new Entry(user, prizeTier, 1));
+    drawing.addEntry(new Entry(user, prizeTier, 2));
+    drawing.addEntry(new Entry(user, prizeTier, 10));
+
+    assertTrue(user.isInLargePoolForDrawing(drawing));
+  }
+
+  @Test
   public void formatDatetimeWithNoTimezoneOrFormat() {
     log.info("Running User datetime formatting with no tz or format specified test");
     User user = new User();

@@ -18,14 +18,20 @@
   <div th:if="${drawing != null}" class="drawing-container" data:drawing-id="${drawingId}">
 
     <header id="drawingHeader" class="row">
-      <div class="col-lg-10">
+      <div class="col-lg-7">
         <p class="lead">Scheduled for <span th:text="${drawing.scheduled}">the end of days</span></p>
       </div>
 
       <!--/* TODO: admin only */-->
-      <div class="col-lg-2 text-right">
-        <a id="startBtn" class="btn btn-default">Start</a>
-        <a id="endBtn" class="btn btn-default disabled">End</a>
+      <div class="col-lg-5 text-right">
+          <div class="btn-group">
+            <a id="depositBtn" class="btn btn-default deposit-btn">Add Entry</a>
+          </div>
+
+          <div class="btn-group">
+            <a id="startBtn" class="btn btn-default">Start</a>
+            <a id="endBtn" class="btn btn-default disabled">End</a>
+          </div>
       </div>
     </header>
 
@@ -59,7 +65,7 @@
   <!--/* TODO: add in detection of admin role */-->
   <script th:src="@{/local/js/admin/drawingRunner.js}" src="drawingRunner.js"></script>
   <div th:replace="fragments/admin/addItemModal :: content" th:remove="tag"></div>
-  <div th:replace="fragments/admin/depositModal :: content"></div>
+  <div th:replace="fragments/admin/depositModal :: content(${drawing})"></div>
 </div>
 
 </body>

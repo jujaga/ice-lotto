@@ -12,9 +12,9 @@
       <h4 class="panel-title pull-left" th:text="${(size == 'small') ? 'Small Pool' : 'Large Pool'}">Prize Pool</h4>
       <div class="pull-right">
         <!--/* TODO: add interface for admin */-->
-        <a class="btn btn-default btn-xs deposit-btn">Deposit</a>
         <a class="btn btn-primary btn-xs hidden disabled money-draw-btn">Draw</a>
-        <span th:text="${entriesTotal}" class="pool-pot">0</span><img th:src="@{/local/images/gold.png}" src="gold.png" />
+        <span th:text="${entriesTotal}" th:id="__${size}__PoolPot" class="pool-pot">0</span>
+        <img th:src="@{/local/images/gold.png}" src="gold.png" />
       </div>
     </header>
 
@@ -51,8 +51,7 @@
 
     <script>
       $(function() {
-        var $addItemModal = $("#addItemModal"),
-            $depositModal = $("#depositModal");
+        var $addItemModal = $("#addItemModal");
 
         $(".add-item-btn").on("click", function() {
           var $this = $(this),
@@ -65,22 +64,6 @@
             tierId: tierId,
             poolId: poolId
           }).modal({
-            backdrop: "static",
-            show: true
-          });
-        });
-
-        $(".deposit-btn").on("click", function() {
-          var $this = $(this),
-              drawing = $(".drawing-container").data("drawingId"),
-              pool = $this.closest(".prize-pool").attr("data-pool-id");
-
-          $depositModal.data({
-            drawingId: drawing,
-            poolId: pool,
-            poolPotDisplay: $this.siblings(".pool-pot")
-          })
-          .modal({
             backdrop: "static",
             show: true
           });

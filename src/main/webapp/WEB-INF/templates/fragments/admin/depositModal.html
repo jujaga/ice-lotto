@@ -6,9 +6,9 @@
 </head>
 <body>
 
-<div th:fragment="content" th:remove="tag">
+<div th:fragment="content(drawing)" th:remove="tag">
   <div id="depositModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog">
       <div class="modal-content">
         <header class="modal-header">
           <a class="close" data-dismiss="modal">&times;</a>
@@ -18,13 +18,34 @@
         <section class="modal-body">
           <form class="form-inline" role="form">
             <div class="form-group">
-              <label class="sr-only" for="depositUser">Entrant</label>
+              <label for="depositUser">Entrant</label>
               <input id="depositUser" class="form-control" placeholder="Entrant" />
             </div>
 
             <div class="form-group">
-              <label class="sr-only" for="depositAmount">Amount</label>
+              <label for="depositAmount">Amount</label>
               <input id="depositAmount" type="number" min="1" max="10" placeholder="1" />
+            </div>
+            
+            <div class="form-group">
+              <label for="depositTier">Tier</label>
+              <select id="depositTier">
+                <optgroup label="Small Pool">
+                  <div th:each="i : ${#numbers.sequence(1,10)}" th:remove="tag">
+                    <option th:value="${drawing.smallPool.tier__${i}__.id}" th:text="${i}">
+                      Tier X
+                    </option>
+                  </div>
+                </optgroup>
+
+                <optgroup label="Large Pool">
+                  <div th:each="i : ${#numbers.sequence(1,10)}" th:remove="tag">
+                    <option th:value="${drawing.largePool.tier__${i}__.id}" th:text="${i + 10}">
+                      Tier X
+                    </option>
+                  </div>
+                </optgroup>
+              </select>
             </div>
           </form>
         </section>
