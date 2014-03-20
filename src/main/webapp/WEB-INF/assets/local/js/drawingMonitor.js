@@ -9,9 +9,9 @@
       updateUI = function(){};
 
   drawingStartedCallback = function(response) {
-    var data = JSON.parse(response.body);
+    var data = (response && response.body) ? JSON.parse(response.body) : response;
     if (data.started) {
-      drawingSubscription.unsubscribe();
+      drawingSubscription.unsubscribe ? drawingSubscription.unsubscribe() : $.noop();
       drawingSubscription = socketManager.subscribe("/topic/drawing/tier/winner", tierResultReceived);
       updateUI();
     }
@@ -19,7 +19,12 @@
 
   initCallback = function() {
     socketManager.off("connected", initCallback);
-    drawingSubscription = socketManager.subscribe("/topic/drawing/started", drawingStartedCallback);
+
+    if ($(".drawing-container").data("drawingInProgress") !== true) {
+      drawingSubscription = socketManager.subscribe("/topic/drawing/started", drawingStartedCallback);
+    } else {
+      drawingStartedCallback({started: true});
+    }
   };
 
   tierResultReceived = function(response) {

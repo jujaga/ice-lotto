@@ -5,6 +5,7 @@
   <title></title>
 </head>
 <body>
+  <!--/* TODO: apply "tier-won-item" class and details if the item has been awarded */-->
   <div th:fragment="fragment (prizeItem)" th:remove="tag">
     <div th:if="${prizeItem}" class="text-center prize-item">
       <i data:id="${prizeItem.gameItem.id}"

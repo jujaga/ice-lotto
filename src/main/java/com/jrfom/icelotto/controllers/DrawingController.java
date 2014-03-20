@@ -176,6 +176,9 @@ public class DrawingController {
     if (drawingOptional.isPresent()) {
       result.setDrawingId(drawingOptional.get().getId());
       result.setStarted(true);
+
+      drawingOptional.get().setInProgress(true);
+      this.drawingService.save(drawingOptional.get());
     }
 
     return result;

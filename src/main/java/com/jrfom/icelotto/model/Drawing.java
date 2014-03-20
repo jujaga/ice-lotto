@@ -25,6 +25,9 @@ public class Drawing {
   @Convert(converter = InstantConverter.class)
   private Instant held;
 
+  @Column
+  private Boolean inProgress;
+
   @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(referencedColumnName = "id")
   private PrizePool smallPool;
@@ -47,10 +50,12 @@ public class Drawing {
 
   protected Drawing() {
     this.entries = new HashSet<>(0);
+    this.inProgress = false;
   }
 
   public Drawing(Instant scheduled, PrizePool smallPool, PrizePool largePool) {
     this.scheduled = scheduled;
+    this.inProgress = false;
     this.smallPool = smallPool;
     this.largePool = largePool;
   }
@@ -82,6 +87,14 @@ public class Drawing {
 
   public void setHeld(Instant held) {
     this.held = held;
+  }
+
+  public Boolean isInProgress() {
+    return this.inProgress;
+  }
+
+  public void setInProgress(Boolean inProgress) {
+    this.inProgress = inProgress;
   }
 
   public PrizePool getSmallPool() {

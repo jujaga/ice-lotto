@@ -12,7 +12,7 @@
       <h4 class="panel-title pull-left" th:text="${(size == 'small') ? 'Small Pool' : 'Large Pool'}">Prize Pool</h4>
       <div class="pull-right">
         <!--/* TODO: add interface for admin */-->
-        <a class="btn btn-primary btn-xs hidden disabled money-draw-btn">Draw</a>
+        <a class="btn btn-primary btn-xs money-draw-btn" th:classappend="${!drawing.inProgress} ? 'disabled hidden'">Draw</a>
         <span th:text="${entriesTotal}" th:id="__${size}__PoolPot" class="pool-pot">0</span>
         <img th:src="@{/local/images/gold.png}" src="gold.png" />
       </div>
@@ -29,12 +29,13 @@
         <tr th:each="i: ${#numbers.sequence(1, 10)}" class="prize-pool-tier-row" data:tier-id="${pool.tier__${i}__.id}">
           <td>
             <!--/* TODO: admin only */-->
-            <a class="btn btn-primary draw-btn disabled invisible">Draw</a>
+            <!--/* TODO: disable button if drawing in progress and tier has been drawn */-->
+            <a class="btn btn-primary draw-btn" th:classappend="${!drawing.inProgress} ? 'disabled invisible'">Draw</a>
           </td>
 
           <td th:each="j: ${#numbers.sequence(1, 10)}" th:object="${pool.tier__${i}__}" data:position="${j}">
             <!--/* There's no item in the current position in this tier so put an add button */-->
-            <div th:if="*{item__${j}__ == null}" class="text-center">
+            <div th:if="${(item__${j}__ == null)  and !drawing.inProgress and !drawing.held}" class="text-center">
               <button class="btn btn-default btn-sm add-item-btn">
                 Add
               </button>

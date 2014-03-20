@@ -169,9 +169,10 @@ update prize_tiers set item1=21, item2=22, item3=23, item4=24, item5=25,
 
 -- Eigth, we need an acutal drawing
 -- Note: the date functions used here are SQLite specific (they get the next saturday)
-insert into drawings (scheduled, small_pool, large_pool)
+insert into drawings (scheduled, small_pool, large_pool, in_progress)
 values(
   (select strftime('%s', datetime('now', 'Weekday 6'))),
   1,
-  2
+  2,
+  0
 );
