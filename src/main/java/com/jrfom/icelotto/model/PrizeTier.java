@@ -1,6 +1,7 @@
 package com.jrfom.icelotto.model;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -52,6 +53,10 @@ public class PrizeTier {
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(referencedColumnName = "id")
   private PrizeItem item10;
+
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @JoinColumn(name = "prize_tier")
+  private Set<Entry> entries;
 
   public PrizeTier() {}
 
@@ -137,6 +142,14 @@ public class PrizeTier {
 
   public void setItem10(PrizeItem item10) {
     this.item10 = item10;
+  }
+
+  public Set<Entry> getEntries() {
+    return this.entries;
+  }
+
+  public void setEntries(Set<Entry> entries) {
+    this.entries = entries;
   }
 
   /**

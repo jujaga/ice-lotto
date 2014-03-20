@@ -176,3 +176,74 @@ values(
   2,
   0
 );
+
+-- Ninth, we need some entries
+insert into entries (id, amount, entered_date, drawing, prize_tier, user)
+values (
+  1,
+  1,
+  (select strftime('%s', datetime('now'))),
+  1,
+  1,
+  1
+);
+
+insert into entries (id, amount, entered_date, drawing, prize_tier, user)
+values (
+  2,
+  1,
+  (select strftime('%s', datetime('now'))),
+  1,
+  1,
+  1
+);
+
+insert into entries (id, amount, entered_date, drawing, prize_tier, user)
+values (
+  3,
+  1,
+  (select strftime('%s', datetime('now'))),
+  1,
+  1,
+  2
+);
+
+insert into entries (id, amount, entered_date, drawing, prize_tier, user)
+values (
+  4,
+  1,
+  (select strftime('%s', datetime('now'))),
+  1,
+  1,
+  3
+);
+
+insert into entries (id, amount, entered_date, drawing, prize_tier, user)
+values (
+  5,
+  1,
+  (select strftime('%s', datetime('now'))),
+  1,
+  1,
+  4
+);
+
+insert into entries (id, amount, entered_date, drawing, prize_tier, user)
+values (
+  6,
+  1,
+  (select strftime('%s', datetime('now'))),
+  1,
+  1,
+  5
+);
+
+insert into entries (id, amount, entered_date, drawing, prize_tier, user)
+values (
+  7,
+  1,
+  (select strftime('%s', datetime('now'))),
+  1,
+  1,
+  5
+);

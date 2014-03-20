@@ -23,7 +23,11 @@ public class Entry {
   @Convert(converter = InstantConverter.class)
   private Instant enteredDate;
 
-  @OneToOne
+  @ManyToOne
+  @JoinColumn(referencedColumnName = "id")
+  private Drawing drawing;
+
+  @ManyToOne
   @JoinColumn(referencedColumnName = "id")
   private PrizeTier prizeTier;
 
@@ -58,6 +62,14 @@ public class Entry {
 
   public void setEnteredDate(Instant enteredDate) {
     this.enteredDate = enteredDate;
+  }
+
+  public Drawing getDrawing() {
+    return this.drawing;
+  }
+
+  public void setDrawing(Drawing drawing) {
+    this.drawing = drawing;
   }
 
   public PrizeTier getPrizeTier() {

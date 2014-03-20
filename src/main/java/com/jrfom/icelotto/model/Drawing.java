@@ -37,15 +37,7 @@ public class Drawing {
   private PrizePool largePool;
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  @JoinTable(
-    name = "drawing_entries",
-    joinColumns = {
-      @JoinColumn(name = "drawing_id")
-    },
-    inverseJoinColumns = {
-      @JoinColumn(name = "entry_id")
-    }
-  )
+  @JoinColumn(name = "drawing")
   private Set<Entry> entries;
 
   protected Drawing() {
