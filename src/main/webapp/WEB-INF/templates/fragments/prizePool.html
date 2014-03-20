@@ -35,7 +35,7 @@
 
           <td th:each="j: ${#numbers.sequence(1, 10)}" th:object="${pool.tier__${i}__}" data:position="${j}">
             <!--/* There's no item in the current position in this tier so put an add button */-->
-            <div th:if="${(item__${j}__ == null)  and !drawing.inProgress and !drawing.held}" class="text-center">
+            <div th:if="*{(item__${j}__ == null)  and __${!drawing.inProgress and drawing.held == null}__}" class="text-center">
               <button class="btn btn-default btn-sm add-item-btn">
                 Add
               </button>

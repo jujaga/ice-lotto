@@ -19,7 +19,7 @@
 
     <header id="drawingHeader" class="row">
       <div class="col-lg-7">
-        <p class="lead" th:if="${!drawing.inProgress and !drawing.held}">
+        <p class="lead" th:if="${!drawing.inProgress and drawing.held == null}">
           Scheduled for <span th:text="${drawing.scheduled}">the end of days</span>
         </p>
 
@@ -34,7 +34,7 @@
 
       <!--/* TODO: admin only */-->
       <div class="col-lg-5 text-right">
-          <div class="btn-group" th:if="${!drawing.inProgress and !drawing.held}">
+          <div class="btn-group" th:if="${!drawing.inProgress and drawing.held == null}">
             <a id="depositBtn" class="btn btn-default deposit-btn">Add Entry</a>
           </div>
 
