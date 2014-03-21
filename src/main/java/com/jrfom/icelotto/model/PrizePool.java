@@ -1,5 +1,8 @@
 package com.jrfom.icelotto.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
 import com.jrfom.icelotto.util.Stringer;
@@ -146,6 +149,35 @@ public class PrizePool {
 
   public void setTier10(PrizeTier tier10) {
     this.tier10 = tier10;
+  }
+
+  @Transient
+  public List<PrizeTier> getPrizeTiers() {
+    List<PrizeTier> list = new ArrayList<>(10);
+    list.add(this.tier1);
+    list.add(this.tier2);
+    list.add(this.tier3);
+    list.add(this.tier4);
+    list.add(this.tier5);
+    list.add(this.tier6);
+    list.add(this.tier7);
+    list.add(this.tier8);
+    list.add(this.tier9);
+    list.add(this.tier10);
+
+    return list;
+  }
+
+  @Transient
+  public List<PrizeDrawResult> getDrawingResults() {
+    List<PrizeTier> prizeTiers = this.getPrizeTiers();
+    List<PrizeDrawResult> results = new ArrayList<>();
+
+    for (PrizeTier tier : prizeTiers) {
+      results.add(tier.getPrizeDrawResult());
+    }
+
+    return results;
   }
 
   @Override

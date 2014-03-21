@@ -28,12 +28,13 @@
   };
 
   tierResultReceived = function(response) {
-    var result = JSON.parse(response.body);
+    var data = JSON.parse(response.body);
     $(
-      "div[data-pool-id=" + result.poolId + "] " +
-        "tr[data-tier-id=" + result.tierId + "] " +
-        "td[data-position=" + (result.itemNumber + 1) + "] img.gw-item-icon"
+      "tr[data-tier-id=" + data.tierId + "] " +
+      "td[data-position=" + (data.result.drawNumber) + "] img.gw-item-icon"
     ).addClass("tier-won-item");
+
+    // TODO: add winner details to item pop-up and a running log (not present yet)
   };
 
   updateUI = function() {

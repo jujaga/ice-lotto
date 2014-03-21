@@ -1,9 +1,11 @@
 package com.jrfom.icelotto.model.websocket;
 
+import com.jrfom.icelotto.model.PrizeDrawResult;
+
 public class DrawForTierResponse {
   private Long poolId;
   private Long tierId;
-  private Integer itemNumber;
+  private PrizeDrawResult result;
 
   public DrawForTierResponse() {}
 
@@ -23,11 +25,11 @@ public class DrawForTierResponse {
     this.tierId = tierId;
   }
 
-  public Integer getItemNumber() {
-    return this.itemNumber;
+  public PrizeDrawResult getResult() {
+    return this.result;
   }
 
-  public void setItemNumber(Integer itemNumber) {
-    this.itemNumber = itemNumber;
+  public void setResult(PrizeDrawResult result) {
+    this.result = result;
   }
 }

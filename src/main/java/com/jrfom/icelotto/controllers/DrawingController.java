@@ -1,9 +1,6 @@
 package com.jrfom.icelotto.controllers;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.List;
-import java.util.Set;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -192,27 +189,14 @@ public class DrawingController {
     response.setPoolId(message.getPoolId());
     response.setTierId(message.getTierId());
 
-    try {
-      SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-      byte[] seed = new byte[4098];
-      random.nextBytes(seed);
-      random.setSeed(seed);
+    Optional<PrizeTier> prizeTierOptional =
+      this.prizeTierService.findById(message.getTierId());
+    if (prizeTierOptional.isPresent()) {
+      PrizeTier tier = prizeTierOptional.get();
+      PrizeDrawResult drawResult = tier.draw();
 
-      Integer result = random.nextInt(10);
-      log.debug("Random draw result = `{}`", result);
-      response.setItemNumber(result);
-
-      // Let's look up the tier entrants
-      Optional<PrizeTier> prizeTierOptional =
-        this.prizeTierService.findById(message.getTierId());
-      if (prizeTierOptional.isPresent()) {
-        PrizeTier tier = prizeTierOptional.get();
-        Set<Entry> entries = tier.getEntries();
-        log.debug("Number of entrants: `{}`", entries.size());
-      }
-    } catch (NoSuchAlgorithmException e) {
-      log.error("Could not find random algorithm: `{}`", e.getMessage());
-      log.debug(e.toString());
+      response.setResult(drawResult);
+      this.prizeTierService.save(tier);
     }
 
     return response;

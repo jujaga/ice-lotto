@@ -19,7 +19,7 @@ public class Role {
   @Column
   private String description;
 
-  @ManyToMany(mappedBy = "roles")
+  @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
   private Set<User> users;
 
   protected Role() {}

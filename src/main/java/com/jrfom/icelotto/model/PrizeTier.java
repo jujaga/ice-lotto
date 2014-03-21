@@ -1,15 +1,23 @@
 package com.jrfom.icelotto.model;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
 
+import com.google.common.collect.ImmutableSet;
 import com.jrfom.icelotto.util.Stringer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.threeten.bp.Instant;
 
 @Entity
 @Table(name = "prize_tiers")
 public class PrizeTier {
+  private static final Logger log = LoggerFactory.getLogger(PrizeTier.class);
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
@@ -58,7 +66,20 @@ public class PrizeTier {
   @JoinColumn(name = "prize_tier")
   private Set<Entry> entries;
 
-  public PrizeTier() {}
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @JoinColumn(name = "prize_tier")
+  private Set<ShuffledTierEntry> shuffledTierEntries;
+
+  @Column
+  private Boolean drawn;
+
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @JoinColumn(name = "prize_tier")
+  private PrizeDrawResult prizeDrawResult;
+
+  public PrizeTier() {
+    this.drawn = false;
+  }
 
   public Long getId() {
     return this.id;
@@ -152,6 +173,30 @@ public class PrizeTier {
     this.entries = entries;
   }
 
+  public Set<ShuffledTierEntry> getShuffledTierEntries() {
+    return this.shuffledTierEntries;
+  }
+
+  public void setShuffledTierEntries(Set<ShuffledTierEntry> shuffledTierEntries) {
+    this.shuffledTierEntries = shuffledTierEntries;
+  }
+
+  public Boolean isDrawn() {
+    return this.drawn;
+  }
+
+  public void setDrawn(Boolean drawn) {
+    this.drawn = drawn;
+  }
+
+  public PrizeDrawResult getPrizeDrawResult() {
+    return this.prizeDrawResult;
+  }
+
+  public void setPrizeDrawResult(PrizeDrawResult prizeDrawResult) {
+    this.prizeDrawResult = prizeDrawResult;
+  }
+
   /**
    * <p>Updates the record by setting the item identifiers to those in the
    * {@code prizeItems} list. This is done by iterating the list, so list element
@@ -242,6 +287,85 @@ public class PrizeTier {
         break;
       default:
         result = null;
+    }
+
+    return result;
+  }
+
+  @Transient
+  public void shuffleEntries() {
+    log.debug("Shuffling entries for tier {}", this.id);
+    if (this.shuffledTierEntries.size() > 0) {
+      log.debug("Entries already shuffled");
+      return;
+    }
+
+    // https://github.com/coolaj86/knuth-shuffle
+    Object[] localEntries = this.entries.toArray();
+    int currentIndex = localEntries.length;
+    double randomIndex;
+    Entry temp;
+
+    while (0 != currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex = currentIndex - 1;
+
+      temp = (Entry) localEntries[currentIndex];
+      localEntries[currentIndex] = localEntries[(int) randomIndex];
+      localEntries[(int) randomIndex] = temp;
+    }
+
+    ShuffledTierEntry[] localShuffled = new ShuffledTierEntry[localEntries.length];
+    for (int i = 0, j = localEntries.length; i < j; i += 1) {
+      ShuffledTierEntry entry = new ShuffledTierEntry(this, (Entry) localEntries[i]);
+      entry.setPosition(i);
+      localShuffled[i] = entry;
+    }
+
+    this.shuffledTierEntries.clear();
+    this.shuffledTierEntries.addAll(ImmutableSet.copyOf(localShuffled));
+    log.debug("Shuffled entries: `{}`", Stringer.jsonString(localShuffled));
+  }
+
+  @Transient
+  public PrizeDrawResult draw() {
+    PrizeDrawResult result = new PrizeDrawResult();
+    this.shuffleEntries();
+
+    // Pick the winner
+    int randomDrawIndex = this.randomInt(this.shuffledTierEntries.size());
+    ShuffledTierEntry shuffledEntry =
+      (ShuffledTierEntry) this.shuffledTierEntries.toArray()[randomDrawIndex];
+    result.setUser(shuffledEntry.getEntry().getUser());
+
+    // Pick the prize
+    int itemDrawNumber = this.randomInt(10) + 1;
+    result.setDrawNumber(itemDrawNumber);
+
+    // Update remaining properties
+    result.setAwarded(Instant.now());
+    result.setPrizeTier(this);
+    result.setPrizeItem(this.getItemAtPosition(itemDrawNumber));
+    this.drawn = true;
+    this.prizeDrawResult = result;
+
+    return result;
+  }
+
+  @Transient
+  protected int randomInt(int maxNumber) {
+    log.debug("Getting random integer with maximum = {}", maxNumber);
+    int result = 0;
+
+    try {
+      SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+      byte[] seed = new byte[4098];
+      random.nextBytes(seed);
+      random.setSeed(seed);
+      result = random.nextInt(maxNumber);
+    } catch (NoSuchAlgorithmException e) {
+      log.error("Could not find secure random algorithm: `{}`", e.getMessage());
+      log.debug(e.toString());
     }
 
     return result;
