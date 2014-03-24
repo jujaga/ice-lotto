@@ -15,6 +15,7 @@ import org.threeten.bp.Instant;
  *   "tierId": 0,
  *   "prizeId": 0,
  *   "userId": 0,
+ *   "userDisplayName": "string",
  *   "drawNumber": 0,
  *   "awarded": "date string"
  * }

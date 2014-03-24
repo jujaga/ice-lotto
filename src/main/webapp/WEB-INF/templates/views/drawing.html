@@ -49,6 +49,17 @@
 
     <div th:replace="fragments/prizePool::fragment('large', ${drawing.largePool}, ${drawing.largePoolTotal})"></div>
 
+    <template id="winnerRowTemplate">
+      <tr class="success text-center winner-row">
+        <td>
+          <small>
+            Winner: <strong class="winner-name"></strong>&nbsp;&Lt;&Gt;&nbsp;
+            Item: <a class="item-won-link" target="_blank"></a>
+          </small>
+        </td>
+      </tr>
+    </template>
+
     <script>
       $(".main-content").on("click", ".gw-item-icon", function() {
         var $this = $(this),

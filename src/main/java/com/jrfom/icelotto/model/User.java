@@ -117,7 +117,7 @@ public class User {
   }
 
   public String getDisplayName() {
-    return this.displayName;
+    return (this.displayName != null) ? this.displayName : this.gw2DisplayName;
   }
 
   public void setDisplayName(String displayName) {

@@ -1,7 +1,8 @@
 (function($){
   /* global UserSocketManager */
   "use strict";
-  var drawingSubscription = {},
+  var $winnerRowTemplate = $($("#winnerRowTemplate").html().trim()),
+      drawingSubscription = {},
       socketManager = UserSocketManager.socketManager,
       drawingStartedCallback = function(){},
       initCallback = function(){},
@@ -28,13 +29,37 @@
   };
 
   tierResultReceived = function(response) {
-    var data = JSON.parse(response.body);
-    $(
-      "tr[data-tier-id=" + data.tierId + "] " +
-      "td[data-position=" + (data.result.drawNumber) + "] img.gw-item-icon"
-    ).addClass("tier-won-item");
+    var $item = {},
+        $itemInfo = {},
+        $prevRow = {},
+        $small = $("small", $winnerRowTemplate),
+        cols = 0,
+        data = JSON.parse(response.body);
 
-    // TODO: add winner details to item pop-up and a running log (not present yet)
+    $prevRow = $("tr[data-tier-id=" + data.tierId + "]");
+    cols = $("td", $prevRow).length;
+
+    // Get the item in the display and add the "won" class to it
+    $item = $(
+      "td[data-position=" + (data.result.drawNumber) + "] .prize-item",
+      $prevRow
+    );
+    $itemInfo = $("i", $item);
+    $("img.gw-item-icon", $item).addClass("tier-won-item");
+
+    // Add a row indicating who won
+    $("td", $winnerRowTemplate).attr("colspan", cols).css({
+      paddingBottom: 0,
+      paddingTop: 0
+    });
+    $(".winner-name", $winnerRowTemplate).append(data.result.userDisplayName);
+    $(".item-won-link", $winnerRowTemplate)
+        .append($itemInfo.data("name"))
+        .attr("href", "http://www.gw2spidy.com/item/" + $itemInfo.data("id"));
+    $small.css({display: "block", height: 0});
+
+    $winnerRowTemplate.insertAfter($prevRow).css({visibility: "visible"});
+    $small.animate({height: $prevRow.outerHeight() * 0.22}, "slow");
   };
 
   updateUI = function() {
