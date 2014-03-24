@@ -44,7 +44,7 @@ public class PrizeDrawResult {
   private User user;
 
   @Column
-  private Integer drawNumber;
+  private Integer itemDrawNumber;
 
   @Column(columnDefinition = "NUMBER")
   @Convert(converter = InstantConverter.class)
@@ -80,12 +80,12 @@ public class PrizeDrawResult {
     this.user = user;
   }
 
-  public Integer getDrawNumber() {
-    return this.drawNumber;
+  public Integer getItemDrawNumber() {
+    return this.itemDrawNumber;
   }
 
-  public void setDrawNumber(Integer drawNumber) {
-    this.drawNumber = drawNumber;
+  public void setItemDrawNumber(Integer drawNumber) {
+    this.itemDrawNumber = drawNumber;
   }
 
   public Instant getAwarded() {

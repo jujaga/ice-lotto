@@ -340,7 +340,7 @@ public class PrizeTier {
 
     // Pick the prize
     int itemDrawNumber = this.randomInt(10) + 1;
-    result.setDrawNumber(itemDrawNumber);
+    result.setItemDrawNumber(itemDrawNumber);
 
     // Update remaining properties
     result.setAwarded(Instant.now());
