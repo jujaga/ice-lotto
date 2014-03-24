@@ -28,11 +28,14 @@
         <th:block th:each="i: ${#numbers.sequence(1, 10)}">
         <!--/* Loop through each tier and each item in that tier */-->
 
-          <tr class="prize-pool-tier-row" data:tier-id="${pool.tier__${i}__.id}">
+          <tr class="prize-pool-tier-row" data:tier-id="${pool.tier__${i}__.id}" data:entrants="${#lists.size(pool.tier__${i}__.entries)}">
             <td>
               <!--/* TODO: admin only */-->
               <!--/* TODO: disable button if drawing in progress and tier has been drawn */-->
-              <a class="btn btn-primary draw-btn" th:classappend="${!drawing.inProgress} ? 'disabled invisible'">Draw</a>
+              <a class="btn btn-primary draw-btn"
+                 th:classappend="${!drawing.inProgress} ? 'disabled invisible'"
+                 th:if="${#lists.size(pool.tier__${i}__.entries) != 0}"
+              >Draw</a>
             </td>
 
             <td th:each="j: ${#numbers.sequence(1, 10)}" th:object="${pool.tier__${i}__}" data:position="${j}">

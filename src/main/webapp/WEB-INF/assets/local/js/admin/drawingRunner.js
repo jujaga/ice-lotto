@@ -15,7 +15,17 @@
 
     $startBtn.toggleClass("disabled");
     $endBtn.toggleClass("disabled");
+
+    // Deal with the item draw buttons
+    $(".prize-pool-tier-row").each(function() {
+      var $this = $(this);
+      if (parseInt($this.data("entrants")) === 0) {
+        $(".draw-btn", $this).remove();
+      }
+    });
     $(".draw-btn").removeClass("disabled invisible");
+
+    // Deal with the money draw buttons
     $(".deposit-btn").remove();
     $(".money-draw-btn").removeClass("hidden disabled");
 
