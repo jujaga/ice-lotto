@@ -107,10 +107,13 @@
         // Highlight any won items
         $(".winner-row").each(function() {
           var $this = $(this),
-              $prevRow = $this.prev();
+              $prevRow = $this.prev(),
+              $tds = $("td", $prevRow),
+              cols = parseInt($this.find("td").attr("colspan"), 10),
+              offset = (cols === 11) ? 0 : 1,
+              wonItemPosition = $("td", $this).data("itemPosition") - (1 * offset);
 
-          $($('.gw-item-icon', $prevRow)[$("td", $this).data("itemPosition") - 1])
-            .addClass("tier-won-item");
+          $($tds[wonItemPosition]).find(".gw-item-icon").addClass("tier-won-item");
         });
       });
     </script>
