@@ -182,7 +182,7 @@ public class PrizeTier {
   }
 
   public Boolean isDrawn() {
-    return this.drawn;
+    return (this.drawn != null) ? this.drawn : false;
   }
 
   public void setDrawn(Boolean drawn) {
@@ -328,18 +328,35 @@ public class PrizeTier {
   }
 
   @Transient
+  public ShuffledTierEntry getShuffledEntryAtPosition(int position) {
+    ShuffledTierEntry entry = null;
+
+    for (ShuffledTierEntry tierEntry : this.shuffledTierEntries) {
+      if (tierEntry.getPosition().equals(position)) {
+        entry = tierEntry;
+        break;
+      }
+    }
+
+    return entry;
+  }
+
+  @Transient
   public PrizeDrawResult draw() {
     PrizeDrawResult result = new PrizeDrawResult();
     this.shuffleEntries();
 
     // Pick the winner
-    int randomDrawIndex = this.randomInt(this.shuffledTierEntries.size());
-    ShuffledTierEntry shuffledEntry =
-      (ShuffledTierEntry) this.shuffledTierEntries.toArray()[randomDrawIndex];
+    int randomDrawIndex = this.randomInt(this.shuffledTierEntries.size()) - 1;
+    ShuffledTierEntry shuffledEntry = this.getShuffledEntryAtPosition(randomDrawIndex);
+    result.setUserDrawNumber(randomDrawIndex);
     result.setUser(shuffledEntry.getEntry().getUser());
 
     // Pick the prize
-    int itemDrawNumber = this.randomInt(10) + 1;
+    int itemDrawNumber;
+    do {
+      itemDrawNumber = this.randomInt(10);
+    } while (this.getItemAtPosition(itemDrawNumber) == null);
     result.setItemDrawNumber(itemDrawNumber);
 
     // Update remaining properties
@@ -362,7 +379,7 @@ public class PrizeTier {
       byte[] seed = new byte[4098];
       random.nextBytes(seed);
       random.setSeed(seed);
-      result = random.nextInt(maxNumber);
+      result = random.nextInt(maxNumber) + 1; // 1 - 10 instead of 0 - 9
     } catch (NoSuchAlgorithmException e) {
       log.error("Could not find secure random algorithm: `{}`", e.getMessage());
       log.debug(e.toString());

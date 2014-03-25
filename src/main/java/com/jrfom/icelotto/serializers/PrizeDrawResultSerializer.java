@@ -19,7 +19,8 @@ public class PrizeDrawResultSerializer extends JsonSerializer<PrizeDrawResult> {
     jgen.writeObjectField("prizeId", value.getPrizeItem().getId());
     jgen.writeObjectField("userId", value.getUser().getId());
     jgen.writeObjectField("userDisplayName", value.getUser().getDisplayName());
-    jgen.writeObjectField("drawNumber", value.getItemDrawNumber());
+    jgen.writeObjectField("userDrawNumber", value.getUserDrawNumber());
+    jgen.writeObjectField("itemDrawNumber", value.getItemDrawNumber());
     jgen.writeObjectField("awarded", value.getAwarded().toString());
 
     jgen.writeEndObject();

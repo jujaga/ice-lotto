@@ -16,7 +16,8 @@ import org.threeten.bp.Instant;
  *   "prizeId": 0,
  *   "userId": 0,
  *   "userDisplayName": "string",
- *   "drawNumber": 0,
+ *   "userDrawNumber": 0,
+ *   "itemDrawNumber": 0,
  *   "awarded": "date string"
  * }
  * }
@@ -42,6 +43,9 @@ public class PrizeDrawResult {
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(referencedColumnName = "id")
   private User user;
+
+  @Column
+  private Integer userDrawNumber;
 
   @Column
   private Integer itemDrawNumber;
@@ -78,6 +82,14 @@ public class PrizeDrawResult {
 
   public void setUser(User user) {
     this.user = user;
+  }
+
+  public Integer getUserDrawNumber() {
+    return this.userDrawNumber;
+  }
+
+  public void setUserDrawNumber(Integer userDrawNumber) {
+    this.userDrawNumber = userDrawNumber;
   }
 
   public Integer getItemDrawNumber() {

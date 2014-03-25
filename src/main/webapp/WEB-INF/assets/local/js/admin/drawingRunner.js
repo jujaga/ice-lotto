@@ -19,7 +19,7 @@
     // Deal with the item draw buttons
     $(".prize-pool-tier-row").each(function() {
       var $this = $(this);
-      if (parseInt($this.data("entrants")) === 0) {
+      if ($this.data("entrants") === 0) {
         $(".draw-btn", $this).remove();
       }
     });

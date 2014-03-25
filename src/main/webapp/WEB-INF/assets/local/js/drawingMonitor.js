@@ -29,10 +29,11 @@
   };
 
   tierResultReceived = function(response) {
-    var $item = {},
+    var $row = $winnerRowTemplate.clone(),
+        $item = {},
         $itemInfo = {},
         $prevRow = {},
-        $small = $("small", $winnerRowTemplate),
+        $small = $("small", $row),
         cols = 0,
         data = JSON.parse(response.body);
 
@@ -41,24 +42,24 @@
 
     // Get the item in the display and add the "won" class to it
     $item = $(
-      "td[data-position=" + (data.result.drawNumber) + "] .prize-item",
+      "td[data-position=" + (data.result.itemDrawNumber) + "] .prize-item",
       $prevRow
     );
     $itemInfo = $("i", $item);
     $("img.gw-item-icon", $item).addClass("tier-won-item");
 
     // Add a row indicating who won
-    $("td", $winnerRowTemplate).attr("colspan", cols).css({
+    $("td", $row).attr("colspan", cols).css({
       paddingBottom: 0,
       paddingTop: 0
     });
-    $(".winner-name", $winnerRowTemplate).append(data.result.userDisplayName);
-    $(".item-won-link", $winnerRowTemplate)
-        .append($itemInfo.data("name"))
+    $(".winner-name", $row).text(data.result.userDisplayName);
+    $(".item-won-link", $row)
+        .text($itemInfo.data("name"))
         .attr("href", "http://www.gw2spidy.com/item/" + $itemInfo.data("id"));
     $small.css({display: "block", height: 0});
 
-    $winnerRowTemplate.insertAfter($prevRow).css({visibility: "visible"});
+    $row.insertAfter($prevRow).css({visibility: "visible"});
     $small.animate({height: $prevRow.outerHeight() * 0.22}, "slow");
   };
 

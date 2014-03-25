@@ -31,11 +31,20 @@
           <tr class="prize-pool-tier-row" data:tier-id="${pool.tier__${i}__.id}" data:entrants="${#lists.size(pool.tier__${i}__.entries)}">
             <td>
               <!--/* TODO: admin only */-->
-              <!--/* TODO: disable button if drawing in progress and tier has been drawn */-->
-              <a class="btn btn-primary draw-btn"
-                 th:classappend="${!drawing.inProgress} ? 'disabled invisible'"
-                 th:if="${#lists.size(pool.tier__${i}__.entries) != 0}"
-              >Draw</a>
+              <th:block th:if="${drawing.inProgress}">
+                <a th:if="${#lists.size(pool.tier__${i}__.entries) != 0 and pool.tier__${i}__.isDrawn() == false}" class="btn btn-primary draw-btn">Draw</a>
+                <a th:if="${#lists.size(pool.tier__${i}__.entries) != 0 and pool.tier__${i}__.isDrawn() == true}" class="btn btn-primary draw-btn disabled">Drawn</a>
+              </th:block>
+
+              <th:block th:if="${!drawing.inProgress}">
+                <a class="btn btn-primary draw-btn disabled invisible">Draw</a>
+                <!--/*
+                  The draw button is added when the drawing is not in progress,
+                  regardless of the number of entries, so that it will be present
+                  when entries are added right before a drawing is started.
+                */-->
+              </th:block>
+
             </td>
 
             <td th:each="j: ${#numbers.sequence(1, 10)}" th:object="${pool.tier__${i}__}" data:position="${j}">

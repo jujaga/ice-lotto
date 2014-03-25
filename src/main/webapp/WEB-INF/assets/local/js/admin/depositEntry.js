@@ -45,7 +45,9 @@
     subscription = socketManager.subscribe(
         "/topic/admin/drawing/deposit/added",
         function(response) {
-          var data = JSON.parse(response.body);
+          var $tr = $("tr[data-tier-id=" + msg.tierId + "]"),
+              data = JSON.parse(response.body),
+              entrants = 0;
           subscription.unsubscribe();
 
           $depositEntryBtn.button("reset");
@@ -57,6 +59,10 @@
           // TODO: check for -1 value as an error
           $smallPoolPot.html(data.smallPoolTotal);
           $largePoolPot.html(data.largePoolTotal);
+
+          entrants = $tr.data("entrants");
+          $tr.data("entrants", entrants + 1)
+             .attr("data-entrants", entrants + 1);
         }
     );
 

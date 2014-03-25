@@ -17,10 +17,10 @@
 
       <!--/* So we don't have to have a store for testing */-->
       <div th:if="${prizeItem.gameItem.id == 2952}" th:remove="tag">
-        <img class="img-responsive gw-item-icon clickable" th:src="@{/local/gw2-icons/2952.png}" src="gw2-icons/2495.png" />
+        <img class="gw-item-icon clickable" th:src="@{/local/gw2-icons/2952.png}" src="gw2-icons/2495.png" />
       </div>
       <div th:if="${prizeItem.gameItem.id != 2952}" th:remove="tag">
-        <img class="img-responsive gw-item-icon clickable" th:src="@{/store/icons/__${prizeItem.gameItem.id}__.png}" src="gw2-icons/2495.png" />
+        <img class="gw-item-icon clickable" th:src="@{/store/icons/__${prizeItem.gameItem.id}__.png}" src="gw2-icons/2495.png" />
       </div>
 
       <br />
@@ -30,7 +30,7 @@
 
     <!--/* TODO: create a missing item icon */-->
     <div th:if="${prizeItem == null}" class="text-center">
-      <img class="img-responsive gw-item-icon" src="missing-item-icon.png" />
+      <img class="gw-item-icon" src="missing-item-icon.png" />
     </div>
   </div>
 </body>
