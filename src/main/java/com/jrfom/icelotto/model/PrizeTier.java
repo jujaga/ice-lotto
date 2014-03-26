@@ -74,7 +74,7 @@ public class PrizeTier {
   private Boolean drawn;
 
   @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-  @JoinColumn(name = "prize_tier")
+  @JoinColumn(name = "draw_result")
   private PrizeDrawResult prizeDrawResult;
 
   public PrizeTier() {
