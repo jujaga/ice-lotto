@@ -23,7 +23,11 @@ public class Drawing {
 
   @Column(columnDefinition = "INTEGER")
   @Convert(converter = InstantConverter.class)
-  private Instant held;
+  private Instant started;
+
+  @Column(columnDefinition = "INTEGER")
+  @Convert(converter = InstantConverter.class)
+  private Instant ended;
 
   @Column
   private Boolean inProgress;
@@ -73,12 +77,20 @@ public class Drawing {
     this.scheduled = scheduled;
   }
 
-  public Instant getHeld() {
-    return this.held;
+  public Instant getStarted() {
+    return this.started;
   }
 
-  public void setHeld(Instant held) {
-    this.held = held;
+  public void setStarted(Instant started) {
+    this.started = started;
+  }
+
+  public Instant getEnded() {
+    return this.ended;
+  }
+
+  public void setEnded(Instant ended) {
+    this.ended = ended;
   }
 
   public Boolean isInProgress() {

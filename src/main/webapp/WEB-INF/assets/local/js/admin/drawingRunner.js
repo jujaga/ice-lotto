@@ -2,12 +2,17 @@
   /* global AdminSocketManager */
   "use strict";
   var $endBtn = $("#endBtn"),
+      $drawingContainer = $(".drawing-container"),
       $startBtn = $("#startBtn"),
       socketManager = AdminSocketManager.socketManager;
 
   $endBtn.on("click", function() {
+    var msg = {};
+
     $endBtn.toggleClass("disabled");
-    // TODO: send end event
+    msg.drawingId = $drawingContainer.data("drawingId");
+
+    socketManager.send("/ws/admin/drawing/end", {}, JSON.stringify(msg));
   });
 
   $startBtn.on("click", function() {
@@ -39,7 +44,7 @@
       }
     });
 
-    data.drawingId = parseInt($(".drawing-container").data("drawingId"), 10);
+    data.drawingId = $drawingContainer.data("drawingId");
     socketManager.send("/ws/admin/drawing/start", {}, JSON.stringify(data));
   });
 
@@ -58,11 +63,10 @@
 
   $(".money-draw-btn").on("click", function() {
     var $this = $(this),
-        $drawing = $(".drawing-container"),
         $pool = $($this.closest(".prize-pool")),
         msg = {};
 
-    msg.drawingId = $drawing.data("drawingId");
+    msg.drawingId = $drawingContainer.data("drawingId");
     msg.poolName = ($pool.hasClass("small-pool")) ? "small" : "large";
 
     $this.toggleClass("disabled").text("Drawing");

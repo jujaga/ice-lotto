@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.threeten.bp.Instant;
 
 @Controller
 public class DrawingController {
@@ -166,20 +167,37 @@ public class DrawingController {
     Optional<Drawing> drawingOptional =
       this.drawingService.findById(startDrawingMessage.getDrawingId());
 
-    // TODO:
-    // 1. calculate pool (money) totals and who is entered in which money pool
-    // 2. shuffle all tiers entrants
-    // 3. return which tiers have entries, and how many
-
     if (drawingOptional.isPresent()) {
       result.setDrawingId(drawingOptional.get().getId());
       result.setStarted(true);
 
       drawingOptional.get().setInProgress(true);
+      drawingOptional.get().setStarted(Instant.now());
       this.drawingService.save(drawingOptional.get());
     }
 
     return result;
+  }
+
+  @MessageMapping("/admin/drawing/end")
+  @SendTo("/topic/drawing/ended")
+  public EndDrawingResponse endDrawing(EndDrawingMessage message) {
+    EndDrawingResponse response = new EndDrawingResponse();
+    Optional<Drawing> drawingOptional =
+      this.drawingService.findById(message.getDrawingId());
+
+    if (drawingOptional.isPresent()) {
+      Drawing drawing = drawingOptional.get();
+      drawing.setInProgress(false);
+      drawing.setEnded(Instant.now());
+      this.drawingService.save(drawing);
+
+      response.setDrawingId(drawing.getId());
+      response.setEnded(true);
+      response.setEndTime(drawing.getEnded());
+    }
+
+    return response;
   }
 
   @MessageMapping("/admin/drawing/draw/tier")

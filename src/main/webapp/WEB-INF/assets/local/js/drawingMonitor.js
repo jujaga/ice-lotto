@@ -2,23 +2,40 @@
   /* global UserSocketManager */
   "use strict";
   var $winnerRowTemplate = $($("#winnerRowTemplate").html().trim()),
+      endedSubscription = {},
       poolSubscription = {},
       tierSubscription = {},
       socketManager = UserSocketManager.socketManager,
+      drawingEndedCallback = function(){},
       drawingStartedCallback = function(){},
       initCallback = function(){},
       poolResultReceived = function(){},
       tierResultReceived = function(){},
       updateUI = function(){};
 
+  drawingEndedCallback = function(response) {
+    var data = JSON.parse(response.body);
+
+    if (data.ended) {
+      endedSubscription.unsubscribe ? endedSubscription.unsubscribe() : $.noop();
+      $("#startBtn").fadeOut().remove();
+      $("#endBtn").fadeOut().remove();
+      $(".draw-btn").fadeOut().remove();
+      $(".money-draw-btn").fadeOut().remove();
+      $("#drawingHeader .lead:first").text("Drawing ended " + data.endTime);
+    }
+  };
+
   drawingStartedCallback = function(response) {
     var data = (response && response.body) ? JSON.parse(response.body) : response;
     if (data.started) {
       // Make sure we are not registered twice
+      endedSubscription.unsubscribe ? endedSubscription.unsubscribe() : $.noop();
       tierSubscription.unsubscribe ? tierSubscription.unsubscribe() : $.noop();
       poolSubscription.unsubscribe ? poolSubscription.unsubscribe() : $.noop();
 
       // Now we can register for results
+      endedSubscription = socketManager.subscribe("/topic/drawing/ended", drawingEndedCallback);
       tierSubscription = socketManager.subscribe("/topic/drawing/tier/winner", tierResultReceived);
       poolSubscription = socketManager.subscribe("/topic/drawing/pool/winner", poolResultReceived);
       updateUI();
