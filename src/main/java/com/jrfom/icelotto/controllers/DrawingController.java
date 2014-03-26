@@ -202,6 +202,39 @@ public class DrawingController {
     return response;
   }
 
+  @MessageMapping("/admin/drawing/draw/pool/money")
+  @SendTo("/topic/drawing/pool/winner")
+  public DrawMoneyResponse poolDraw(DrawMoneyMessage message) {
+    DrawMoneyResponse response = new DrawMoneyResponse();
+
+    Optional<Drawing> drawingOptional =
+      this.drawingService.findById(message.getDrawingId());
+    if (drawingOptional.isPresent()) {
+      Drawing drawing = drawingOptional.get();
+      PrizePool prizePool;
+      double amountWon;
+
+      if (message.isSmallPool()) {
+        prizePool = drawing.getSmallPool();
+        amountWon = Math.floor(drawing.getSmallPoolTotal() / 2);
+      } else {
+        prizePool = drawing.getLargePool();
+        amountWon = Math.floor(drawing.getLargePoolTotal() / 2);
+      }
+
+      MoneyDrawResult drawResult = prizePool.draw();
+      drawResult.setDrawing(drawing);
+      drawResult.setAmountWon((int) amountWon);
+      prizePool.setMoneyDrawResult(drawResult);
+      this.prizePoolService.save(prizePool);
+
+      response.setPoolId(prizePool.getId());
+      response.setResult(drawResult);
+    }
+
+    return response;
+  }
+
   private GameItem getGameItem(Long itemId) {
     // TODO: this should be in a service
     Preconditions.checkNotNull(itemId);

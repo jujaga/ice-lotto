@@ -4,9 +4,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(
-  name = "shuffled_tier_entries"
+  name = "shuffled_pool_entries"
 )
-public class ShuffledTierEntry {
+public class ShuffledPoolEntry {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
@@ -14,19 +14,19 @@ public class ShuffledTierEntry {
   @Column
   private Integer position;
 
-  @ManyToOne
-  @JoinColumn(referencedColumnName = "id")
-  private PrizeTier prizeTier;
-
   @OneToOne
   @JoinColumn(referencedColumnName = "id")
   private Entry entry;
 
-  protected ShuffledTierEntry() {}
+  @ManyToOne
+  @JoinColumn(referencedColumnName = "id")
+  private PrizePool prizePool;
 
-  public ShuffledTierEntry(PrizeTier prizeTier, Entry entry) {
-    this.prizeTier = prizeTier;
+  protected ShuffledPoolEntry() {}
+
+  public ShuffledPoolEntry(PrizePool pool, Entry entry) {
     this.entry = entry;
+    this.prizePool = pool;
   }
 
   public Long getId() {
@@ -37,16 +37,8 @@ public class ShuffledTierEntry {
     return this.position;
   }
 
-  public void setPosition(Integer order) {
-    this.position = order;
-  }
-
-  public PrizeTier getPrizeTier() {
-    return this.prizeTier;
-  }
-
-  public void setPrizeTier(PrizeTier prizeTier) {
-    this.prizeTier = prizeTier;
+  public void setPosition(Integer position) {
+    this.position = position;
   }
 
   public Entry getEntry() {
@@ -55,5 +47,13 @@ public class ShuffledTierEntry {
 
   public void setEntry(Entry entry) {
     this.entry = entry;
+  }
+
+  public PrizePool getPrizePool() {
+    return this.prizePool;
+  }
+
+  public void setPrizePool(PrizePool prizePool) {
+    this.prizePool = prizePool;
   }
 }

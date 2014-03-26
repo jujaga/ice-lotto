@@ -12,6 +12,12 @@
       <h4 class="panel-title pull-left" th:text="${(size == 'small') ? 'Small Pool' : 'Large Pool'}">Prize Pool</h4>
       <div class="pull-right">
         <!--/* TODO: add interface for admin */-->
+        <span class="money-draw-result">
+          <span class="money-draw-winner">Morhyn.8032</span> won
+          <span class="money-draw-coin">3</span> <img th:src="@{/local/images/gold.png}" src="gold.png" />
+          out of
+        </span>
+
         <a class="btn btn-primary btn-xs money-draw-btn" th:classappend="${!drawing.inProgress} ? 'disabled hidden'">Draw</a>
         <span th:text="${entriesTotal}" th:id="__${size}__PoolPot" class="pool-pot">0</span>
         <img th:src="@{/local/images/gold.png}" src="gold.png" />

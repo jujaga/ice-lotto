@@ -1,13 +1,12 @@
 package com.jrfom.icelotto.model;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
 
 import com.google.common.collect.ImmutableSet;
+import com.jrfom.icelotto.util.Crypto;
 import com.jrfom.icelotto.util.Stringer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -346,8 +345,13 @@ public class PrizeTier {
     PrizeDrawResult result = new PrizeDrawResult();
     this.shuffleEntries();
 
+    if (!this.hasPrizes()) {
+      // If we continue under this case, then an infinite look will happen
+      return result;
+    }
+
     // Pick the winner
-    int randomDrawIndex = this.randomInt(this.shuffledTierEntries.size()) - 1;
+    int randomDrawIndex = Crypto.randomInt(this.shuffledTierEntries.size()) - 1;
     ShuffledTierEntry shuffledEntry = this.getShuffledEntryAtPosition(randomDrawIndex);
     result.setUserDrawNumber(randomDrawIndex);
     result.setUser(shuffledEntry.getEntry().getUser());
@@ -355,7 +359,7 @@ public class PrizeTier {
     // Pick the prize
     int itemDrawNumber;
     do {
-      itemDrawNumber = this.randomInt(10);
+      itemDrawNumber = Crypto.randomInt(10);
     } while (this.getItemAtPosition(itemDrawNumber) == null);
     result.setItemDrawNumber(itemDrawNumber);
 
@@ -370,19 +374,14 @@ public class PrizeTier {
   }
 
   @Transient
-  protected int randomInt(int maxNumber) {
-    log.debug("Getting random integer with maximum = {}", maxNumber);
-    int result = 0;
+  public boolean hasPrizes() {
+    boolean result = false;
 
-    try {
-      SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-      byte[] seed = new byte[4098];
-      random.nextBytes(seed);
-      random.setSeed(seed);
-      result = random.nextInt(maxNumber) + 1; // 1 - 10 instead of 0 - 9
-    } catch (NoSuchAlgorithmException e) {
-      log.error("Could not find secure random algorithm: `{}`", e.getMessage());
-      log.debug(e.toString());
+    for (int i = 1; i < 11; i += 1) {
+      if (this.getItemAtPosition(i) != null) {
+        result = true;
+        break;
+      }
     }
 
     return result;

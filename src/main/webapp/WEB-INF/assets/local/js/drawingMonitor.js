@@ -2,18 +2,25 @@
   /* global UserSocketManager */
   "use strict";
   var $winnerRowTemplate = $($("#winnerRowTemplate").html().trim()),
-      drawingSubscription = {},
+      poolSubscription = {},
+      tierSubscription = {},
       socketManager = UserSocketManager.socketManager,
       drawingStartedCallback = function(){},
       initCallback = function(){},
+      poolResultReceived = function(){},
       tierResultReceived = function(){},
       updateUI = function(){};
 
   drawingStartedCallback = function(response) {
     var data = (response && response.body) ? JSON.parse(response.body) : response;
     if (data.started) {
-      drawingSubscription.unsubscribe ? drawingSubscription.unsubscribe() : $.noop();
-      drawingSubscription = socketManager.subscribe("/topic/drawing/tier/winner", tierResultReceived);
+      // Make sure we are not registered twice
+      tierSubscription.unsubscribe ? tierSubscription.unsubscribe() : $.noop();
+      poolSubscription.unsubscribe ? poolSubscription.unsubscribe() : $.noop();
+
+      // Now we can register for results
+      tierSubscription = socketManager.subscribe("/topic/drawing/tier/winner", tierResultReceived);
+      poolSubscription = socketManager.subscribe("/topic/drawing/pool/winner", poolResultReceived);
       updateUI();
     }
   };
@@ -22,9 +29,34 @@
     socketManager.off("connected", initCallback);
 
     if ($(".drawing-container").data("drawingInProgress") !== true) {
-      drawingSubscription = socketManager.subscribe("/topic/drawing/started", drawingStartedCallback);
+      tierSubscription = socketManager.subscribe("/topic/drawing/started", drawingStartedCallback);
     } else {
       drawingStartedCallback({started: true});
+    }
+  };
+
+  poolResultReceived = function(response) {
+    var data = JSON.parse(response.body),
+        $pool = $("div[data-pool-id=" + data.poolId + "]"),
+        $moneyDisplay = $(".pull-right", $pool),
+        $drawResult = $(".money-draw-result", $moneyDisplay),
+        $btn = $(".money-draw-btn", $pool),
+        showResult = function(){};
+
+    showResult = function() {
+      $drawResult.animate({opacity: 1}, "slow");
+    };
+
+    $drawResult.css({opacity: 0, display: "inline"});
+    $($moneyDisplay.find(".money-draw-winner")).text(data.result.userDisplayName);
+    $($moneyDisplay.find(".money-draw-coin").text(data.result.amountWon));
+
+    if ($btn.length > 0) {
+      // Admin view
+      $btn.fadeOut("slow", showResult);
+    } else {
+      // User view
+      showResult();
     }
   };
 

@@ -18,6 +18,14 @@ body {
   width: 32px;
 }
 
+.money-draw-result {
+  display: none;
+}
+
+.money-draw-winner {
+  font-weight: bold;
+}
+
 .narrow-300 {
   max-width: 300px;
 }

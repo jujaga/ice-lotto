@@ -2,14 +2,22 @@ package com.jrfom.icelotto.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
+import com.google.common.collect.ImmutableSet;
+import com.jrfom.icelotto.util.Crypto;
 import com.jrfom.icelotto.util.Stringer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.threeten.bp.Instant;
 
 @Entity
 @Table(name = "prize_pools")
 public class PrizePool {
+  private static final Logger log = LoggerFactory.getLogger(PrizePool.class);
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
@@ -54,6 +62,17 @@ public class PrizePool {
   @JoinColumn(referencedColumnName = "id")
   private PrizeTier tier10;
 
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @JoinColumn(name = "prize_pool")
+  private Set<ShuffledPoolEntry> shuffledPoolEntries;
+
+  @Column
+  private Boolean drawn;
+
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @JoinColumn(name = "draw_result")
+  private MoneyDrawResult moneyDrawResult;
+
   public PrizePool() {
     this.tier1 = new PrizeTier();
     this.tier2 = new PrizeTier();
@@ -65,6 +84,7 @@ public class PrizePool {
     this.tier8 = new PrizeTier();
     this.tier9 = new PrizeTier();
     this.tier10 = new PrizeTier();
+    this.drawn = false;
   }
 
   public Long getId() {
@@ -151,6 +171,30 @@ public class PrizePool {
     this.tier10 = tier10;
   }
 
+  public Set<ShuffledPoolEntry> getShuffledPoolEntries() {
+    return this.shuffledPoolEntries;
+  }
+
+  public void setShuffledPoolEntries(Set<ShuffledPoolEntry> shuffledPoolEntries) {
+    this.shuffledPoolEntries = shuffledPoolEntries;
+  }
+
+  public Boolean isDrawn() {
+    return (this.drawn != null) ? this.drawn : false;
+  }
+
+  public void setDrawn(Boolean drawn) {
+    this.drawn = drawn;
+  }
+
+  public MoneyDrawResult getMoneyDrawResult() {
+    return this.moneyDrawResult;
+  }
+
+  public void setMoneyDrawResult(MoneyDrawResult moneyDrawResult) {
+    this.moneyDrawResult = moneyDrawResult;
+  }
+
   @Transient
   public List<PrizeTier> getPrizeTiers() {
     List<PrizeTier> list = new ArrayList<>(10);
@@ -178,6 +222,89 @@ public class PrizePool {
     }
 
     return results;
+  }
+
+  @Transient
+  public ShuffledPoolEntry getShuffledEntryAtPosition(int position) {
+    ShuffledPoolEntry entry = null;
+
+    for (ShuffledPoolEntry poolEntry : this.shuffledPoolEntries) {
+      if (poolEntry.getPosition().equals(position)) {
+        entry = poolEntry;
+        break;
+      }
+    }
+
+    return entry;
+  }
+
+  @Transient
+  public MoneyDrawResult draw() {
+    MoneyDrawResult result = new MoneyDrawResult();
+    this.shuffleEntries();
+
+    // Pick the winner
+    int randomDrawIndex = Crypto.randomInt(this.shuffledPoolEntries.size()) - 1;
+    ShuffledPoolEntry entry = this.getShuffledEntryAtPosition(randomDrawIndex);
+    result.setDrawNumber(randomDrawIndex);
+    result.setUser(entry.getEntry().getUser());
+
+    result.setPrizePool(this);
+    result.setAwarded(Instant.now());
+    this.drawn = true;
+
+    return result;
+  }
+
+  @Transient
+  protected void shuffleEntries() {
+    log.debug("Shuffling entries for pool {}", this.id);
+    if (this.shuffledPoolEntries.size() > 0) {
+      log.debug("Entries already shuffled");
+      return;
+    }
+
+    // https://github.com/coolaj86/knuth-shuffle
+    List<Entry> entries = this.getEntries();
+    int currentIndex = entries.size();
+    double randomIndex;
+    Entry temp;
+
+    while (0 != currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex = currentIndex - 1;
+
+      temp = entries.get(currentIndex);
+      entries.set(currentIndex, entries.get((int) randomIndex));
+      entries.set((int) randomIndex, temp);
+    }
+
+    ShuffledPoolEntry[] shuffled = new ShuffledPoolEntry[entries.size()];
+    for (int i = 0, j = entries.size(); i < j; i += 1) {
+      ShuffledPoolEntry entry = new ShuffledPoolEntry(this, entries.get(i));
+      entry.setPosition(i);
+      shuffled[i] = entry;
+    }
+
+    this.shuffledPoolEntries.clear();
+    this.shuffledPoolEntries.addAll(ImmutableSet.copyOf(shuffled));
+    log.debug("Shuffled entries: `{}`", Stringer.jsonString(shuffled));
+  }
+
+  @Transient
+  protected List<Entry> getEntries() {
+    List<PrizeTier> prizeTiers = this.getPrizeTiers();
+    List<Entry> entries = new ArrayList<>(0);
+
+    for (PrizeTier tier : prizeTiers) {
+      for (Entry entry : tier.getEntries()) {
+        if (entry.getPrizeTier().getId().equals(tier.getId())) {
+          entries.add(entry);
+        }
+      }
+    }
+
+    return entries;
   }
 
   @Override
