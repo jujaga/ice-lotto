@@ -37,7 +37,7 @@
     $depositEntryBtn.button("loading");
 
     msg.gw2DisplayName = $depositUser.val();
-    msg.amount = ($depositAmount.val().length > 1) ?
+    msg.amount = ($depositAmount.val().length > 0) ?
         parseInt($depositAmount.val(), 10) : 1;
     msg.drawingId = $depositModal.data("drawingId");
     msg.tierId = parseInt($depositTier.val(), 10);
