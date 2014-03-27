@@ -7,6 +7,28 @@ body {
   cursor: pointer;
 }
 
+.form-signin {
+  margin: 0 auto;
+  max-width: 330px;
+  padding: 15px;
+}
+
+.form-signin-heading {
+  margin-bottom: 10px;
+}
+
+.form-signin .username-field {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-bottom: -1px;
+}
+
+.form-signin .password-field {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  margin-bottom: 10px;
+}
+
 .gw-item-icon {
   border: 1px solid #ccc;
   height: 64px;
@@ -16,6 +38,11 @@ body {
 .img-sm {
   height: 32px;
   width: 32px;
+}
+
+.login-alert {
+  margin: 0 auto;
+  max-width: 300px;
 }
 
 .money-draw-winner {

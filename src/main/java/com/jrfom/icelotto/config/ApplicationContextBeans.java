@@ -17,6 +17,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
+import org.thymeleaf.extras.springsecurity3.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
@@ -54,6 +55,7 @@ public class ApplicationContextBeans {
     SpringTemplateEngine engine = new SpringTemplateEngine();
     engine.setTemplateResolver(this.templateResolver());
     engine.addDialect(new DataAttributeDialect());
+    engine.addDialect(new SpringSecurityDialect());
 
     return engine;
   }

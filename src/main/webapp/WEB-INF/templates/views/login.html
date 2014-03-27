@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title></title>
+</head>
+<body>
+
+<div th:fragment="content">
+  <form class="form-signin" role="form" th:action="@{/login}" method="post">
+    <h2 class="form-signin-heading">Login <small>(or <a href="#">claim account</a>)</small></h2>
+
+    <input class="form-control username-field" placeholder="GW2 Display Name (e.g. 'Foo.1234')" name="username" required="required" autofocus="autofocus" />
+    <input type="password" class="form-control password-field" placeholder="Password" name="password" required="required" />
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+  </form>
+
+  <div th:if="${param.error != null}">
+    <div class="alert alert-danger alert-dismissable login-alert">
+      <button type="button" class="btn close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      Invalid username and/or password.
+    </div>
+  </div>
+
+  <div th:if="${param.logout != null}">
+    <div class="alert alert-success alert-dismissable login-alert">
+      <button type="button" class="btn close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      You have been logged out.
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
