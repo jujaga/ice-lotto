@@ -64,7 +64,7 @@
       $drawResult.animate({opacity: 1}, "slow");
     };
 
-    $drawResult.css({opacity: 0, display: "inline"});
+    $drawResult.css({opacity: 0, display: "inline"}).removeClass("hidden");
     $($moneyDisplay.find(".money-draw-winner")).text(data.result.userDisplayName);
     $($moneyDisplay.find(".money-draw-coin").text(data.result.amountWon));
 
