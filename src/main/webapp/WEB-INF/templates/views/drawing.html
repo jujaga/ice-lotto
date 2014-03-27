@@ -32,8 +32,7 @@
         </p>
       </div>
 
-      <!--/* TODO: admin only */-->
-      <div class="col-lg-5 text-right">
+      <div class="col-lg-5 text-right" sec:authorize="hasRole('ROLE_ADMIN')">
           <div class="btn-group" th:if="${!drawing.inProgress and drawing.ended == null}">
             <a id="depositBtn" class="btn btn-default deposit-btn">Add Entry</a>
           </div>
@@ -83,10 +82,11 @@
 
   <script th:src="@{/local/js/drawingMonitor.js}" src="drawingMonitor.js"></script>
 
-  <!--/* TODO: add in detection of admin role */-->
-  <script th:src="@{/local/js/admin/drawingRunner.js}" src="drawingRunner.js"></script>
-  <div th:replace="fragments/admin/addItemModal :: content" th:remove="tag"></div>
-  <div th:replace="fragments/admin/depositModal :: content(${drawing})"></div>
+  <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+    <script th:src="@{/local/js/admin/drawingRunner.js}" src="drawingRunner.js"></script>
+    <div th:replace="fragments/admin/addItemModal :: content" th:remove="tag"></div>
+    <div th:replace="fragments/admin/depositModal :: content(${drawing})"></div>
+  </th:block>
 </div>
 
 </body>

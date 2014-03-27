@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/html">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
@@ -46,9 +46,10 @@
 
   </div>
 
-  <!--/* TODO: add in detection of admin role */-->
-  <div th:replace="fragments/admin/addItemModal :: content" th:remove="tag"></div>
-  <div th:replace="fragments/admin/depositModal :: content"></div>
+  <th:block sec:authorize="hasRole('ROLE_ADMIN')" th:if="${drawing != null}">
+    <div th:replace="fragments/admin/addItemModal :: content" th:remove="tag"></div>
+    <div th:replace="fragments/admin/depositModal :: content"></div>
+  </th:block>
 </div>
 
 </body>

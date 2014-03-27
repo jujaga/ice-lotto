@@ -21,7 +21,7 @@
       </header>
 
       <div class="collapse navbar-collapse" id="header-nav" sec:authorize="hasRole('ROLE_USER')">
-        <ul class="nav navbar-nav">
+        <ul class="nav navbar-nav navbar-left">
           <li class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
             <a class="clickable dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -31,6 +31,11 @@
           <li><a href="#">bar</a></li>
           <li><a href="#">foobar</a> </li>
         </ul>
+
+        <p class="navbar-text navbar-right" sec:authorize="hasRole('ROLE_USER')">
+          Signed in as <a class="navbar-link" sec:authentication="name">Foo User</a>
+          (<a th:href="@{/logout}" class="navbar-link">logout</a>)
+        </p>
       </div>
 
     </div>

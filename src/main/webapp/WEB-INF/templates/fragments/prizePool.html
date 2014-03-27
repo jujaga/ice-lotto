@@ -25,8 +25,9 @@
             <span class="money-draw-coin">3</span> <img th:src="@{/local/images/gold.png}" src="gold.png" />
             out of
           </span>
-          <!--/* TODO: add only for admin */-->
-          <a class="btn btn-primary btn-xs money-draw-btn" th:classappend="${!drawing.inProgress} ? 'disabled hidden'">Draw</a>
+          <a class="btn btn-primary btn-xs money-draw-btn"
+             sec:authorize="hasRole('ROLE_ADMIN')"
+             th:classappend="${!drawing.inProgress} ? 'disabled hidden'">Draw</a>
         </th:block>
 
         <span th:text="${entriesTotal}" th:id="__${size}__PoolPot" class="pool-pot">0</span>
@@ -38,15 +39,13 @@
       <h4>No pool is defined. (add pool btn)</h4>
     </div>
 
-    <table class="table" th:if="${pool != null}">
-      <!--/* TODO: add detection for admin and drawing having been started */-->
+    <table class="table table-striped" th:if="${pool != null}">
       <tbody>
         <th:block th:each="i: ${#numbers.sequence(1, 10)}">
         <!--/* Loop through each tier and each item in that tier */-->
 
           <tr class="prize-pool-tier-row" data:tier-id="${pool.tier__${i}__.id}" data:entrants="${#lists.size(pool.tier__${i}__.entries)}">
-            <td>
-              <!--/* TODO: admin only */-->
+            <td sec:authorize="hasRole('ROLE_ADMIN')">
               <th:block th:if="${drawing.inProgress}">
                 <a th:if="${#lists.size(pool.tier__${i}__.entries) != 0 and pool.tier__${i}__.isDrawn() == false}" class="btn btn-primary draw-btn">Draw</a>
                 <a th:if="${#lists.size(pool.tier__${i}__.entries) != 0 and pool.tier__${i}__.isDrawn() == true}" class="btn btn-primary draw-btn disabled">Drawn</a>
@@ -65,7 +64,9 @@
 
             <td th:each="j: ${#numbers.sequence(1, 10)}" th:object="${pool.tier__${i}__}" data:position="${j}">
               <!--/* There's no item in the current position in this tier so put an add button */-->
-              <div th:if="*{(item__${j}__ == null)  and __${!drawing.inProgress and drawing.ended == null}__}" class="text-center">
+              <div class="text-center"
+                   sec:authorize="hasRole('ROLE_ADMIN')"
+                   th:if="*{(item__${j}__ == null)  and __${!drawing.inProgress and drawing.ended == null}__}">
                 <button class="btn btn-default btn-sm add-item-btn">
                   Add
                 </button>
@@ -81,9 +82,8 @@
           <!--/* Add a "winner" row if there is a drawing result associated with the tier */-->
           <tr th:if="${pool.tier__${i}__.prizeDrawResult != null}" class="success text-center winner-row">
             <td data:item-position="${pool.tier__${i}__.prizeDrawResult.itemDrawNumber}"
-                th:colspan="11"
-                style="padding-bottom: 0; padding-top: 0;"
-            > <!--/* TODO: detect if the user is an admin or not for the correct cols */-->
+                th:colspan="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? 11 : 10}"
+                style="padding-bottom: 0; padding-top: 0;">
               <small>
                 Winner: <strong class="winner-name" th:text="${pool.tier__${i}__.prizeDrawResult.user.displayName}">Foo Bar</strong>
                 &nbsp;&Lt;&Gt;&nbsp;
