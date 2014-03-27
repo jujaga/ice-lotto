@@ -266,7 +266,26 @@ public class PrizePool {
 
     // https://github.com/coolaj86/knuth-shuffle
     List<Entry> entries = this.getEntries();
-    int currentIndex = entries.size();
+    // Because we count _each gold_ as an "entry" in the money draws,
+    // we need to calculate a total number of entries based on the amount
+    // associated with each actual entry. There are more efficient ways to do
+    // this, http://programmers.stackexchange.com/questions/150616/return-random-list-item-by-its-weight
+    // , but I don't want to redesign a large chunk of this mess.
+    int maxEntries = 0;
+    for (Entry entry : entries) {
+      maxEntries += entry.getAmount();
+    }
+
+    int k = 0;
+    Entry[] expandedEntries = new Entry[maxEntries];
+    for (Entry entry : entries) {
+      for (int i = 0, j = entry.getAmount(); i < j; i += 1) {
+        expandedEntries[k] = entry;
+        k += 1;
+      }
+    }
+
+    int currentIndex = maxEntries;
     double randomIndex;
     Entry temp;
 
@@ -274,14 +293,14 @@ public class PrizePool {
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex = currentIndex - 1;
 
-      temp = entries.get(currentIndex);
-      entries.set(currentIndex, entries.get((int) randomIndex));
-      entries.set((int) randomIndex, temp);
+      temp = expandedEntries[currentIndex];
+      expandedEntries[currentIndex] = expandedEntries[(int) randomIndex];
+      expandedEntries[(int) randomIndex] = temp;
     }
 
-    ShuffledPoolEntry[] shuffled = new ShuffledPoolEntry[entries.size()];
-    for (int i = 0, j = entries.size(); i < j; i += 1) {
-      ShuffledPoolEntry entry = new ShuffledPoolEntry(this, entries.get(i));
+    ShuffledPoolEntry[] shuffled = new ShuffledPoolEntry[maxEntries];
+    for (int i = 0, j = maxEntries; i < j; i += 1) {
+      ShuffledPoolEntry entry = new ShuffledPoolEntry(this, expandedEntries[i]);
       entry.setPosition(i);
       shuffled[i] = entry;
     }
