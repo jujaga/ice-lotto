@@ -17,10 +17,12 @@
     <table class="table table-bordered table-condensed table-hover table-striped">
       <thead>
         <tr>
+          <td></td>
           <td>Scheduled</td>
-          <td>Held</td>
-          <td>Small Pool</td>
-          <td>Large Pool</td>
+          <td>Started</td>
+          <td>Ended</td>
+          <td>Small Pool Id</td>
+          <td>Large Pool Id</td>
           <td colspan="4"></td>
         </tr>
       </thead>
@@ -29,15 +31,17 @@
         <!--/* TODO: add links to drawings and pools */-->
         <!--/* TODO: add support for formating JSR-310 dates (new dialect?) */-->
         <tr th:each="drawing: ${drawingsList}" data:drawing-id="${drawing.id}">
+          <td class="text-center"><a th:href="@{/drawing/__${drawing.id}__}">View</a></td>
           <td th:text="${drawing.scheduled}">Not Set</td>
-          <td th:text="${drawing.held} ?: 'Not Yet Held'">Not Set</td>
+          <td th:text="${drawing.started} ?: 'Not Started'">Not Started</td>
+          <td th:text="${drawing.ended} ?: 'Not Yet Held'">Not Set</td>
           <td th:text="${drawing.smallPool} ? ${drawing.smallPool.id}">Not Set</td>
           <td th:text="${drawing.largePool} ? ${drawing.largePool.id}">Not Set</td>
           <td class="text-center" colspan="4">
             <div class="btn-group">
-              <a th:if="${drawing.held == null}" class="btn btn-default btn-xs" th:href="@{/drawing/__${drawing.id}__}">Edit</a>
-              <a th:if="${drawing.held != null}" class="btn btn-default btn-xs">Duplicate</a>
-              <a class="btn btn-default btn-xs">Delete</a>
+              <a th:if="${drawing.ended == null}" class="btn btn-default btn-xs" th:href="@{/drawing/__${drawing.id}__}">Edit</a>
+              <a th:if="${drawing.ended != null}" class="btn btn-default btn-xs">Duplicate</a>
+              <a class="btn btn-default btn-xs disabled">Delete</a>
             </div>
           </td>
         </tr>
