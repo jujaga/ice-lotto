@@ -12,6 +12,7 @@ public interface UserService {
   List<User> findAll();
   Optional<User> findById(Long id);
   Optional<User> findByGw2DisplayName(String gw2DisplayName);
+  Optional<User> findByGw2DisplayNameAndClaimKey(String gw2DisplayName, String claimKey);
   List<User> findAllLike(String term);
   User save(User user);
 }

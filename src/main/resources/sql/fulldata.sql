@@ -25,7 +25,7 @@ insert into characters (id, name) values (4, "Sanctum Chrae");
 insert into user_characters (user_id, character_id) values (2, 4);
 
 -- Just going to start from the top of http://ice-gw2.proboards.com/thread/316/name
-insert into users (id, gw2display_name, enabled) values (3, "Mia Wynd.2367", 0);
+insert into users (id, gw2display_name, enabled, claim_key) values (3, "Mia Wynd.2367", 0, "cc7eaffe764f8252");
 insert into user_roles (user_id, role_id) values (3, 2);
 insert into characters (id, name) values (5, "Mia Wynd");
 insert into characters (id, name) values (6, "Bella Wynd");

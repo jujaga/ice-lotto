@@ -74,6 +74,10 @@ public class ApplicationContextConfig extends WebMvcConfigurerAdapter {
       .addResourceLocations("/WEB-INF/assets/bootstrap-dtpicker-2.2.0/");
 
     registry
+      .addResourceHandler("bootstrap-pwstrength/**")
+      .addResourceLocations("/WEB-INF/assets/bootstrap-pwstrength-1.1.1/");
+
+    registry
       .addResourceHandler("typeahead/**")
       .addResourceLocations("/WEB-INF/assets/typeahead-0.10.1/");
 

@@ -89,6 +89,19 @@ public class UserRepositoryService implements UserService {
   }
 
   @Override
+  @Transactional
+  public Optional<User> findByGw2DisplayNameAndClaimKey(String gw2DisplayName, String claimKey) {
+    Optional<User> result = Optional.absent();
+    User user = this.userRepository.findByGw2DisplayNameAndClaimKey(gw2DisplayName, claimKey);
+
+    if (user != null) {
+      result = Optional.of(user);
+    }
+
+    return result;
+  }
+
+  @Override
   @Transactional(readOnly = true)
   public List<User> findAllLike(String term) {
     String actualTerm = (term.contains("%")) ? term : term + "%";

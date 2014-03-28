@@ -1,7 +1,6 @@
 package com.jrfom.icelotto.config;
 
 import com.jrfom.icelotto.security.AuthSuccessHandler;
-import com.jrfom.icelotto.security.LocalPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -11,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebMvcSecurity
@@ -21,6 +21,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   private UserDetailsService userDetailsService;
 
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+
+  @Autowired
   public void configureGlobal(AuthenticationManagerBuilder auth)
     throws Exception
   {
@@ -31,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     auth
       .userDetailsService(this.userDetailsService)
-      .passwordEncoder(new LocalPasswordEncoder());
+      .passwordEncoder(this.passwordEncoder);
   }
 
   @Override
@@ -47,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // Override the default which also alows HTTP BASIC auth (boo! hiss!)
     httpSecurity
       .authorizeRequests()
+        .antMatchers("/claim/**").anonymous()
         .antMatchers("/admin/**").hasRole("ADMIN")
         .antMatchers("/**").hasRole("USER") // block all other unauthed requests
       .and()

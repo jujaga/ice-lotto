@@ -61,6 +61,9 @@ public class User {
   @Column
   private boolean enabled;
 
+  @Column
+  private String claimKey;
+
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinTable(
     name = "user_characters",
@@ -159,6 +162,14 @@ public class User {
 
   public void setEnabled(boolean enabled) {
     this.enabled = enabled;
+  }
+
+  public String getClaimKey() {
+    return this.claimKey;
+  }
+
+  public void setClaimKey(String claimKey) {
+    this.claimKey = claimKey;
   }
 
   public Set<Character> getCharacters() {
