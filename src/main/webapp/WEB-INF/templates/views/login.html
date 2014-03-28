@@ -20,7 +20,14 @@
   <div th:if="${param.error != null}">
     <div class="alert alert-danger alert-dismissable login-alert">
       <button type="button" class="btn close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      Invalid username and/or password.
+      <div th:if="${#httpSession.getAttribute('SPRING_SECURITY_LAST_EXCEPTION')}" th:remove="tag">
+        <strong>Error :</strong>
+        <span th:text="${#httpSession.getAttribute('SPRING_SECURITY_LAST_EXCEPTION').getMessage()}">Oops</span>
+      </div>
+
+      <div th:if="${#httpSession.getAttribute('SPRING_SECURITY_LAST_EXCEPTION') == null}" th:remove="tag">
+        <strong>Error :</strong> Invalid username and/or password
+      </div>
     </div>
   </div>
 

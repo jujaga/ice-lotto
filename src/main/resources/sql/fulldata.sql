@@ -6,8 +6,10 @@ insert into roles (id, name, description) values (1, "admin", "Application Admin
 insert into roles (id, name, description) values (2, "user", "Basic account");
 
 -- Second, some users
-insert into users (id, gw2display_name, enabled) values (1, "Morhyn.8032", 1);
+insert into users (id, gw2display_name, enabled, password) -- "password"
+  values (1, "Morhyn.8032", 1, "$2a$13$6SaY/IFkGK8YBb6eC40SYe4CwPCkOc6GKvgnW0YNoo7QMbnbvPSFK");
 insert into user_roles (user_id, role_id) values (1, 1);
+insert into user_roles (user_id, role_id) values (1, 2);
 insert into characters (id, name) values (1, "Semaj Srenmus");
 insert into characters (id, name) values (2, "Krait Hate");
 insert into characters (id, name) values (3, "Poncy Jigglebottom");
@@ -15,8 +17,10 @@ insert into user_characters (user_id, character_id) values (1, 1);
 insert into user_characters (user_id, character_id) values (1, 2);
 insert into user_characters (user_id, character_id) values (1, 3);
 
-insert into users (id, gw2display_name, enabled) values (2, "Sanctum.7938", 1);
+insert into users (id, gw2display_name, enabled, password)
+  values (2, "Sanctum.7938", 1, "$2a$13$6SaY/IFkGK8YBb6eC40SYe4CwPCkOc6GKvgnW0YNoo7QMbnbvPSFK");
 insert into user_roles (user_id, role_id) values (2, 1);
+insert into user_roles (user_id, role_id) values (2, 2);
 insert into characters (id, name) values (4, "Sanctum Chrae");
 insert into user_characters (user_id, character_id) values (2, 4);
 

@@ -42,9 +42,6 @@ public class User {
   @JsonIgnore
   private String password;
 
-  @Column
-  private String salt;
-
   /**
    * This should the be value of {@link org.threeten.bp.ZoneId#OLD_IDS_POST_2005}.
    */
@@ -138,14 +135,6 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
-  }
-
-  public String getSalt() {
-    return this.salt;
-  }
-
-  public void setSalt(String salt) {
-    this.salt = salt;
   }
 
   public String getTimeZone() {

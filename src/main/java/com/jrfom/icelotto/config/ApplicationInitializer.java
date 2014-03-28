@@ -17,16 +17,14 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
   protected Class<?>[] getRootConfigClasses() {
     log.info("Getting root config classes");
     return new Class<?>[] {
-      SecurityConfig.class
+      ApplicationContextConfig.class
     };
   }
 
   @Override
   protected Class<?>[] getServletConfigClasses() {
     log.info("Getting servlet config classes");
-    return new Class<?>[] {
-      ApplicationContextConfig.class
-    };
+    return null;
   }
 
   @Override
