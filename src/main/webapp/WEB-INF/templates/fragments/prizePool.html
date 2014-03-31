@@ -66,7 +66,7 @@
               <!--/* There's no item in the current position in this tier so put an add button */-->
               <div class="text-center"
                    sec:authorize="hasRole('ROLE_ADMIN')"
-                   th:if="*{(item__${j}__ == null)  and __${!drawing.inProgress and drawing.ended == null}__}">
+                   th:if="*{(item__${j}__ == null)  and __${!#bools.isTrue(drawing.inProgress) and drawing.ended == null}__}">
                 <button class="btn btn-default btn-sm add-item-btn">
                   Add
                 </button>
@@ -78,7 +78,7 @@
               </div>
 
               <!--/* If the drawing is running/ended, and no item is in this position, show the filler image */-->
-              <div class="text-center prize-tiem" th:if="*{item__${j}__ == null and __${drawing.inProgress or drawing.ended}__}">
+              <div class="text-center prize-tiem" th:if="*{item__${j}__ == null and __${#bools.isTrue(drawing.inProgress) or drawing.ended != null}__}">
                 <img class="gw-item-icon" th:src="@{/local/images/filler.jpg}" src="filler.jpg" />
               </div>
             </td>
