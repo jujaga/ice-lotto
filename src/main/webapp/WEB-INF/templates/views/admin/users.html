@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title></title>
+</head>
+<body>
+
+<div th:fragment="content">
+  <th:block th:if="${not #authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+    <h2>Not Authorized</h2>
+    <p class="lead">Sorry, you do not have permission to access this feature.</p>
+  </th:block>
+
+  <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+    <th:block th:if="${#lists.size(usersList) == 0}">
+      <p class="lead">No users to list. How did you get here?</p>
+    </th:block>
+
+    <table class="table table-bordered table-hover table-striped" th:if="${#lists.size(usersList) > 0}">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Display Name</th>
+          <th>Enabled</th>
+          <th>Claimed</th>
+          <th>Claim Key</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr th:each="user: ${usersList}">
+          <td th:text="${user.gw2DisplayName}">Foo.1234</td>
+          <td th:text="${user.displayName}">Foo</td>
+          <td th:text="${user.enabled ? 'Yes' : 'No'}">Yes</td>
+          <td th:text="${user.enabled ? 'Yes' : 'No'}">Yes</td> <!--/* TODO: use an actual "claimed" attribute */-->
+          <td>
+            <span th:if="${user.claimKey}" th:text="${user.claimKey}">slfj1083</span>
+            <a th:if="${user.claimKey == null}"
+               th:href="@{/admin/users/__${user.gw2DisplayName}__/create/key}">create</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="panel panel-info">
+      <header class="panel-heading">
+        <a href="#help" class="panel-title" data-toggle="collapse">Help</a>
+      </header>
+      <div id="help" class="panel-collapse collapse">
+        <div class="panel-body">
+          <ul class="list-group">
+            <li class="list-group-item"><samp>Username</samp> is the GW2 Display Name the user will login to this site with.</li>
+            <li class="list-group-item"><samp>Display Name</samp> is what will be shown for this user throughout the site (e.g. prize wins).</li>
+            <li class="list-group-item"><samp>Enabled</samp> indicates if the account is enabled or disabled (can login or not).</li>
+            <li class="list-group-item"><samp>Claimed</samp> indicates if the user has used their claim key to activate their account.</li>
+            <li class="list-group-item"><samp>Claim Key</samp> is the key a user will have to use to register with this site (you have to send it to them).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </th:block>
+</div>
+
+</body>
+</html>

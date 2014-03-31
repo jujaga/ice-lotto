@@ -18,6 +18,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
   @Query(value =
     "select u " +
     "from User u " +
+    "where lower(u.gw2DisplayName) = lower(?1) " +
+    "and u.claimKey = ?2 " +
+    "and u.enabled = false"
+  )
+  User findByGw2DisplayNameAndClaimKey(String gw2DisplayName, String claimKey) throws UserNotFoundException;
+
+  @Query(value =
+    "select u " +
+    "from User u " +
     "where lower(u.gw2DisplayName) like lower(?1) " +
     "or lower(u.displayName) like lower(?1) " +
     "or lower(u.email) like lower(?1) " +
@@ -32,9 +41,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
   @Query(value =
     "select u " +
     "from User u " +
-    "where lower(u.gw2DisplayName) = lower(?1) " +
-    "and u.claimKey = ?2 " +
-    "and u.enabled = false"
+    "order by u.gw2DisplayName asc"
   )
-  User findByGw2DisplayNameAndClaimKey(String gw2DisplayName, String claimKey) throws UserNotFoundException;
+  List<User> findAllOrderByGw2DisplayName();
 }

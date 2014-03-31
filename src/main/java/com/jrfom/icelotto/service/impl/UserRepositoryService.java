@@ -109,6 +109,12 @@ public class UserRepositoryService implements UserService {
   }
 
   @Override
+  @Transactional(readOnly = true)
+  public List<User> findAllOrderByGw2DisplayName() {
+    return this.userRepository.findAllOrderByGw2DisplayName();
+  }
+
+  @Override
   @Transactional
   public User save(User user) {
     return this.userRepository.save(user);
