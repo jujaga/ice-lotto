@@ -76,6 +76,11 @@
               <div th:if="*{item__${j}__ != null}">
                 <div th:replace="fragments/item::fragment(*{item__${j}__})"></div>
               </div>
+
+              <!--/* If the drawing is running/ended, and no item is in this position, show the filler image */-->
+              <div class="text-center prize-tiem" th:if="*{item__${j}__ == null and __${drawing.inProgress or drawing.ended}__}">
+                <img class="gw-item-icon" th:src="@{/local/images/filler.jpg}" src="filler.jpg" />
+              </div>
             </td>
           </tr>
 

@@ -59,6 +59,12 @@
       </tr>
     </template>
 
+    <template id="fillerImage">
+      <div class="text-center prize-item">
+        <img th:src="@{/local/images/filler.jpg}" src="filler.jpg" class="gw-item-icon" />
+      </div>
+    </template>
+
     <script>
       $(".main-content").on("click", ".gw-item-icon", function() {
         var $this = $(this),

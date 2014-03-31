@@ -28,9 +28,8 @@
       <!--/* TODO: position the badge over the icon as it is in-game */-->
     </div>
 
-    <!--/* TODO: create a missing item icon */-->
     <div th:if="${prizeItem == null}" class="text-center">
-      <img class="gw-item-icon" src="missing-item-icon.png" />
+      <img class="gw-item-icon" th:src="@{/local/images/missing-item-icon.jpg}" src="missing-item-icon.jpg" />
     </div>
   </div>
 </body>

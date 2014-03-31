@@ -2,6 +2,7 @@
   /* global UserSocketManager */
   "use strict";
   var $winnerRowTemplate = $($("#winnerRowTemplate").html().trim()),
+      $fillerTemplate = $($("#fillerImage").html().trim()),
       endedSubscription = {},
       poolSubscription = {},
       tierSubscription = {},
@@ -118,12 +119,10 @@
     // TODO: do something more attention grabbing so the user notices it
     $drawingHeader.find(".lead").html("Drawing underway");
 
-    // TODO: create a "filler.png" for the spots that do not have prizes
     $(".add-item-btn")
         .animate({opacity: 0}, "slow")
         .parent()
-        .css("opacity", 0)
-        .html("<img src='filler.png' class='prize-item'>");
+        .html($fillerTemplate.clone());
   };
 
   if (socketManager.connected) {
