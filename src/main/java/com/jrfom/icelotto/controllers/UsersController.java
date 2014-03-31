@@ -13,7 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * This controller is for the administration of all users. This does not deal
@@ -30,7 +32,7 @@ public class UsersController {
     value = "/admin/users",
     method = RequestMethod.GET
   )
-  private ModelAndView index() {
+  public ModelAndView index() {
     log.debug("Received request for list of users");
     ModelAndView mav = new ModelAndView();
     List<User> usersList = this.userService.findAllOrderByGw2DisplayName();
@@ -42,10 +44,32 @@ public class UsersController {
   }
 
   @RequestMapping(
+    value = "/admin/users/add",
+    method = RequestMethod.POST
+  )
+  public String addUser(@RequestParam String username, RedirectAttributes attrs) {
+    log.debug("Received request to create new user: `{}`", username);
+    ModelAndView mav = new ModelAndView();
+    attrs.addFlashAttribute("addUserSuccess", "false");
+
+    Optional<User> dbUser = this.userService.findByGw2DisplayName(username);
+    if (dbUser.isPresent()) {
+      attrs.addFlashAttribute("addUserErrorMessage", "User already exists");
+    } else {
+      User user = new User(username);
+      this.userService.save(user);
+      attrs.addFlashAttribute("addUserSuccess", "true");
+      attrs.addFlashAttribute("addedUser", username);
+    }
+
+    return "redirect:/admin/users#" + username;
+  }
+
+  @RequestMapping(
     value = "/admin/users/{user}/create/key",
     method = RequestMethod.GET
   )
-  private String createClaimKey(@PathVariable String user) {
+  public String createClaimKey(@PathVariable String user) {
     log.debug("Received request to create claim key for `{}`", user);
     Optional<User> userOptional = this.userService.findByGw2DisplayName(user);
 

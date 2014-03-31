@@ -17,6 +17,17 @@
       <p class="lead">No users to list. How did you get here?</p>
     </th:block>
 
+    <div class="row">
+      <div class="col-lg-8">
+        <p class="lead">Users List</p>
+      </div>
+      <div class="col-lg-4 text-right">
+        <div class="btn-group">
+          <a class="btn btn-default" data-toggle="modal" data-target="#addUserModal">Add User</a>
+        </div>
+      </div>
+    </div>
+
     <table class="table table-bordered table-hover table-striped" th:if="${#lists.size(usersList) > 0}">
       <thead>
         <tr>
@@ -29,7 +40,9 @@
       </thead>
 
       <tbody>
-        <tr th:each="user: ${usersList}">
+        <tr th:each="user: ${usersList}"
+            th:classappend="${(addedUser != null and user.gw2DisplayName == addedUser)} ? 'success'"
+            th:name="${user.gw2DisplayName}">
           <td th:text="${user.gw2DisplayName}">Foo.1234</td>
           <td th:text="${user.displayName}">Foo</td>
           <td th:text="${user.enabled ? 'Yes' : 'No'}">Yes</td>
@@ -59,6 +72,31 @@
         </div>
       </div>
     </div>
+
+    <div id="addUserModal" class="modal fade" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+
+        <header class="modal-header">
+          <a class="close" data-dismiss="modal" role="button">&times;</a>
+          <h4 class="modal-title">Add User</h4>
+        </header>
+
+        <div class="modal-body">
+          <form th:action="@{/admin/users/add}" method="post" role="form">
+            <div class="form-group">
+              <label for="username">GW2 Display Name</label>
+              <input class="form-control" id="username" name="username" placeholder="FooUser.1234" />
+            </div>
+
+            <div class="form-group text-right">
+              <button type="submit" class="btn btn-primary" role="button" data-loading-text="Working...">Add</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   </th:block>
 </div>
 
