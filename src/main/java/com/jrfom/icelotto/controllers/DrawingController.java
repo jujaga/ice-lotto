@@ -83,6 +83,24 @@ public class DrawingController {
     return modelAndView;
   }
 
+  @RequestMapping(
+    value = "/drawing/previous",
+    method = RequestMethod.GET,
+    produces = MediaType.TEXT_HTML_VALUE
+  )
+  public ModelAndView previousDrawing() {
+    ModelAndView mav = new ModelAndView();
+    mav.setViewName("drawing");
+
+    Optional<Drawing> drawingOptional = this.drawingService.previousDrawing();
+    if (drawingOptional.isPresent()) {
+      mav.addObject("drawing", drawingOptional.get());
+      mav.addObject("drawingId", drawingOptional.get().getId());
+    }
+
+    return mav;
+  }
+
   @MessageMapping("/admin/drawing/item/add")
   @SendTo("/topic/admin/drawing/item/add")
   public ItemAddResponse addItem(ItemAddMessage itemAddMessage) {

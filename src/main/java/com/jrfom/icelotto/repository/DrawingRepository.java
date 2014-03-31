@@ -13,4 +13,15 @@ public interface DrawingRepository extends JpaRepository<Drawing, Long> {
     "order by d.scheduled asc"
   )
   Drawing nextDrawing();
+
+  @Query(
+    "select d " +
+    "from Drawing d " +
+    "where d.ended = (" +
+      "select max(z.ended) " +
+      "from Drawing z " +
+      "where z.id = d.id" +
+    ")"
+  )
+  Drawing previousDrawing();
 }

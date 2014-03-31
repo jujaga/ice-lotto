@@ -24,5 +24,7 @@ public interface DrawingService {
    */
   Optional<Drawing> nextDrawing();
 
+  Optional<Drawing> previousDrawing();
+
   Drawing save(Drawing drawing);
 }

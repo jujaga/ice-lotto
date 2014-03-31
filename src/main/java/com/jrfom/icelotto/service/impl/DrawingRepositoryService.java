@@ -101,6 +101,19 @@ public class DrawingRepositoryService implements DrawingService {
   }
 
   @Override
+  @Transactional(readOnly = true)
+  public Optional<Drawing> previousDrawing() {
+    Optional<Drawing> result = Optional.absent();
+    Drawing drawing = this.drawingRepository.previousDrawing();
+
+    if (drawing != null) {
+      result = Optional.of(drawing);
+    }
+
+    return result;
+  }
+
+  @Override
   @Transactional
   public Drawing save(Drawing drawing) {
     return this.drawingRepository.save(drawing);

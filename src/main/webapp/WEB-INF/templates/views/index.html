@@ -17,6 +17,7 @@
 
   <div th:if="${nextDrawing == null}">
     <h4>No drawing is currently open.</h4>
+    <p>View <a th:href="@{/drawing/previous}">the previous</a> drawing instead.</p>
   </div>
 
   <div th:if="${nextDrawing != null}" class="drawing-container" data:drawing-id="${nextDrawing.id}">
