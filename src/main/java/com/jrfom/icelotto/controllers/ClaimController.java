@@ -84,6 +84,7 @@ public class ClaimController {
         User dbUser = userOptional.get();
         dbUser.setPassword(encoded);
         dbUser.setEnabled(true);
+        dbUser.setClaimed(true);
         this.userService.save(dbUser);
 
         mav.addObject("setPassSuccess", true);

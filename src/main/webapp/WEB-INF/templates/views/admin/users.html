@@ -33,7 +33,7 @@
           <td th:text="${user.gw2DisplayName}">Foo.1234</td>
           <td th:text="${user.displayName}">Foo</td>
           <td th:text="${user.enabled ? 'Yes' : 'No'}">Yes</td>
-          <td th:text="${user.enabled ? 'Yes' : 'No'}">Yes</td> <!--/* TODO: use an actual "claimed" attribute */-->
+          <td th:text="${user.claimed ? 'Yes' : 'No'}">Yes</td>
           <td>
             <span th:if="${user.claimKey}" th:text="${user.claimKey}">slfj1083</span>
             <a th:if="${user.claimKey == null}"

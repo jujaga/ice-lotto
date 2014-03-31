@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jrfom.icelotto.util.Stringer;
+import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.threeten.bp.Instant;
 import org.threeten.bp.OffsetDateTime;
 import org.threeten.bp.ZoneId;
@@ -59,10 +60,13 @@ public class User {
   private String datetimeFormat;
 
   @Column
-  private boolean enabled;
+  private Boolean enabled;
 
   @Column
   private String claimKey;
+
+  @Column
+  private Boolean claimed;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinTable(
@@ -93,6 +97,7 @@ public class User {
   public User(String gw2DisplayName) {
     this.gw2DisplayName = gw2DisplayName;
     this.enabled = false;
+    this.claimKey = KeyGenerators.string().generateKey();
   }
 
   public Long getId() {
@@ -156,11 +161,11 @@ public class User {
     this.datetimeFormat = datetimeFormat;
   }
 
-  public boolean isEnabled() {
-    return this.enabled;
+  public Boolean isEnabled() {
+    return (this.enabled == null) ? false : this.enabled;
   }
 
-  public void setEnabled(boolean enabled) {
+  public void setEnabled(Boolean enabled) {
     this.enabled = enabled;
   }
 
@@ -170,6 +175,14 @@ public class User {
 
   public void setClaimKey(String claimKey) {
     this.claimKey = claimKey;
+  }
+
+  public Boolean isClaimed() {
+    return (this.claimed == null) ? false : this.claimed;
+  }
+
+  public void setClaimed(Boolean claimed) {
+    this.claimed = claimed;
   }
 
   public Set<Character> getCharacters() {

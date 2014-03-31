@@ -20,7 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     "from User u " +
     "where lower(u.gw2DisplayName) = lower(?1) " +
     "and u.claimKey = ?2 " +
-    "and u.enabled = false"
+    "and u.claimed = false"
   )
   User findByGw2DisplayNameAndClaimKey(String gw2DisplayName, String claimKey) throws UserNotFoundException;
 
